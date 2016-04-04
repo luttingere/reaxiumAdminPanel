@@ -2425,7 +2425,7 @@ TableTools.prototype = {
 		{
 			this._fnPrintScrollStart( oSetDT );
 
-			// If the table redraws while in print view, the DataTables scrolling
+			// If the table redraws while in print views, the DataTables scrolling
 			// setup would hide the header, so we need to readd it on draw
 			$(this.s.dt.nTable).bind('draw.DTTT_Print', function () {
 				that._fnPrintScrollStart( oSetDT );
@@ -2546,7 +2546,7 @@ TableTools.prototype = {
 			nTheadSize, nTfootSize;
 
 		/* Copy the header in the thead in the body table, this way we show one single table when
-		 * in print view. Note that this section of code is more or less verbatim from DT 1.7.0
+		 * in print views. Note that this section of code is more or less verbatim from DT 1.7.0
 		 */
 		nTheadSize = oSetDT.nTable.getElementsByTagName('thead');
 		if ( nTheadSize.length > 0 )
@@ -2903,11 +2903,11 @@ TableTools.BUTTONS = {
 	} ),
 
 	"print": $.extend( {}, TableTools.buttonBase, {
-		"sInfo": "<h6>Print view</h6><p>Please use your browser's print function to "+
+		"sInfo": "<h6>Print views</h6><p>Please use your browser's print function to "+
 		  "print this table. Press escape when finished.</p>",
 		"sMessage": null,
 		"bShowAll": true,
-		"sToolTip": "View print view",
+		"sToolTip": "View print views",
 		"sButtonClass": "DTTT_button_print",
 		"sButtonText": "Print",
 		"fnClick": function ( nButton, oConfig ) {

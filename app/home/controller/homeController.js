@@ -3,7 +3,7 @@ var appMenus = [{
     'name': 'User Administration',
     'subMenus': [{
         'name': 'All Users',
-        'url': "'app/home/views/user.html'"
+        'url': 'app/home/views/user.html'
     }]
 }, {
     'name': 'Bus Administration',
@@ -13,7 +13,9 @@ var appMenus = [{
     }]
 }];
 
-app.controller("HomeController", function ($scope, $location, $state, $stateParams) {
+angular.module('Home')
+
+.controller('HomeController',['$scope','$state', function ($scope,$state) {
     //Menu
     $scope.menus = appMenus;
     //Search on the menu
@@ -25,4 +27,4 @@ app.controller("HomeController", function ($scope, $location, $state, $statePara
         $scope.currentView = view;
     };
     return $scope;
-});
+}]);

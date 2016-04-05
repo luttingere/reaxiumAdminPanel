@@ -1,12 +1,13 @@
 /**
  * Created by VladimirIlich on 4/4/2016.
  */
-var app = angular.module("app", ['ui.router']);
+
+angular.module('Login', []);
+angular.module('Home', []);
+angular.module('App', ['Login','Home','ui.router'])
 
 //Configurando enrutado de la aplicacion
-app.config(function ($stateProvider, $urlRouterProvider) {
-
-    $urlRouterProvider.otherwise("/login");
+.config(['$stateProvider','$urlRouterProvider',function ($stateProvider, $urlRouterProvider) {
 
     $stateProvider
         .state("login", {
@@ -24,5 +25,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
-
-});
+    $urlRouterProvider.otherwise("/login");
+}])
+    //Aqui lo primero que se ejecuta en angular como el document Ready en jquery
+//.run(['rootScope'],function(){});

@@ -1,19 +1,24 @@
-<div class="wrapper" ng-controller="HomeController as homeCtrl">
 
-    <div ui-view="header"></div>
+<div class="skin-blue sidebar-mini">
+    <div class="wrapper" ng-controller="HomeController as homeCtrl">
 
-    <div ui-view="menu"></div>
+        <div ui-view="header"></div>
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <div ng-include="homeCtrl.currentView"></div>
-    </div>
+        <div ui-view="menu"></div>
 
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> 2.3.0
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <div ng-include="homeCtrl.currentView"></div>
         </div>
-        <strong>Copyright &copy; 2016-2017 <a href="#">G&G Development Team</a>.</strong> All rights reserved.
-    </footer>
 
-</div><!-- ./wrapper -->
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 2.3.0
+            </div>
+            <strong>Copyright &copy; 2016-2017 <a href="#">G&G Development Team</a>.</strong> All rights reserved.
+        </footer>
+
+    </div><!-- ./wrapper -->
+</div>
+
+

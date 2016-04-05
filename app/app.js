@@ -15,9 +15,9 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             controller: "loginController"
         })
         .state("home", {
-            url: '/home',
+            'url': '/home',
             'controller':'HomeController',
-            views: {
+            'views': {
                 '': {templateUrl: 'app/home/views/home.html'},
                 'header@home': {templateUrl: 'app/home/views/header.html'},
                 'menu@home': {templateUrl: 'app/home/views/menu.html'}

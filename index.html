@@ -32,7 +32,7 @@
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 
-
+    <link rel="stylesheet" href="dist/css/Spinner.css">
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -45,7 +45,8 @@
     <!-- jQuery 2.1.4 -->
     <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <!--<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>-->
+    <script src="plugins/jQueryUI/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
         $.widget.bridge('uibutton', $.ui.button);
@@ -83,14 +84,18 @@
     <!--FrameWork Angular-->
     <script src="plugins/angularjs/angular.min.js"></script>
     <script src="plugins/angularjs/angular-ui-router.js"></script>
+    <script src="plugins/angularjs/angular-spinners.min.js"></script>
     <script src="app/app.js"></script>
     <script src="app/commons/directives/directives.js"></script>
     <script src="app/login/controller/loginController.js"></script>
     <script src="app/home/controller/homeController.js"></script>
 
+    <!--Servicios-->
+    <script src="app/login/services/servicesLogin.js"></script>
 
 </head>
 <body style="background: #d2d6de">
+
     <div class="hold-transition">
         <div ui-view></div>
     </div>

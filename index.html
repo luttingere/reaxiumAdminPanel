@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="app">
+<html ng-app="App">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
     <!-- iCheck -->
     <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
+
+    <!-- iCheck -->
+    <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
 
     <!-- jvectormap -->
     <link rel="stylesheet" href="plugins/jvectormap/jquery-jvectormap-1.2.2.css">
@@ -95,17 +98,20 @@
     <!--<script src="dist/js/demo.js"></script>-->
     <!-- iCheck -->
     <script src="plugins/iCheck/icheck.min.js"></script>
-    <script>
-        $(function () {
-            $('input').iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue',
-                increaseArea: '20%' // optional
-            });
-        });
-    </script>
+
+    <!--FrameWork Angular-->
+    <script src="plugins/angularjs/angular.min.js"></script>
+    <script src="plugins/angularjs/angular-ui-router.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/commons/directives/directives.js"></script>
+    <script src="app/login/controller/loginController.js"></script>
+    <script src="app/home/controller/homeController.js"></script>
+
+
 </head>
-<body class="hold-transition skin-blue sidebar-mini" >
-    <div ui-view=""></div>
+<body style="background: #d2d6de">
+    <div class="hold-transition">
+        <div ui-view></div>
+    </div>
 </body>
 </html>

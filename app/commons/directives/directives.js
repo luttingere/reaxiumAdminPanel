@@ -27,3 +27,21 @@ angular.module('App')
         }
     })
 
+    .directive('dataTable', function () {
+        return {
+            link: function ($scope, element, attrs) {
+                $scope.$on('dataloaded', function () {
+                    console.log("Si funciona viejo");
+                    //$('#userTable').DataTable({
+                    //    "paging": true,
+                    //    "lengthChange": true,
+                    //    "searching": true,
+                    //    "ordering": true,
+                    //    "info": true,
+                    //    "autoWidth": true
+                    //});
+                });
+            }
+        };
+    })
+

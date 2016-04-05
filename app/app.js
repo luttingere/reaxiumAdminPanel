@@ -4,7 +4,8 @@
 
 angular.module('Login', []);
 angular.module('Home', []);
-angular.module('App', ['Login','Home','ui.router'])
+angular.module('Users', []);
+angular.module('App', ['Login','Home','Users','ui.router'])
 
 //Configurando enrutado de la aplicacion
 .config(['$stateProvider','$urlRouterProvider',function ($stateProvider, $urlRouterProvider) {

@@ -15,20 +15,19 @@
     <section class="content">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-            <div class="col-lg-3 col-xs-6">
+            <div class="col-lg-3 col-xs-4">
                 <!-- small box -->
-                <div class="small-box bg-aqua">
+                <div class="small-box bg-green">
                     <div class="inner">
                         <h3>100</h3>
                         <p>Active Users</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-bag"></i>
+                        <i class="ion ion-stats-bars"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div><!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
+            <div class="col-lg-3 col-xs-4">
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
@@ -38,33 +37,25 @@
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div><!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
+            <div class="col-lg-3 col-xs-4">
                 <!-- small box -->
-                <div class="small-box bg-yellow">
+                <div class="small-box bg-green">
                     <div class="inner">
                         <h3>70</h3>
                         <p>Users OUT</p>
                     </div>
                     <div class="icon">
-                        <i class="ion ion-person-add"></i>
+                        <i class="ion ion-stats-bars"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div><!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-                <!-- small box -->
-                <div class="small-box bg-red">
-                    <div class="inner">
-                        <h3>10</h3>
-                        <p>Disabled Users</p>
+            <div class="col-lg-3 col-xs-8">
+                <div class="small-box">
+                    <div class="customIcon">
+                        <i ng-click="userCtrl.newUser()" class="ion ion-plus-circled"></i>
                     </div>
-                    <div class="icon">
-                        <i class="ion ion-pie-graph"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div><!-- ./col -->
         </div><!-- /.row -->
@@ -80,7 +71,7 @@
                                 <h3 class="box-title">System Users</h3>
                             </div><!-- /.box-header -->
                             <div class="box-body">
-                                <table data-table id="userTable" class="table table-bordered table-striped">
+                                <table id="userTable" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th>Name</th>
@@ -94,13 +85,13 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="user in userCtrl.users">
-                                        <td>{{user.name +' '+ user.name}}</td>
-                                        <td>Internet
-                                            Explorer 4.0
-                                        </td>
-                                        <td>Win 95+</td>
-                                        <td> 4</td>
-                                        <td>X</td>
+                                        <td>{{user.first_name + "    " + user.first_name}}</td>
+                                        <td>{{user.first_last_name + "    " + user.second_last_name}}</td>
+                                        <td>{{user.document_id}}</td>
+                                        <td><a href="" ng-click="userCtrl.showPhoneInformation(user.user_id)">Phones</a></td>
+                                        <td><a href="">Addresss</a></td>
+                                        <td><a href="">Information</a></td>
+                                        <td>Eliminar - Editar</td>
                                     </tr>
                                     </tbody>
                                     </tfoot>
@@ -115,6 +106,48 @@
         </div>
 
     </section>
+    <modal title="User Phone Information" visible="userCtrl.showPhoneModal">
+        <div class="box box-widget widget-user-2">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header bg-yellow">
+                <div class="widget-user-image">
+                    <img class="img-circle" src="images/fotoPerfil.jpg" alt="User Avatar">
+                </div><!-- /.widget-user-image -->
+                <h3 class="widget-user-username">Eduardo Luttinger</h3>
+                <h5 class="widget-user-desc">Student</h5>
+            </div>
+            <div class="box-footer no-padding">
+                <ul class="nav nav-stacked">
+                    <li><a href="#">Home Number <span class="pull-right badge bg-blue">0212-3734831</span></a></li>
+                    <li><a href="#">Cel Number <span class="pull-right badge bg-blue">0412-8711244</span></a></li>
+                    <li><a href="#">Moms Cel Number <span class="pull-right badge bg-blue">0412-5529689</span></a></li>
+                    <li><a href="#">Dad Cel Number <span class="pull-right badge bg-blue">0414-3454087</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </modal>
+
+    <modal title="User New User" visible="userCtrl.showNewUserModal">
+        <div class="box box-widget widget-user-2">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header bg-yellow">
+                <div class="widget-user-image">
+                    <img class="img-circle" src="images/fotoPerfil.jpg" alt="User Avatar">
+                </div><!-- /.widget-user-image -->
+                <h3 class="widget-user-username">Eduardo Luttinger</h3>
+                <h5 class="widget-user-desc">Student</h5>
+            </div>
+            <div class="box-footer no-padding">
+                <ul class="nav nav-stacked">
+                    <li><a href="#">Home Number <span class="pull-right badge bg-blue">0212-3734831</span></a></li>
+                    <li><a href="#">Cel Number <span class="pull-right badge bg-blue">0412-8711244</span></a></li>
+                    <li><a href="#">Moms Cel Number <span class="pull-right badge bg-blue">0412-5529689</span></a></li>
+                    <li><a href="#">Dad Cel Number <span class="pull-right badge bg-blue">0414-3454087</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </modal>
+
 </div>
 <div class="control-sidebar-bg"></div>
 </div>

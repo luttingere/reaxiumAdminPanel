@@ -4,9 +4,8 @@
 
 angular.module('Login', []);
 angular.module('Home', []);
-angular.module('App', ['Login', 'Home', 'ui.router','angularSpinners','ngStorage'])
 angular.module('Users', []);
-angular.module('App', ['Login','Home','Users','ui.router'])
+angular.module('App', ['Login','Home','Users','ui.router','angularSpinners','ngStorage'])
 
     //Configuracion de todos los endpoints manejados por la aplicacion
     .constant('CONST_PROXY_URL', {

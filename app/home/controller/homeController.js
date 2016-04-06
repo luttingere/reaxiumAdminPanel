@@ -3,7 +3,7 @@ var appMenus = [{
     'name': 'User Administration',
     'subMenus': [{
         'name': 'All Users',
-        'url': 'app/home/views/user.html'
+        'url': "app/users/views/userDashboard.html"
     }]
 }, {
     'name': 'Bus Administration',

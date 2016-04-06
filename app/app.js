@@ -2,9 +2,11 @@
  * Created by VladimirIlich on 4/4/2016.
  */
 
-angular.module('Login', [])
+angular.module('Login', []);
 angular.module('Home', []);
 angular.module('App', ['Login', 'Home', 'ui.router','angularSpinners','ngStorage'])
+angular.module('Users', []);
+angular.module('App', ['Login','Home','Users','ui.router'])
 
     //Configuracion de todos los endpoints manejados por la aplicacion
     .constant('CONST_PROXY_URL', {
@@ -30,7 +32,7 @@ angular.module('App', ['Login', 'Home', 'ui.router','angularSpinners','ngStorage
                 }
             })
 
-        $urlRouterProvider.otherwise("/login");
-    }])
-//Aqui lo primero que se ejecuta en angular como el document Ready en jquery
+    $urlRouterProvider.otherwise("/login");
+}])
+    //Aqui lo primero que se ejecuta en angular como el document Ready en jquery
 //.run(['rootScope'],function(){});

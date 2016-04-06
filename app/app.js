@@ -4,7 +4,8 @@
 
 angular.module('Login', [])
 angular.module('Home', []);
-angular.module('App', ['Login', 'Home', 'ui.router','angularSpinners'])
+angular.module('App', ['Login', 'Home', 'ui.router','angularSpinners','ngStorage'])
+
     //Configuracion de todos los endpoints manejados por la aplicacion
     .constant('CONST_PROXY_URL', {
         PROXY_URL_LOGIN: "http://54.200.133.84/reaxium/Access/checkUserAccessInformation",

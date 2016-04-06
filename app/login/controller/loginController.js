@@ -3,51 +3,90 @@
  */
 
 angular.module('Login')
-    .controller('loginController',['$scope','$state','$log','$timeout','loginServices','spinnerService',
-        function($scope,$state,$log,$timeout,loginServices,spinnerService){
+    .controller('loginController', ['$scope', '$state', '$log', '$timeout', 'loginServices', 'spinnerService','$localStorage',
+        function ($scope, $state, $log, $timeout, loginServices, spinnerService,$localStorage) {
 
-        console.log('Inicializando controlador Login...');
+            $scope.showMessage = false;
 
-        $scope.goHome = function(){
-            $state.go('home');
-        }
+            $scope.data = {
+                settings: {
+                    username: '',
+                    password: '',
+                    checked: false
+                }
+            };
 
-        $scope.showMessage = false;
-        $scope.authenticateUser = function(){
-            spinnerService.show('html5spinner');
+            var init = function(){
+                console.log('Inicializando controlador Login...');
 
-                loginServices.proxyLogin($scope.username,$scope.password)
-                    .success(function(data){
+                if (angular.isDefined($localStorage.settings)) {
+                    console.log('Esta definido el localStored');
+                    $log.debug($localStorage.settings);
+                    $scope.data.settings = $localStorage.settings;
+
+                }
+                else {
+                    console.log('No Esta definido el localStored');
+                    $localStorage.settings = $scope.data.settings;
+                }
+            }
+
+            init();
+
+
+            $scope.authenticateUser = function () {
+
+                spinnerService.show('html5spinner');
+
+                loginServices.proxyLogin($scope.data.settings.username, $scope.data.settings.password)
+                    .success(function (data) {
                         console.log("Invocacion del servicio exitosa");
                         $log.debug(data);
 
-                        if(data.ReaxiumResponse.code === 0){
+                        if (data.ReaxiumResponse.code === 0) {
                             $state.go('home');
-                        }else{
+                        } else {
                             $scope.showMessage = true;
-                            $scope.message={
-                                message:data.message
-                            }
+                            console.log("Error a ingresar al aplicativo: " + data.ReaxiumResponse.message)
                         }
 
                     })
-                    .catch(function(error){
-                        console.log("Error invocacion del servicio" +error);
+                    .catch(function (error) {
+                        console.log("Error invocacion del servicio" + error);
 
-                    }).finally(function(){
-                        cleanInput();
-                        spinnerService.hide('html5spinner');
+                    }).finally(function () {
+                    cleanInput();
+                    spinnerService.hide('html5spinner');
                 })
 
 
-        }
+            }
 
-        //Limpiar el scope vinculados a los campos
-        var cleanInput = function(){
-            $scope.username="";
-            $scope.password="";
-        }
+            /*Limpiar el scope vinculados a los campos*/
 
-    }]);
+            function cleanInput() {
+                $scope.username = "";
+                $scope.password = "";
+            }
+
+            $scope.newDataUser = function (){
+                console.log("Cambio checkbox ifChecked");
+                if($scope.data.settings.username!=null &&
+                    $scope.data.settings.username!=undefined &&
+                    $scope.data.settings.password!=null &&
+                    $scope.data.settings.password!=undefined){
+
+                    var obj = {settings: {username: $scope.data.settings.username, password: $scope.data.settings.password,checked: true}};
+                    $log.debug("objeto paraguardar local:",obj);
+                    $localStorage.settings = obj.settings;
+
+                }
+            }
+
+            $scope.deleteDataUser = function(){
+                console.log("Cambio checkbox ifUnchecked");
+                delete $localStorage.settings;
+            }
+        }]);
 
 

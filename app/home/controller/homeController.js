@@ -4,6 +4,9 @@ var appMenus = [{
     'subMenus': [{
         'name': 'All Users',
         'url': "app/users/views/userDashboard.html"
+    },{
+        'name': 'Search Users',
+        'url': "app/users/views/userSearchDashboard.html"
     }]
 }, {
     'name': 'Bus Administration',

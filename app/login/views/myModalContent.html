@@ -1,0 +1,26 @@
+<div class="modal-body {{data_alert.color_border}}" style="padding: 0px;">
+    <div class="alert alert-{{data_alert.mode}}">
+        <button type="button" class="close" data-ng-click="close()" >
+            <span class="glyphicon glyphicon-remove-circle"></span>
+        </button>
+        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+        <strong>{{data_alert.boldTextTitle}}</strong> {{data_alert.textAlert}}
+    </div>
+</div>
+
+<!--<div class="modal-header">
+    <h3 class="modal-title">I'm a modal!</h3>
+</div>
+<div class="modal-body">
+    <ul>
+        <li ng-repeat="item in items">
+            <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
+        </li>
+    </ul>
+    Selected: <b>{{ selected.item }}</b>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>-->
+

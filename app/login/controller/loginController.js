@@ -3,9 +3,8 @@
  */
 
 angular.module('Login')
-    .controller('loginController', function ($scope, $state, $log, $timeout, loginServices, spinnerService, $localStorage) {
+    .controller('loginController', function ($scope, $state, $log, $timeout, loginServices, spinnerService, $localStorage,$uibModal) {
 
-        $scope.showMessage = false;
 
         $scope.data = {
             settings: {
@@ -15,6 +14,7 @@ angular.module('Login')
             }
         };
 
+
         var init = function () {
             console.log('Inicializando controlador Login...');
 
@@ -22,7 +22,6 @@ angular.module('Login')
                 console.log('Esta definido el localStored');
                 $log.debug($localStorage.settings);
                 $scope.data.settings = $localStorage.settings;
-
             }
             else {
                 console.log('No Esta definido el localStored');
@@ -31,7 +30,6 @@ angular.module('Login')
         }
 
         init();
-
 
         $scope.authenticateUser = function () {
 
@@ -45,7 +43,7 @@ angular.module('Login')
                     if (data.ReaxiumResponse.code === 0) {
                         $state.go('home');
                     } else {
-                        $scope.showMessage = true;
+                        open("danger");
                         console.log("Error a ingresar al aplicativo: " + data.ReaxiumResponse.message)
                     }
 
@@ -92,6 +90,48 @@ angular.module('Login')
             console.log("Cambio checkbox ifUnchecked");
             delete $localStorage.settings;
         }
+
+        $scope.data_alert = {
+            boldTextTitle: "Done",
+            textAlert : "Invalid User",
+            mode : "danger",
+            color_border: "bg-red-active"
+        }
+
+        //Alert
+        var open = function (mode) {
+
+            $scope.data_alert.mode = mode;
+
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/login/views/myModalContent.html',
+                controller: ModalInstanceCtrl,
+                backdrop: true,
+                keyboard: true,
+                backdropClick: true,
+                size: 'sm',
+                resolve: {
+                    data: function () {
+                        return $scope.data_alert;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+                $scope.selected = selectedItem;
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+
+        }
+        var ModalInstanceCtrl = function ($scope, $uibModalInstance, data) {
+            $scope.data_alert = data;
+            $scope.close = function(/*result*/){
+                $uibModalInstance.close($scope.data_alert);
+            };
+        };
+
+
     })
 
     .directive('myViewCheck', function () {
@@ -113,16 +153,13 @@ angular.module('Login')
                 if (scope.data.settings.checked) {
                     $('#checkLogin').iCheck('check');
                 }
-
                 $('#checkLogin').on('ifChecked', function (event) {
                     scope.newDataUser();
                 });
-
                 $('#checkLogin').on('ifUnchecked', function (event) {
                     scope.deleteDataUser();
                 });
             }
         }
     });
-
 

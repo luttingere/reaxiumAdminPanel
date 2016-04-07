@@ -17,11 +17,12 @@ angular.module('Users')
         invokeServiceUserFilter(str);
 
         $scope.userFilter.forEach(function(person) {
+            matches.push(person);
             var fullName = person.firstName + ' ' + person.lastName;
             if ((person.firstName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
                 (person.lastName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
                 (fullName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0)) {
-                matches.push(person);
+
             }
         });
 

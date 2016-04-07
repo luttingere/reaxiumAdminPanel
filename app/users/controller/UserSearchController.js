@@ -8,14 +8,14 @@ angular.module('Users')
 
     //TODO autocompletar para filtar usuario
 
-
     $scope.userFilter = [];
     $scope.allUser=[];
-    $scope.user={};
 
     $scope.localSearch = function(str){
         var matches = [];
+
         invokeServiceUserFilter(str);
+
         $scope.userFilter.forEach(function(person) {
             var fullName = person.firstName + ' ' + person.lastName;
             if ((person.firstName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
@@ -35,30 +35,37 @@ angular.module('Users')
         myUserFilterPromise.then(function(result){
 
             if(result.ReaxiumResponse.code === 0){
-                var at=[];
+                $scope.userFilter=[];
                 var array = result.ReaxiumResponse.object;
                 console.log("size:" +array.length);
                 array.forEach(function(entry){
-                    var aux = {};
-                    aux.firstName= entry.first_name;
-                    aux.lastName= entry.second_name;
-                    aux.userId= entry.user_id;
-                    aux.dni= entry.document_id;
-                    aux.pic = "dist/img/fotoPerfil.jpg";
-                    at.push(aux);
+                    var aux = {
+                        firstName: entry.first_name,
+                        lastName: entry.second_name,
+                        userId: entry.user_id,
+                        dni: entry.document_id,
+                        pic: "dist/img/fotoPerfil.jpg"
+                    };
+
+                    $scope.userFilter.push(aux);
                 });
 
-                $scope.userFilter = at;
             }
         });
     }
 
     $scope.addUser = function(str){
-        console.log($scope.userFilter);
+        $scope.allUser.push(str.originalObject);
+        clearInput('ex2');
+    }
 
-        /*$scope.userFilter.forEach(function(person) {
-            $scope.allUser.push(person);
-        });*/
+    var clearInput = function (id) {
+        if (id) {
+            $scope.$broadcast('angucomplete-alt:clearInput', id);
+        }
+        else{
+            $scope.$broadcast('angucomplete-alt:clearInput');
+        }
     }
 
 })

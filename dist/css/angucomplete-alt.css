@@ -70,7 +70,7 @@
     color: #ff0000;
 }
 
-.form-control {
+.form-control_aut {
     outline: 0;
     border-color: #ECECEC;
     border-style: solid;
@@ -83,7 +83,7 @@
     font-size: 14px;
 }
 
-.form-control-small {
+.form-control-small_aut {
     -webkit-transition: width .5s ease-in-out;
     -moz-transition: width .5s ease-in-out;
     -o-transition: width .5s ease-in-out;
@@ -92,6 +92,6 @@
     width: 62%;
 }
 
-.form-control:-webkit-autofill {
+.form-control_aut:-webkit-autofill {
     background-color: #fff !important;
 }

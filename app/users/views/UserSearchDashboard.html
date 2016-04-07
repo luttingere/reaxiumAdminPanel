@@ -1,4 +1,4 @@
-<div ng-controller="UserSearchController as userCtrl1">
+<div ng-controller="UserSearchController as userSearch">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
@@ -71,20 +71,20 @@
                                         <td style="width: 400px;">
                                             <div angucomplete-alt id="ex2"
                                                  placeholder="Search people"
-                                                 pause="400"
+                                                 pause="300"
                                                  selected-object="selectedPerson"
                                                  local-data="userFilter"
                                                  local-search="localSearch"
                                                  title-field="firstName,lastName"
-                                                 minlength="3"
+                                                 minlength="2"
                                                  description-field="dni"
                                                  image-field="pic"
                                                  input-class="form-control form-control-small"
                                                  match-class="highlight">
                                             </div>
                                         </td>
-                                        <td>
-                                            <button class="btn btn-info btn-flat" type="button" ng-click="addUser()">Go!</button>
+                                        <td ng-show="selectedPerson">
+                                            <button class="btn btn-info btn-flat" type="button" ng-click="addUser(selectedPerson)">Go!</button>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -114,7 +114,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="user in userCtrl1.allUser">
+                                    <tr ng-repeat="user in allUser">
                                         <td>{{user.firstName + " " + user.firstName}}</td>
                                         <td>{{user.lastName + " " + user.lastName}}</td>
                                         <td>{{user.dni}}</td>
@@ -136,47 +136,6 @@
         </div>
 
     </section>
-    <modal title="User Phone Information" visible="userCtrl.showPhoneModal">
-        <div class="box box-widget widget-user-2">
-            <!-- Add the bg color to the header using any of the bg-* classes -->
-            <div class="widget-user-header bg-yellow">
-                <div class="widget-user-image">
-                    <img class="img-circle" src="images/fotoPerfil.jpg" alt="User Avatar">
-                </div><!-- /.widget-user-image -->
-                <h3 class="widget-user-username">Eduardo Luttinger</h3>
-                <h5 class="widget-user-desc">Student</h5>
-            </div>
-            <div class="box-footer no-padding">
-                <ul class="nav nav-stacked">
-                    <li><a href="#">Home Number <span class="pull-right badge bg-blue">0212-3734831</span></a></li>
-                    <li><a href="#">Cel Number <span class="pull-right badge bg-blue">0412-8711244</span></a></li>
-                    <li><a href="#">Moms Cel Number <span class="pull-right badge bg-blue">0412-5529689</span></a></li>
-                    <li><a href="#">Dad Cel Number <span class="pull-right badge bg-blue">0414-3454087</span></a></li>
-                </ul>
-            </div>
-        </div>
-    </modal>
-
-    <modal title="User New User" visible="userCtrl.showNewUserModal">
-        <div class="box box-widget widget-user-2">
-            <!-- Add the bg color to the header using any of the bg-* classes -->
-            <div class="widget-user-header bg-yellow">
-                <div class="widget-user-image">
-                    <img class="img-circle" src="images/fotoPerfil.jpg" alt="User Avatar">
-                </div><!-- /.widget-user-image -->
-                <h3 class="widget-user-username">Eduardo Luttinger</h3>
-                <h5 class="widget-user-desc">Student</h5>
-            </div>
-            <div class="box-footer no-padding">
-                <ul class="nav nav-stacked">
-                    <li><a href="#">Home Number <span class="pull-right badge bg-blue">0212-3734831</span></a></li>
-                    <li><a href="#">Cel Number <span class="pull-right badge bg-blue">0412-8711244</span></a></li>
-                    <li><a href="#">Moms Cel Number <span class="pull-right badge bg-blue">0412-5529689</span></a></li>
-                    <li><a href="#">Dad Cel Number <span class="pull-right badge bg-blue">0414-3454087</span></a></li>
-                </ul>
-            </div>
-        </div>
-    </modal>
 
 </div>
 <div class="control-sidebar-bg"></div>

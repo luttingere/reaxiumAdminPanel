@@ -35,6 +35,9 @@
     <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css"/>
 
     <link rel="stylesheet" href="plugins/reaxium/reaxium.css"/>
+    <link rel="stylesheet" href="dist/css/Spinner.css">
+    <link rel="stylesheet" href="dist/css/angucomplete-alt.css">
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -43,13 +46,11 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-
-
-
     <!-- jQuery 2.1.4 -->
     <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <!--<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>-->
+    <script src="plugins/jQueryUI/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
         $.widget.bridge('uibutton', $.ui.button);
@@ -89,27 +90,31 @@
 
     <!--FrameWork Angular-->
     <script src="plugins/angularjs/angular.min.js"></script>
-    <!--<script src="plugins/angularjs/angular-route.min.js"></script>-->
+    <script src="plugins/angularjs/angular-touch.min.js"></script>
     <script src="plugins/angularjs/angular-ui-router.js"></script>
+    <script src="plugins/angularjs/angular-spinners.min.js"></script>
+    <script src="plugins/angularjs/ngStorage.min.js"></script>
+    <script src="plugins/angularjs/angucomplete-alt.min.js"></script>
+    <script src="app/commons/util.js"></script>
 
     <!--Modules-->
     <script src="app/app.js"></script>
+
 
     <!--Controllers-->
     <script src="app/login/controller/loginController.js"></script>
     <script src="app/home/controller/homeController.js"></script>
     <script src="app/users/controller/UserController.js"></script>
-    <script src="app/commons/directives/directives.js"></script>
+    <script src="app/users/controller/UserSearchController.js"></script>
 
 
     <!--Services-->
-    <script src="app/users/services/UserServices.js"></script>
-
-
-
+   <script src="app/users/services/UserServices.js"></script>
+    <script src="app/login/services/servicesLogin.js"></script>
 
 </head>
 <body style="background: #d2d6de">
+
     <div class="hold-transition">
         <div ui-view></div>
     </div>

@@ -6,8 +6,10 @@ angular.module('Users')
     .controller("UserController", function ($scope, UserService) {
 
         console.log("Cargo el Controlador de Usuarios");
-
+        $scope.name = 'Epa si funciona';
         $scope.showPhoneModal = false;
+        $scope.showAddressModal = false;
+        $scope.showGeneralInfoModal = false;
         $scope.showNewUserModal = false;
 
         /**
@@ -24,12 +26,47 @@ angular.module('Users')
         }
 
         /**
-         * get the user's phone information and show it in a modal
+         * Get a  user of the system by his id
+         * @param $scope
+         * @param UserService
+         * @private
+         */
+        $scope.findByUserId = function (userId) {
+            if(UserService.getUserIdFound() != userId){
+                var myPhonePromise = UserService.getUsersById(userId);
+                myPhonePromise.then(function (result) {
+                    $scope.userFound = result[0];
+                });
+            }
+        }
+
+
+        /**
+         * get the user's phone information and show it in a modal and show it in a modal
          * @param userId
          */
         $scope.showPhoneInformation = function (userId) {
-            console.log("Intyeractuando con el modal " + userId);
+            console.log("showPhoneInformation");
+            $scope.findByUserId(userId,$scope);
             $scope.showPhoneModal = !$scope.showPhoneModal;
+        }
+
+        /**
+         * get the address information of a user and show it in a modal
+         * @param userId
+         */
+        $scope.showAddressInformation = function(userId){
+            console.log("showAddressInformation");
+            $scope.showAddressModal = !$scope.showAddressModal;
+        }
+
+        /**
+         * get the general information of a user and show it in a modal
+         * @param userId
+         */
+        $scope.showGeneralInformation = function(userId){s
+            console.log("showGeneralInformation");
+            $scope.showGeneralInfoModal = !$scope.showGeneralInfoModal;
         }
 
         /**
@@ -99,6 +136,8 @@ angular.module('Users')
                         scope.$parent[attrs.visible] = false;
                         scope.$parent.showPhoneModal = false;
                         scope.$parent.showNewUserModal = false;
+                        scope.$parent.showAddressModal = false;
+                        scope.$parent.showGeneralInfoModal = false;
                     });
                 });
             }

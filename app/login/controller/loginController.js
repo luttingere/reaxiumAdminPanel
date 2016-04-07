@@ -8,5 +8,4 @@ angular.module('Login')
         $scope.goHome = function(){
             $state.go('home');
         }
-
     }]);

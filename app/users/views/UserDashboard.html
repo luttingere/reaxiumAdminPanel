@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-lg-3 col-xs-4">
                 <!-- small box -->
-                <div class="small-box bg-green">
+                <div class="small-box bg-blue">
                     <div class="inner">
                         <h3>100</h3>
                         <p>Active Users</p>
@@ -29,7 +29,7 @@
             </div><!-- ./col -->
             <div class="col-lg-3 col-xs-4">
                 <!-- small box -->
-                <div class="small-box bg-green">
+                <div class="small-box bg-blue">
                     <div class="inner">
                         <h3>30<sup style="font-size: 20px">%</sup></h3>
                         <p>Users IN</p>
@@ -41,7 +41,7 @@
             </div><!-- ./col -->
             <div class="col-lg-3 col-xs-4">
                 <!-- small box -->
-                <div class="small-box bg-green">
+                <div class="small-box bg-blue">
                     <div class="inner">
                         <h3>70</h3>
                         <p>Users OUT</p>
@@ -51,7 +51,7 @@
                     </div>
                 </div>
             </div><!-- ./col -->
-            <div class="col-lg-3 col-xs-8">
+            <div class="col-lg-3 col-xs-5">
                 <div class="small-box">
                     <div class="customIcon">
                         <i ng-click="userCtrl.newUser()" class="ion ion-plus-circled"></i>
@@ -79,18 +79,20 @@
                                         <th>ID</th>
                                         <th>Phones</th>
                                         <th>Address</th>
-                                        <th>Information</a></th>
+                                        <th>Information</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="user in userCtrl.users">
-                                        <td>{{user.first_name + "    " + user.first_name}}</td>
+                                        <td>{{user.first_name + "    " + user.second_name}}</td>
                                         <td>{{user.first_last_name + "    " + user.second_last_name}}</td>
                                         <td>{{user.document_id}}</td>
                                         <td><a href="" ng-click="userCtrl.showPhoneInformation(user.user_id)">Phones</a></td>
-                                        <td><a href="">Addresss</a></td>
-                                        <td><a href="">Information</a></td>
+                                        <td><a href="" ng-click="userCtrl.showAddressInformation(user.user_id)">Addresss</a></td>
+                                        <td><a href="" ng-click="userCtrl.showGeneralInformation(user.user_id)">Information</a></td>
+                                        <td>{{user.status.status_name}}</td>
                                         <td>Eliminar - Editar</td>
                                     </tr>
                                     </tbody>
@@ -104,46 +106,60 @@
             </section><!-- /.content -->
 
         </div>
-
     </section>
-    <modal title="User Phone Information" visible="userCtrl.showPhoneModal">
-        <div class="box box-widget widget-user-2">
+    <modal title="Users Phone Intomation" visible="userCtrl.showPhoneModal">
+        <div class="box box-widget widget-user">
             <!-- Add the bg color to the header using any of the bg-* classes -->
-            <div class="widget-user-header bg-yellow">
-                <div class="widget-user-image">
-                    <img class="img-circle" src="images/fotoPerfil.jpg" alt="User Avatar">
-                </div><!-- /.widget-user-image -->
-                <h3 class="widget-user-username">Eduardo Luttinger</h3>
-                <h5 class="widget-user-desc">Student</h5>
+            <div class="widget-user-header bg-aqua-active">
+                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"      "+userCtrl.userFound.first_last_name}}</h3>
+                <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
             </div>
-            <div class="box-footer no-padding">
-                <ul class="nav nav-stacked">
-                    <li><a href="#">Home Number <span class="pull-right badge bg-blue">0212-3734831</span></a></li>
-                    <li><a href="#">Cel Number <span class="pull-right badge bg-blue">0412-8711244</span></a></li>
-                    <li><a href="#">Moms Cel Number <span class="pull-right badge bg-blue">0412-5529689</span></a></li>
-                    <li><a href="#">Dad Cel Number <span class="pull-right badge bg-blue">0414-3454087</span></a></li>
-                </ul>
+            <div class="widget-user-image">
+                <!--<img class="img-circle" src="{{userCtrl.userFound.user_photo}}" alt="User Avatar">-->
+                <img class="img-circle" src="dist/img/profile-default.png" alt="User Avatar">
+            </div>
+            <div class="box-footer">
+                <div class="form-group" ng-repeat="phones in userCtrl.userFound.phone_numbers">
+                    <label>{{phones.phone_name}}</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <label class="form-control" >{{phones.phone_number}}</label>
+                    </div><!-- /.input group -->
+                </div>
             </div>
         </div>
     </modal>
+    <modal title="User general information" visible="userCtrl.showGeneralInfoModal">
 
-    <modal title="User New User" visible="userCtrl.showNewUserModal">
-        <div class="box box-widget widget-user-2">
+        <div class="box box-widget widget-user">
             <!-- Add the bg color to the header using any of the bg-* classes -->
-            <div class="widget-user-header bg-yellow">
-                <div class="widget-user-image">
-                    <img class="img-circle" src="images/fotoPerfil.jpg" alt="User Avatar">
-                </div><!-- /.widget-user-image -->
-                <h3 class="widget-user-username">Eduardo Luttinger</h3>
-                <h5 class="widget-user-desc">Student</h5>
+            <div class="widget-user-header bg-aqua-active">
+                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"      "+userCtrl.userFound.first_last_name}}</h3>
+                <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
             </div>
-            <div class="box-footer no-padding">
-                <ul class="nav nav-stacked">
-                    <li><a href="#">Home Number <span class="pull-right badge bg-blue">0212-3734831</span></a></li>
-                    <li><a href="#">Cel Number <span class="pull-right badge bg-blue">0412-8711244</span></a></li>
-                    <li><a href="#">Moms Cel Number <span class="pull-right badge bg-blue">0412-5529689</span></a></li>
-                    <li><a href="#">Dad Cel Number <span class="pull-right badge bg-blue">0414-3454087</span></a></li>
-                </ul>
+            <div class="widget-user-image">
+                <!--<img class="img-circle" src="{{userCtrl.userFound.user_photo}}" alt="User Avatar">-->
+                <img class="img-circle" src="dist/img/profile-default.png" alt="User Avatar">
+            </div>
+            <div class="box-footer">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">User Relationship</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body no-padding">
+                        <ul class="users-list clearfix">
+
+                            <li ng-repeat="stakeholder in userCtrl.userFound.Stakeholders">
+                                <img src="dist/img/profile-default.png" alt="User Image">
+                                <a class="users-list-name" href="#">{{stakeholder[0].first_name +' '+ stakeholder[0].first_last_name}}</a>
+                                <span class="users-list-date">{{stakeholder[0].user_type.user_type_name}}</span>
+                            </li>
+
+                        </ul><!-- /.users-list -->
+                    </div><!-- /.box-body -->
+                </div>
             </div>
         </div>
     </modal>

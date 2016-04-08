@@ -43,7 +43,41 @@ angular.module('Users')
         return lookup;
     })
 
-    .service('UserService', function (UserLookup) {
+    //TODO Fabrica para obtener los usuarios por filtro
+    .factory('UserSearch',function($http,CONST_PROXY_URL){
+
+        var objUser = {};
+        objUser.allUserWithFilter = function(filters){
+
+            var dataSend = {
+                ReaxiumParameters:{
+                    Users:{
+                        filter:filters
+                    }
+                }
+            };
+
+            var jsonObj = JSON.stringify(dataSend);
+            console.log("Objeto armado consulta filtro:" +jsonObj);
+
+            return $http({
+                method: 'POST',
+                url: CONST_PROXY_URL.PROXY_URL_ALL_USER_WITH_FILTER,
+                data: jsonObj,
+                headers: {'Content-Type':'application/json;charset=UTF-8'}
+            }).then(function(response){
+                return response.data ;
+
+            },function(error){
+                console.log("Error invocando servicio allUsersWithFilter: "+error);
+            });
+        };
+
+        return objUser;
+
+    })
+
+    .service('UserService', function (UserLookup,UserSearch) {
         this.getUsers = function () {
             return UserLookup.allUsers();
         };
@@ -53,4 +87,8 @@ angular.module('Users')
         this.getUserIdFound = function () {
             return UserLookup.getUserIdFound();
         }
+
+        this.getUsersFilter = function(filters){
+            return UserSearch.allUserWithFilter(filters);
+        };
     });

@@ -6,7 +6,6 @@ angular.module('Users')
     .controller("UserController", function ($scope, UserService) {
 
         console.log("Cargo el Controlador de Usuarios");
-        $scope.name = 'Epa si funciona';
         $scope.showPhoneModal = false;
         $scope.showAddressModal = false;
         $scope.showGeneralInfoModal = false;
@@ -35,6 +34,7 @@ angular.module('Users')
             if(UserService.getUserIdFound() != userId){
                 var myPhonePromise = UserService.getUsersById(userId);
                 myPhonePromise.then(function (result) {
+                    console.log(result[0]);
                     $scope.userFound = result[0];
                 });
             }
@@ -57,6 +57,7 @@ angular.module('Users')
          */
         $scope.showAddressInformation = function(userId){
             console.log("showAddressInformation");
+            $scope.findByUserId(userId,$scope);
             $scope.showAddressModal = !$scope.showAddressModal;
         }
 
@@ -64,8 +65,9 @@ angular.module('Users')
          * get the general information of a user and show it in a modal
          * @param userId
          */
-        $scope.showGeneralInformation = function(userId){s
+        $scope.showGeneralInformation = function(userId){
             console.log("showGeneralInformation");
+            $scope.findByUserId(userId,$scope);
             $scope.showGeneralInfoModal = !$scope.showGeneralInfoModal;
         }
 

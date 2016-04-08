@@ -63,3 +63,33 @@ angular.module('Login')
         }
     }
 })
+    .directive('inputMaskPhone',function(){
+        return{
+            restrict:'A',
+            link:function(scope,elem,attrs){
+
+                var modeMask = [{code:1,mode:"phone"},{code:2,mode:"date"}];
+                var id='#'+attrs.id;
+                var mode = attrs.mode;
+
+                //Initialize Select2 Elements
+                $(".select2").select2();
+
+                modeMask.forEach(function(entry){
+                    if(entry.mode === mode){
+                        switch(entry.code){
+                            case 1:
+                                $(id).inputmask("(999)999-9999", {"placeholder": "(___)___-_____"});
+                                break;
+                            case 2:
+                                $(id).inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+                                break;
+                        }
+                    }
+                })
+
+
+
+            }
+        }
+    })

@@ -5,18 +5,26 @@
 angular.module('Login', ['ui.bootstrap']);
 angular.module('Home', []);
 angular.module('Users', []);
-angular.module('App', ['Login','Home','Users','ui.router','angularSpinners','ngStorage','ngTouch','angucomplete-alt'])
+angular.module('App', ['Login',
+        'Home',
+        'Users',
+        'ui.router',
+        'angularSpinners',
+        'ngStorage',
+        'ngTouch',
+        'angucomplete-alt',
+        'uiGmapgoogle-maps'])
 
     //Configuracion de todos los endpoints manejados por la aplicacion
     .constant('CONST_PROXY_URL', {
 
         PROXY_URL_LOGIN: "http://54.200.133.84/reaxium/Access/checkUserAccessInformation",
-        PROXY_URL_ALL_USER:"http://54.200.133.84/reaxium/Users/allUsersInfo",
-        PROXY_URL_ALL_USER_WITH_FILTER:"http://54.200.133.84/reaxium/Users/allUsersWithFilter"
+        PROXY_URL_ALL_USER: "http://54.200.133.84/reaxium/Users/allUsersInfo",
+        PROXY_URL_ALL_USER_WITH_FILTER: "http://54.200.133.84/reaxium/Users/allUsersWithFilter"
 
     })
     //Configurando enrutado de la aplicacion
-    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', 'uiGmapGoogleMapApiProvider', function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider) {
 
         $stateProvider
             .state("login", {
@@ -34,7 +42,17 @@ angular.module('App', ['Login','Home','Users','ui.router','angularSpinners','ngS
                 }
             })
 
-    $urlRouterProvider.otherwise("/login");
-}])
+        uiGmapGoogleMapApiProvider.configure({
+            key: 'AIzaSyBzOVQq2CAsKnOTplH5Xfesys9_vnZg9Gs',
+            v: '3.20', //defaults to latest 3.X anyhow
+            libraries: 'weather,geometry,visualization,places',
+            china: true
+        });
+
+        $urlRouterProvider.otherwise("/login");
+    }])
     //Aqui lo primero que se ejecuta en angular como el document Ready en jquery
-//.run(['rootScope'],function(){});
+    //.run(['rootScope'],function(){});
+    .run(['$templateCache', function ($templateCache) {
+        $templateCache.put('searchbox.tpl.html', '<input class="form-control" type="text" placeholder="Place an address...">');
+    }])

@@ -2,7 +2,7 @@
  * Created by VladimirIlich on 4/4/2016.
  */
 
-angular.module('Login', []);
+angular.module('Login', ['ui.bootstrap']);
 angular.module('Home', []);
 angular.module('Users', []);
 angular.module('App', ['Login','Home','Users','ui.router','angularSpinners','ngStorage','ngTouch','angucomplete-alt'])

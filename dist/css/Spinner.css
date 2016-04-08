@@ -104,3 +104,13 @@ form.well {
 .example-modal .modal {
     background: transparent !important;
 }
+
+
+.div-alert{
+    transition: all linear 0.5s;
+    height: 100px;
+    width: 350px;
+    position: relative;
+    top: 520px;
+    left: 100px;
+}

@@ -1,12 +1,13 @@
 /**
  * Created by Eduardo Luttinger on 05/04/2016.
  */
-angular.module('Users')
+angular.module('Home')
 
-    .factory('UserLookup', function ($http) {
+    .factory('UserLookup', function ($http,CONST_PROXY_URL) {
         var lookup = {};
         var userIdFound= 0;
         var userData = {};
+
         /**
          *
          * @returns {IPromise<TResult>|*}
@@ -14,7 +15,7 @@ angular.module('Users')
         lookup.allUsers = function () {
             return $http({
                 method: 'GET',
-                url: 'http://54.200.133.84/reaxium/Users/allUsersInfo',
+                url: CONST_PROXY_URL.PROXY_URL_ALL_USER,
             }).then(function (response) {
                 var jsonObj = response.data;
                 return jsonObj.ReaxiumResponse.object;
@@ -27,7 +28,7 @@ angular.module('Users')
                 return $http({
                     method: 'POST',
                     data: JSON.stringify({'ReaxiumParameters': {'Users': {'user_id': userId}}}),
-                    url: 'http://54.200.133.84/reaxium/Users/userInfo',
+                    url: CONST_PROXY_URL.PROXY_URL_USER_BY_ID,
                 }).then(function (response) {
                     var jsonObj = response.data.ReaxiumResponse.object;
                     userIdFound = jsonObj[0].user_id;
@@ -40,30 +41,18 @@ angular.module('Users')
         lookup.getUserIdFound = function(){
             return userIdFound;
         }
-        return lookup;
-    })
 
-    //TODO Fabrica para obtener los usuarios por filtro
-    .factory('UserSearch',function($http,CONST_PROXY_URL){
-
-        var objUser = {};
-        objUser.allUserWithFilter = function(filters){
-
-            var dataSend = {
-                ReaxiumParameters:{
-                    Users:{
-                        filter:filters
-                    }
-                }
-            };
-
-            var jsonObj = JSON.stringify(dataSend);
-            console.log("Objeto armado consulta filtro:" +jsonObj);
+        /**
+         * Get User with filter
+         * @param filters
+         * @returns {*}
+         */
+        lookup.allUserWithFilter = function(filters){
 
             return $http({
                 method: 'POST',
                 url: CONST_PROXY_URL.PROXY_URL_ALL_USER_WITH_FILTER,
-                data: jsonObj,
+                data: JSON.stringify({ReaxiumParameters:{Users:{filter:filters}}}),
                 headers: {'Content-Type':'application/json;charset=UTF-8'}
             }).then(function(response){
                 return response.data ;
@@ -73,11 +62,20 @@ angular.module('Users')
             });
         };
 
-        return objUser;
+        lookup.getAllAccessType = function(){
+            return $http({
+                method: 'GET',
+                url: CONST_PROXY_URL.PROXY_URL_ACCESS_TYPE_LIST,
+            }).then(function(response){
+                return response.data.ReaxiumResponse.object;
+            })
+        }
 
+        return lookup;
     })
 
-    .service('UserService', function (UserLookup,UserSearch) {
+
+    .service('UserService', function (UserLookup) {
         this.getUsers = function () {
             return UserLookup.allUsers();
         };
@@ -89,6 +87,10 @@ angular.module('Users')
         }
 
         this.getUsersFilter = function(filters){
-            return UserSearch.allUserWithFilter(filters);
+            return UserLookup.allUserWithFilter(filters);
         };
+
+        this.getAccessType = function(){
+            return UserLookup.getAllAccessType();
+        }
     });

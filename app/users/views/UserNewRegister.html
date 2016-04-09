@@ -1,4 +1,4 @@
-<div ng-controller="UserNewCtrl">
+<div ng-controller="UserNewCtrl as userCtrl1">
 
     <section class="content-header">
         <h1>
@@ -13,7 +13,6 @@
 
     <!-- Main content -->
     <section class="content">
-
         <!-- Main row Personal information-->
         <div class="row">
             <div class="col-lg-12">
@@ -133,7 +132,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="content">
+                            <div class="content" style="min-height: 0px;">
                                 <div class="col-md-6">
                                     <div class="box box-primary box-solid">
                                         <div class="box-header bg-light-blue-active with-border">
@@ -142,18 +141,100 @@
                                                  <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                                              </div><!-- /.box-tools -->
                                         </div><!-- /.box-header -->
+                                        <div class="box-body">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-map-marker"></i>
+                                                    </div>
+                                                    <div id="searchBoxParent"></div>
+                                                </div><!-- /.input group -->
+                                            </div>
+                                            <div id="googleMapDiv">
+                                                <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options">
+                                                    <ui-gmap-marker idKey='1' coords='marker.coords'></ui-gmap-marker>
+                                                    <ui-gmap-search-box template="searchbox.template" events="searchbox.events" parentdiv="searchbox.parentdiv"></ui-gmap-search-box>
+                                                </ui-gmap-google-map>
+                                            </div>
+                                        </div>
 
-                                        <!-- form start -->
-                                        <form role="form">
-                                            <div class="box-body">
-                                                <div class="form-group">
-                                                    <label>First name</label>
-                                                    <input type="text" class="form-control" placeholder="Enter first name">
-                                                </div>
-
-                                            </div><!-- /.box-body -->
-                                        </form>
+                                        </div><!-- /.box-body -->
                                     </div>
+                                <div class="col-md-6">
+                                    <div class="box box-primary box-solid">
+                                        <div class="box-header bg-light-blue-active with-border">
+                                            <h3 class="box-title">Security</h3>
+                                            <div class="box-tools pull-right">
+                                                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                                            </div><!-- /.box-tools -->
+                                        </div><!-- /.box-header -->
+                                        <div class="box-body">
+                                            <div class="form-group">
+                                                <label>Access Type</label>
+                                                <select class="form-control select2" style="width: 100%;" ng-model="selectAccT">
+                                                    <option selected="selected">Select...</option>
+                                                    <option ng-repeat="x in allAccessType" value="{{x.access_type_id}}">{{x.access_type_name}}</option>
+                                                </select>
+                                            </div><!-- /.form-group -->
+
+                                            <div class="box box-info" ng-show="showLoginAndPass">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">Login & Password</h3>
+                                                </div><!-- /.box-header -->
+                                                <!-- form start -->
+                                                <div class="box-body">
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                                                        </div>
+                                                    </div>
+
+                                                </div><!-- /.box-body -->
+                                            </div><!-- /.box -->
+
+                                            <div class="box box-info" ng-show="showBioPanel">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">Biometric</h3>
+                                                </div><!-- /.box-header -->
+                                                <!-- form start -->
+                                                <div class="box-body">
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-2 control-label">Biometric</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="email" class="form-control" id="inputEmail31" placeholder="Email">
+                                                        </div>
+                                                    </div>
+
+                                                </div><!-- /.box-body -->
+                                            </div><!-- /.box -->
+
+                                            <div class="box box-info" ng-show="showRfid">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">RFID</h3>
+                                                </div><!-- /.box-header -->
+                                                <!-- form start -->
+                                                <div class="box-body">
+                                                    <div class="form-group">
+                                                        <label for="inputEmail3" class="col-sm-2 control-label">RFID</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="email" class="form-control" id="inputEmail6" placeholder="Email">
+                                                        </div>
+                                                    </div>
+
+                                                </div><!-- /.box-body -->
+                                            </div><!-- /.box -->
+                                        </div>
+
+
+                                    </div><!-- /.box-body -->
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -162,11 +243,10 @@
 
                 </div>
             </div>
-
-
-        </div>
-
-
     </section>
 
 </div>
+
+
+
+

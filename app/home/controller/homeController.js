@@ -7,9 +7,6 @@ var appMenus = [{
     },{
         'name': 'Search Users',
         'url': "app/users/views/userSearchDashboard.html"
-    }, {
-        'name': 'New Users',
-        'url': "app/users/views/userNewRegister.html"
     }]
 }, {
     'name': 'Bus Administration',

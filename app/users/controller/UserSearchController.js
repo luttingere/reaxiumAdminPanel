@@ -2,7 +2,7 @@
  * Created by VladimirIlich on 6/4/2016.
  */
 
-angular.module('Users')
+angular.module('Home')
 
 .controller('UserSearchController',function($scope, UserService,$log){
 

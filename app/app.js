@@ -4,10 +4,8 @@
 
 angular.module('Login', ['ui.bootstrap']);
 angular.module('Home', []);
-angular.module('Users', []);
 angular.module('App', ['Login',
         'Home',
-        'Users',
         'ui.router',
         'angularSpinners',
         'ngStorage',
@@ -20,7 +18,9 @@ angular.module('App', ['Login',
 
         PROXY_URL_LOGIN: "http://54.200.133.84/reaxium/Access/checkUserAccessInformation",
         PROXY_URL_ALL_USER: "http://54.200.133.84/reaxium/Users/allUsersInfo",
-        PROXY_URL_ALL_USER_WITH_FILTER: "http://54.200.133.84/reaxium/Users/allUsersWithFilter"
+        PROXY_URL_ALL_USER_WITH_FILTER: "http://54.200.133.84/reaxium/Users/allUsersWithFilter",
+        PROXY_URL_ACCESS_TYPE_LIST: "http://54.200.133.84/reaxium/SystemList/accessTypeList",
+        PROXY_URL_USER_BY_ID: "http://54.200.133.84/reaxium/Users/userInfo"
 
     })
     //Configurando enrutado de la aplicacion
@@ -34,7 +34,7 @@ angular.module('App', ['Login',
             })
             .state("home", {
                 url: '/home',
-                'controller': 'HomeController',
+                controller: 'HomeController',
                 views: {
                     '': {templateUrl: 'app/home/views/home.html'},
                     'header@home': {templateUrl: 'app/home/views/header.html'},

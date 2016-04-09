@@ -1,9 +1,9 @@
 /**
  * Created by Eduardo Luttinger on 05/04/2016.
  */
-angular.module('Users')
+angular.module('Home')
 
-    .controller("UserController", function ($scope, UserService, uiGmapGoogleMapApi) {
+    .controller("UserController", function ($scope, UserService, uiGmapGoogleMapApi,$state) {
 
         console.log("Cargo el Controlador de Usuarios");
         $scope.control = {}
@@ -136,11 +136,12 @@ angular.module('Users')
          * @param userId
          */
         $scope.newUser = function () {
-            $scope.showNewUserModal = !$scope.showNewUserModal;
+            $scope.setView('app/users/views/UserNewRegister.html');
         }
 
         $scope._init($scope, UserService);
         return $scope;
+
     })
     .directive('myDataTable', function () {
         return {

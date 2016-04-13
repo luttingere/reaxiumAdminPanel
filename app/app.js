@@ -4,10 +4,8 @@
 
 angular.module('Login', ['ui.bootstrap',]);
 angular.module('Home', []);
-angular.module('Users', []);
 angular.module('App', ['Login',
         'Home',
-        'Users',
         'ui.router',
         'angularSpinners',
         'ngStorage',

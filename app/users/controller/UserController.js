@@ -100,7 +100,7 @@ angular.module('Home')
             }
             spinnerService.show("spinnerUserList");
             UserService.setModeEdit(obj);
-            var myUserPromise = UserService.getUsers();
+            var myUserPromise = UserService.getUsers($scope.filterCriteria);
             myUserPromise.then(function (result) {
                 $scope.users = result;
                 spinnerService.hide("spinnerUserList");

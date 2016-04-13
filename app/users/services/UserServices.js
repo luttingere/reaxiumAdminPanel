@@ -180,8 +180,8 @@ angular.module('Home')
             objModeEdit = mode;
         };
 
-        this.getUsers = function () {
-            return UserLookup.allUsers();
+        this.getUsers = function (filter) {
+            return UserLookup.allUsers(filter);
         };
         this.getUsersById = function (userId) {
             return UserLookup.userById(userId);

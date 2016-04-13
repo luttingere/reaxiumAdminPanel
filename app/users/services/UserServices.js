@@ -4,6 +4,7 @@
 angular.module('Home')
 
     .factory('UserLookup', function ($http,CONST_PROXY_URL) {
+
         var lookup = {};
         var userIdFound= 0;
         var userData = {};
@@ -62,29 +63,124 @@ angular.module('Home')
             });
         };
 
+        /**
+         * Get Access type for user
+         * @returns {*}
+         */
         lookup.getAllAccessType = function(){
             return $http({
                 method: 'GET',
-                url: CONST_PROXY_URL.PROXY_URL_ACCESS_TYPE_LIST,
+                url: CONST_PROXY_URL.PROXY_URL_ACCESS_TYPE_LIST
             }).then(function(response){
                 return response.data.ReaxiumResponse.object;
+            });
+        }
+
+        /**
+         * get User Types
+         * @returns {*}
+         */
+        lookup.allUsersType = function(){
+            return $http({
+                method: 'GET',
+                url: CONST_PROXY_URL.PROXY_URL_ALL_USERS_TYPE
+            }).then(function(response){
+               return response.data.ReaxiumResponse.object;
+            });
+        }
+
+
+        /**
+         * get status users
+         * @returns {*}
+         */
+        lookup.allStatusUser = function(){
+            return $http({
+                method: 'GET',
+                url: CONST_PROXY_URL.PROXY_URL_ALL_STATUS_USER
+            }).then(function(response){
+                return response.data.ReaxiumResponse.object;
+            });
+        }
+
+        /**
+         * create new user
+         * @param obj
+         * @returns {*}
+         */
+        lookup.newUser = function(obj){
+            return $http({
+                method: 'POST',
+                url: CONST_PROXY_URL.PROXY_URL_CREATE_NEW_USER,
+                data: JSON.stringify(obj),
+                headers: {'Content-Type':'application/json;charset=UTF-8'}
+            }).then(function(response){
+                return response.data.ReaxiumResponse;
+            })
+        }
+
+        /**
+         * create new user stakeholder
+         * @param obj
+         * @returns {*}
+         */
+        lookup.newUserStakeHolder = function(obj){
+            return $http({
+                method: 'POST',
+                url: CONST_PROXY_URL.PROXY_URL_CREATE_USER_STAKEHOLDER,
+                data: JSON.stringify(obj),
+                headers: {'Content-Type':'application/json;charset=UTF-8'}
+            }).then(function(response){
+                return response.data.ReaxiumResponse;
             })
         }
 
         return lookup;
+
     })
 
-
     .service('UserService', function (UserLookup) {
+
+        var objModeEdit = {
+            isModeEdit: false,
+            idUser: 0
+        };
+
+        var addressDefault = {
+            latitude: 37.0902,
+            longitude: -95.7129
+        }
+
+        var objUserById = {};
+
+        this.getObjUserById = function(){
+            return objUserById;
+        }
+
+        this.setObjUserById = function(obj){
+            objUserById = obj;
+        }
+
+        this.getAddressDefault = function(){
+            return addressDefault;
+        }
+
+        this.getModeEdit = function() {
+            return objModeEdit;
+        };
+        this.setModeEdit = function(mode) {
+            objModeEdit = mode;
+        };
+
         this.getUsers = function () {
             return UserLookup.allUsers();
         };
         this.getUsersById = function (userId) {
             return UserLookup.userById(userId);
-        }
+        };
         this.getUserIdFound = function () {
             return UserLookup.getUserIdFound();
-        }
+        };
 
         this.getUsersFilter = function(filters){
             return UserLookup.allUserWithFilter(filters);
@@ -92,5 +188,21 @@ angular.module('Home')
 
         this.getAccessType = function(){
             return UserLookup.getAllAccessType();
+        };
+
+        this.getAllUsersType = function(){
+            return UserLookup.allUsersType();
+        };
+
+        this.getAllStatusUser = function(){
+            return UserLookup.allStatusUser();
+        };
+
+        this.createNewUser = function(objNewUser){
+            return UserLookup.newUser(objNewUser);
+        }
+
+        this.createNewUserStakeHolder = function(objNewUser){
+            return UserLookup.newUserStakeHolder(objNewUser);
         }
     });

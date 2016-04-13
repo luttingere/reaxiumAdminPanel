@@ -1,5 +1,6 @@
-
 <div class="login-page" scroll="false">
+
+  <!--<span us-spinner="{radius:30, width:8, length: 16}" spinner-key="spinner-1"></span>-->
   <spinner name="html5spinner" ng-cloak="">
     <div class="overlay"></div>
     <div class="spinner">
@@ -8,9 +9,11 @@
     <div class="please-wait">Please Wait...</div>
   </spinner>
 
+  <growl-notification class="fading" ng-if="showgrowlMessage">{{showMesaggeAuthenticate}}</growl-notification>
+
   <div class="login-box">
     <div class="login-logo">
-    <b>Reaxium</b>LTE
+    <b>Reaxium</b>
     </div><!-- /.login-logo -->
     <div class="login-box-body">
       <p class="login-box-msg">Sign in to start your session</p>
@@ -36,7 +39,7 @@
             </div><!-- /.col -->
           </div>
        </form>
-      <a href="#">I forgot my password</a><br>
+      <a ui-sref="forgetPass">I forgot my password</a><br>
 
     </div><!-- /.login-box-body -->
   </div><!-- /.login-box -->

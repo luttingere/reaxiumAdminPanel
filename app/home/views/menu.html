@@ -34,7 +34,7 @@
                         class="fa fa-angle-left pull-right"></i>
                     <ul class="treeview-menu">
                         <li ng-repeat="subMenu in menu.subMenus">
-                            <a href="" ng-click="setView(subMenu.url)"><i class="fa fa-circle-o"></i>{{subMenu.name}}</a>
+                            <a ui-sref="{{subMenu.url}}"><i class="fa fa-circle-o"></i>{{subMenu.name}}</a>
                         </li>
                     </ul>
                 </a>

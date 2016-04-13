@@ -3,7 +3,7 @@
  */
 angular.module('Home')
 
-    .controller("UserController", function ($scope, UserService, uiGmapGoogleMapApi,$state) {
+    .controller("UserController", function ($scope, UserService, uiGmapGoogleMapApi,$state,$rootScope,spinnerService) {
 
         console.log("Cargo el Controlador de Usuarios");
         $scope.control = {}
@@ -12,6 +12,12 @@ angular.module('Home')
         $scope.showGeneralInfoModal = false;
         $scope.showNewUserModal = false;
 
+        //menu sidebar
+        $scope.menus = $rootScope.appMenus;
+        //Search on the menu
+        $scope.menuOptions = {searchWord: ''};
+
+
         /**
          * Get all the user of the system
          * @param $scope
@@ -19,9 +25,17 @@ angular.module('Home')
          * @private
          */
         $scope._init = function ($scope, UserService) {
+
+            var obj ={
+                isModeEdit:false,
+                idUser:0
+            }
+            spinnerService.show("spinnerUserList");
+            UserService.setModeEdit(obj);
             var myUserPromise = UserService.getUsers();
             myUserPromise.then(function (result) {
                 $scope.users = result;
+                spinnerService.hide("spinnerUserList");
             });
         }
 
@@ -135,11 +149,20 @@ angular.module('Home')
          * get the user's phone information and show it in a modal
          * @param userId
          */
-        $scope.newUser = function () {
-            $scope.setView('app/users/views/UserNewRegister.html');
-        }
 
         $scope._init($scope, UserService);
+
+        $scope.editMode = function(id){
+
+            var obj ={
+                isModeEdit:true,
+                idUser:parseInt(id)
+            }
+            UserService.setModeEdit(obj);
+
+            $state.go("newUser");
+        }
+
         return $scope;
 
     })

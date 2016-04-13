@@ -5,7 +5,9 @@
 angular.module('Login')
     .controller('loginController', function ($scope, $state, $log, $timeout, loginServices, spinnerService, $localStorage,$uibModal) {
 
-
+        $scope.showgrowlMessage = false;
+        $scope.showMesaggeAuthenticate = "";
+        $scope.showspinner = false;
         $scope.data = {
             settings: {
                 username: '',
@@ -13,7 +15,6 @@ angular.module('Login')
                 checked: false
             }
         };
-
 
         var init = function () {
             console.log('Inicializando controlador Login...');
@@ -34,6 +35,8 @@ angular.module('Login')
         $scope.authenticateUser = function () {
 
             spinnerService.show('html5spinner');
+            //$scope.showspinner = true;
+           // usSpinnerService.spin('spinner-1');
 
             loginServices.proxyLogin($scope.data.settings.username, $scope.data.settings.password)
                 .success(function (data) {
@@ -43,7 +46,8 @@ angular.module('Login')
                     if (data.ReaxiumResponse.code === 0) {
                         $state.go('home');
                     } else {
-                        open("danger");
+                        $scope.showgrowlMessage = true;
+                        $scope.showMesaggeAuthenticate = data.ReaxiumResponse.message;
                         console.log("Error a ingresar al aplicativo: " + data.ReaxiumResponse.message)
                     }
 
@@ -52,19 +56,15 @@ angular.module('Login')
                     console.log("Error invocacion del servicio" + error);
 
                 }).finally(function () {
-                cleanInput();
+                //cleanInput();
                 spinnerService.hide('html5spinner');
+                //usSpinnerService.stop('spinner-1');
             })
 
 
         }
 
         /*Limpiar el scope vinculados a los campos*/
-
-        function cleanInput() {
-            $scope.username = "";
-            $scope.password = "";
-        }
 
         $scope.newDataUser = function () {
             console.log("Cambio checkbox ifChecked");
@@ -98,40 +98,6 @@ angular.module('Login')
             color_border: "bg-red-active"
         }
 
-        //Alert
-        var open = function (mode) {
-
-            $scope.data_alert.mode = mode;
-
-            var modalInstance = $uibModal.open({
-                templateUrl: 'app/login/views/myModalContent.html',
-                controller: ModalInstanceCtrl,
-                backdrop: true,
-                keyboard: true,
-                backdropClick: true,
-                size: 'sm',
-                resolve: {
-                    data: function () {
-                        return $scope.data_alert;
-                    }
-                }
-            });
-
-            modalInstance.result.then(function (selectedItem) {
-                $scope.selected = selectedItem;
-            }, function () {
-                $log.info('Modal dismissed at: ' + new Date());
-            });
-
-        }
-        var ModalInstanceCtrl = function ($scope, $uibModalInstance, data) {
-            $scope.data_alert = data;
-            $scope.close = function(/*result*/){
-                $uibModalInstance.close($scope.data_alert);
-            };
-        };
-
-
     })
 
     .directive('myViewCheck', function () {
@@ -163,3 +129,37 @@ angular.module('Login')
         }
     });
 
+
+
+//Alert
+/*var open = function (mode) {
+
+ $scope.data_alert.mode = mode;
+
+ var modalInstance = $uibModal.open({
+ templateUrl: 'app/login/views/myModalContent.html',
+ controller: ModalInstanceCtrl,
+ backdrop: true,
+ keyboard: true,
+ backdropClick: true,
+ size: 'sm',
+ resolve: {
+ data: function () {
+ return $scope.data_alert;
+ }
+ }
+ });
+
+ modalInstance.result.then(function (selectedItem) {
+ $scope.selected = selectedItem;
+ }, function () {
+ $log.info('Modal dismissed at: ' + new Date());
+ });
+
+ }*/
+/*var ModalInstanceCtrl = function ($scope, $uibModalInstance, data) {
+ $scope.data_alert = data;
+ $scope.close = function(result){
+ $uibModalInstance.close($scope.data_alert);
+ };
+ };*/

@@ -3,7 +3,11 @@
  * Metodos utilitarios
  * */
 
-//TODO si un elemento esta presente desntro de un arreglo
+/**
+ * Search object inside of array
+ * @param obj
+ * @returns {boolean}
+ */
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
@@ -14,11 +18,20 @@ Array.prototype.contains = function(obj) {
     return false;
 }
 
-//valida si un objeto es vacio
+/**
+ * Empty string
+ * @param str
+ * @returns {boolean}
+ */
 function isEmptyString(str) {
     return (!str || 0 === str.length);
 }
 
+/**
+ * Empty array
+ * @param array
+ * @returns {boolean}
+ */
 function isEmptyArray(array){
 
     if(array.length > 0){
@@ -29,12 +42,18 @@ function isEmptyArray(array){
 }
 
 
-// Compare two objects
+/**
+ * Compare two objects
+ * @param obj1
+ * @param obj2
+ * @returns {boolean}
+ */
+
 function compareObjects(obj1, obj2) {
     return JSON.stringify(obj1) === JSON.stringify(obj2);
 }
 
-//TODO Validar si el dia seleccionado es valido para reservar
+
 function isDaysClass(dateSelect,daysActivity){
     var flag = false;
     var daySelect = dateSelect.split(".");
@@ -47,4 +66,23 @@ function isDaysClass(dateSelect,daysActivity){
     });
 
     return flag;
+}
+
+/***
+ *
+ * @param phone
+ * @returns {*}
+ */
+function cleanMaskPhone(phone){
+
+    return phone.replace("(","").replace(")","").replace("-","");
+}
+
+/**
+ *
+ * @param date
+ * @returns {*}
+ */
+function formatDate(date){
+    return moment(date).format("YYYY-MM-DD");
 }

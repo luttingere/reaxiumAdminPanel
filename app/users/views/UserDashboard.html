@@ -61,7 +61,6 @@
         </div><!-- /.row -->
         <!-- Main row -->
         <div class="row">
-
             <section class="content">
                 <div class="row">
                     <div class="col-xs-12">
@@ -101,8 +100,8 @@
                                         </td>
                                         <td><a href="" ng-click="userCtrl.showGeneralInformation(user.user_id)">Information</a>
                                         </td>
-                                        <td>{{user.status.status_name}}</td>
-                                        <td>Eliminar - Editar</td>
+                                        <td>{{user.status.status_name | lowerCase | capitalize}}</td>
+                                        <td><a><small><i class="fa fa-fw fa-trash"></i></small></i></a> - <a ng-click="editMode(user.user_id)"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
                                     </tr>
                                     </tbody>
                                     </tfoot>
@@ -128,8 +127,7 @@
         <div class="box box-widget widget-user">
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-aqua-active">
-                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"
-                    "+userCtrl.userFound.first_last_name}}</h3>
+                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"      "+userCtrl.userFound.first_last_name}}</h3>
                 <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
             </div>
             <div class="widget-user-image">
@@ -143,7 +141,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-phone"></i>
                         </div>
-                        <label class="form-control">{{phones.phone_number}}</label>
+                        <label class="form-control" >{{phones.phone_number}}</label>
                     </div><!-- /.input group -->
                 </div>
             </div>
@@ -154,8 +152,7 @@
         <div class="box box-widget widget-user">
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-aqua-active">
-                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"
-                    "+userCtrl.userFound.first_last_name}}</h3>
+                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"      "+userCtrl.userFound.first_last_name}}</h3>
                 <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
             </div>
             <div class="widget-user-image">
@@ -172,8 +169,7 @@
 
                             <li ng-repeat="stakeholder in userCtrl.userFound.Stakeholders">
                                 <img src="dist/img/profile-default.png" alt="User Image">
-                                <a class="users-list-name" href="#">{{stakeholder[0].first_name +' '+
-                                    stakeholder[0].first_last_name}}</a>
+                                <a class="users-list-name" href="#">{{stakeholder[0].first_name +' '+ stakeholder[0].first_last_name}}</a>
                                 <span class="users-list-date">{{stakeholder[0].user_type.user_type_name}}</span>
                             </li>
 
@@ -189,8 +185,7 @@
         <div class="box box-widget widget-user">
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-aqua-active">
-                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"
-                    "+userCtrl.userFound.first_last_name}}</h3>
+                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"   "+userCtrl.userFound.first_last_name}}</h3>
                 <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
             </div>
             <div class="widget-user-image">
@@ -218,10 +213,6 @@
                 </div><!-- /.box-body -->
             </div>
         </div>
-</div>
 </modal>
-
-
-</div>
 <div class="control-sidebar-bg"></div>
 </div>

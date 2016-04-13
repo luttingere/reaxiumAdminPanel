@@ -4,6 +4,7 @@
 angular.module('Home')
 
     .factory('UserLookup', function ($http,CONST_PROXY_URL) {
+
         var lookup = {};
         var userIdFound = 0;
         var userData = {};
@@ -67,12 +68,75 @@ angular.module('Home')
             });
         };
 
+        /**
+         * Get Access type for user
+         * @returns {*}
+         */
         lookup.getAllAccessType = function(){
             return $http({
                 method: 'GET',
-                url: CONST_PROXY_URL.PROXY_URL_ACCESS_TYPE_LIST,
+                url: CONST_PROXY_URL.PROXY_URL_ACCESS_TYPE_LIST
             }).then(function(response){
                 return response.data.ReaxiumResponse.object;
+            });
+        }
+
+        /**
+         * get User Types
+         * @returns {*}
+         */
+        lookup.allUsersType = function(){
+            return $http({
+                method: 'GET',
+                url: CONST_PROXY_URL.PROXY_URL_ALL_USERS_TYPE
+            }).then(function(response){
+               return response.data.ReaxiumResponse.object;
+            });
+        }
+
+
+        /**
+         * get status users
+         * @returns {*}
+         */
+        lookup.allStatusUser = function(){
+            return $http({
+                method: 'GET',
+                url: CONST_PROXY_URL.PROXY_URL_ALL_STATUS_USER
+            }).then(function(response){
+                return response.data.ReaxiumResponse.object;
+            });
+        }
+
+        /**
+         * create new user
+         * @param obj
+         * @returns {*}
+         */
+        lookup.newUser = function(obj){
+            return $http({
+                method: 'POST',
+                url: CONST_PROXY_URL.PROXY_URL_CREATE_NEW_USER,
+                data: JSON.stringify(obj),
+                headers: {'Content-Type':'application/json;charset=UTF-8'}
+            }).then(function(response){
+                return response.data.ReaxiumResponse;
+            })
+        }
+
+        /**
+         * create new user stakeholder
+         * @param obj
+         * @returns {*}
+         */
+        lookup.newUserStakeHolder = function(obj){
+            return $http({
+                method: 'POST',
+                url: CONST_PROXY_URL.PROXY_URL_CREATE_USER_STAKEHOLDER,
+                data: JSON.stringify(obj),
+                headers: {'Content-Type':'application/json;charset=UTF-8'}
+            }).then(function(response){
+                return response.data.ReaxiumResponse;
             })
         }
 
@@ -80,52 +144,51 @@ angular.module('Home')
             return userIdFound;
         }
         return lookup;
+
     })
 
-    //TODO Fabrica para obtener los usuarios por filtro
-    .factory('UserSearch', function ($http, CONST_PROXY_URL) {
+    .service('UserService', function (UserLookup) {
 
-        var objUser = {};
-        objUser.allUserWithFilter = function (filters) {
-
-            var dataSend = {
-                ReaxiumParameters: {
-                    Users: {
-                        filter: filters
-                    }
-                }
-            };
-
-            var jsonObj = JSON.stringify(dataSend);
-            console.log("Objeto armado consulta filtro:" + jsonObj);
-
-            return $http({
-                method: 'POST',
-                url: CONST_PROXY_URL.PROXY_URL_ALL_USER_WITH_FILTER,
-                data: jsonObj,
-                headers: {'Content-Type': 'application/json;charset=UTF-8'}
-            }).then(function (response) {
-                return response.data;
-
-            }, function (error) {
-                console.log("Error invocando servicio allUsersWithFilter: " + error);
-            });
+        var objModeEdit = {
+            isModeEdit: false,
+            idUser: 0
         };
 
-        return objUser;
+        var addressDefault = {
+            latitude: 37.0902,
+            longitude: -95.7129
+        }
 
-    })
+        var objUserById = {};
 
-    .service('UserService', function (UserLookup, UserSearch) {
-        this.getUsers = function (filterCriteria) {
-            return UserLookup.allUsers(filterCriteria);
+        this.getObjUserById = function(){
+            return objUserById;
+        }
+
+        this.setObjUserById = function(obj){
+            objUserById = obj;
+        }
+
+        this.getAddressDefault = function(){
+            return addressDefault;
+        }
+
+        this.getModeEdit = function() {
+            return objModeEdit;
+        };
+        this.setModeEdit = function(mode) {
+            objModeEdit = mode;
+        };
+
+        this.getUsers = function () {
+            return UserLookup.allUsers();
         };
         this.getUsersById = function (userId) {
             return UserLookup.userById(userId);
-        }
+        };
         this.getUserIdFound = function () {
             return UserLookup.getUserIdFound();
-        }
+        };
 
         this.getUsersFilter = function (filters) {
             return UserSearch.allUserWithFilter(filters);
@@ -133,5 +196,21 @@ angular.module('Home')
 
         this.getAccessType = function(){
             return UserLookup.getAllAccessType();
+        };
+
+        this.getAllUsersType = function(){
+            return UserLookup.allUsersType();
+        };
+
+        this.getAllStatusUser = function(){
+            return UserLookup.allStatusUser();
+        };
+
+        this.createNewUser = function(objNewUser){
+            return UserLookup.newUser(objNewUser);
+        }
+
+        this.createNewUserStakeHolder = function(objNewUser){
+            return UserLookup.newUserStakeHolder(objNewUser);
         }
     });

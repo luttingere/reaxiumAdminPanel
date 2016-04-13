@@ -71,12 +71,17 @@
                                 <h3 class="box-title">System Users</h3>
                             </div><!-- /.box-header -->
                             <div class="box-body">
+
+                                <div>
+                                    <input class="form-control reduceSize" placeholder="Search here..." on-enter-blur on-blur-change="filterResult()" ng-model="userCtrl.filterCriteria.ReaxiumParameters.filter" type="text" />
+                                </div>
+
                                 <table id="userTable" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Last Name</th>
-                                        <th>ID</th>
+                                        <th ng-repeat="header in userCtrl.userTableHeaders">
+                                            <sort-by onsort="onSort" sortdir="userCtrl.filterCriteria.ReaxiumParameters.sortDir" sortedby="userCtrl.filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
+                                        </th>
                                         <th>Phones</th>
                                         <th>Address</th>
                                         <th>Information</th>
@@ -86,19 +91,31 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="user in userCtrl.users">
-                                        <td>{{user.first_name + "    " + user.second_name}}</td>
-                                        <td>{{user.first_last_name + "    " + user.second_last_name}}</td>
+                                        <td>{{user.first_name + " " + user.second_name}}</td>
+                                        <td>{{user.first_last_name + " " + user.second_last_name}}</td>
                                         <td>{{user.document_id}}</td>
-                                        <td><a href="" ng-click="userCtrl.showPhoneInformation(user.user_id)">Phones</a></td>
-                                        <td><a href="" ng-click="userCtrl.showAddressInformation(user.user_id)">Addresss</a></td>
-                                        <td><a href="" ng-click="userCtrl.showGeneralInformation(user.user_id)">Information</a></td>
+                                        <td><a href="" ng-click="userCtrl.showPhoneInformation(user.user_id)">Phones</a>
+                                        </td>
+                                        <td><a href=""
+                                               ng-click="userCtrl.showAddressInformation(user.user_id)">Addresss</a>
+                                        </td>
+                                        <td><a href="" ng-click="userCtrl.showGeneralInformation(user.user_id)">Information</a>
+                                        </td>
                                         <td>{{user.status.status_name}}</td>
                                         <td>Eliminar - Editar</td>
                                     </tr>
                                     </tbody>
                                     </tfoot>
                                 </table>
+                                <div ng-show="userCtrl.totalRecords == 0">
+                                    <h3>No Customers Found</h3>
+                                </div>
+                                <div ng-show="userCtrl.totalPages > 1" class="align-center">
+                                    <uib-pagination total-items="userCtrl.totalRecords" ng-model="userCtrl.filterCriteria.ReaxiumParameters.page" items-per-page="userCtrl.filterCriteria.ReaxiumParameters.limit" previous-text="previous" next-text="next" last-text="last"
+                                                    direction-links="true" rotate="false" ng-change="userCtrl.selectPage()"></uib-pagination>
+                                </div>
                             </div><!-- /.box-body -->
+
                         </div><!-- /.box -->
 
                     </div><!-- /.col -->
@@ -111,7 +128,8 @@
         <div class="box box-widget widget-user">
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-aqua-active">
-                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"      "+userCtrl.userFound.first_last_name}}</h3>
+                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"
+                    "+userCtrl.userFound.first_last_name}}</h3>
                 <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
             </div>
             <div class="widget-user-image">
@@ -125,7 +143,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-phone"></i>
                         </div>
-                        <label class="form-control" >{{phones.phone_number}}</label>
+                        <label class="form-control">{{phones.phone_number}}</label>
                     </div><!-- /.input group -->
                 </div>
             </div>
@@ -136,7 +154,8 @@
         <div class="box box-widget widget-user">
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-aqua-active">
-                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"      "+userCtrl.userFound.first_last_name}}</h3>
+                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"
+                    "+userCtrl.userFound.first_last_name}}</h3>
                 <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
             </div>
             <div class="widget-user-image">
@@ -153,7 +172,8 @@
 
                             <li ng-repeat="stakeholder in userCtrl.userFound.Stakeholders">
                                 <img src="dist/img/profile-default.png" alt="User Image">
-                                <a class="users-list-name" href="#">{{stakeholder[0].first_name +' '+ stakeholder[0].first_last_name}}</a>
+                                <a class="users-list-name" href="#">{{stakeholder[0].first_name +' '+
+                                    stakeholder[0].first_last_name}}</a>
                                 <span class="users-list-date">{{stakeholder[0].user_type.user_type_name}}</span>
                             </li>
 
@@ -169,7 +189,8 @@
         <div class="box box-widget widget-user">
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-aqua-active">
-                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"   "+userCtrl.userFound.first_last_name}}</h3>
+                <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"
+                    "+userCtrl.userFound.first_last_name}}</h3>
                 <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
             </div>
             <div class="widget-user-image">
@@ -197,6 +218,10 @@
                 </div><!-- /.box-body -->
             </div>
         </div>
+</div>
 </modal>
+
+
+</div>
 <div class="control-sidebar-bg"></div>
 </div>

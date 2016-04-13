@@ -2,16 +2,19 @@
  * Created by VladimirIlich on 4/4/2016.
  */
 
-angular.module('Login', ['ui.bootstrap']);
+angular.module('Login', []);
 angular.module('Home', []);
+angular.module('Users', []);
 angular.module('App', ['Login',
         'Home',
+        'Users',
         'ui.router',
         'angularSpinners',
         'ngStorage',
         'ngTouch',
         'angucomplete-alt',
-        'uiGmapgoogle-maps'])
+        'uiGmapgoogle-maps',
+        'ui.bootstrap'])
 
     //Configuracion de todos los endpoints manejados por la aplicacion
     .constant('CONST_PROXY_URL', {
@@ -55,4 +58,6 @@ angular.module('App', ['Login',
     //.run(['rootScope'],function(){});
     .run(['$templateCache', function ($templateCache) {
         $templateCache.put('searchbox.tpl.html', '<input class="form-control" type="text" placeholder="Place an address...">');
+        $templateCache.put('sort-by.html','<a ng-click="sort(sortvalue)"><span ng-transclude=""></span><span ng-show="sortedby == sortvalue">&nbsp;&nbsp;<i ng-class="{true: \'fa fa-sort-up\', false: \'fa fa-sort-desc\'}[sortdir == \'asc\']"></i></span></a>');
     }])
+

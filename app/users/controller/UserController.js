@@ -12,6 +12,75 @@ angular.module('Home')
         $scope.showGeneralInfoModal = false;
         $scope.showNewUserModal = false;
 
+        $scope.totalPages = 0;
+        $scope.usersCount = 0;
+
+        /**
+         * cabecera de la tabla de usuarios
+         * @type {*[]}
+         */
+        $scope.userTableHeaders = [{
+            title: 'Name',
+            value: 'first_name'
+        }, {
+            title: 'Last Name',
+            value: 'first_last_name'
+        }, {
+            title: 'DNI',
+            value: 'document_id'
+        }
+        ];
+
+        //default criteria that will be sent to the server
+        $scope.filterCriteria = {
+            ReaxiumParameters: {
+                page: 1,
+                limit:5,
+                sortDir: 'asc',
+                sortedBy: 'first_name',
+                filter: ''
+            }
+        };
+
+        $scope.getAllUsers = function () {
+            return UserService.getUsers($scope.filterCriteria).then(function (data) {
+                $scope.users = data.users;
+                $scope.totalPages = data.totalPages;
+                console.log($scope.totalPages);
+                $scope.totalRecords = data.totalRecords;
+            }, function () {
+                $scope.users = [];
+                $scope.totalPages = 0;
+                $scope.totalRecords = 0;
+            });
+        }
+
+        //called when navigate to another page in the pagination
+        $scope.selectPage = function () {
+            $scope.getAllUsers();
+        };
+
+        //Will be called when filtering the grid, will reset the page number to one
+        $scope.filterResult = function () {
+            $scope.filterCriteria.ReaxiumParameters.page = 1;
+            $scope.getAllUsers().then(function () {
+                //The request fires correctly but sometimes the ui doesn't update, that's a fix
+                $scope.filterCriteria.ReaxiumParameters.page = 1;
+            });
+        };
+
+        //call back function that we passed to our custom directive sortBy, will be called when clicking on any field to sort
+        $scope.onSort = function (sortedBy, sortDir) {
+            console.log("OnSort");
+            $scope.filterCriteria.ReaxiumParameters.sortDir = sortDir;
+            $scope.filterCriteria.ReaxiumParameters.sortedBy = sortedBy;
+            $scope.filterCriteria.ReaxiumParameters.page = 1;
+            $scope.getAllUsers().then(function () {
+                //The request fires correctly but sometimes the ui doesn't update, that's a fix
+                $scope.filterCriteria.ReaxiumParameters.page = 1;
+            });
+        };
+
         /**
          * Get all the user of the system
          * @param $scope
@@ -19,10 +88,7 @@ angular.module('Home')
          * @private
          */
         $scope._init = function ($scope, UserService) {
-            var myUserPromise = UserService.getUsers();
-            myUserPromise.then(function (result) {
-                $scope.users = result;
-            });
+
         }
 
         /**
@@ -100,7 +166,6 @@ angular.module('Home')
             'events': events
         };
 
-
         /**
          * get the user's phone information and show it in a modal and show it in a modal
          * @param userId
@@ -140,25 +205,9 @@ angular.module('Home')
         }
 
         $scope._init($scope, UserService);
+        $scope.selectPage(1);
         return $scope;
 
-    })
-    .directive('myDataTable', function () {
-        return {
-            restrict: "A",
-            link: function (scope, elem, attrs) {
-                $(function () {
-                    $('#userTable').DataTable({
-                        "paging": true,
-                        "lengthChange": true,
-                        "searching": true,
-                        "ordering": true,
-                        "info": true,
-                        "autoWidth": true
-                    });
-                });
-            }
-        }
     })
     .directive('modal', function () {
         return {

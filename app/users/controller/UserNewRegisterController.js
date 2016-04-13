@@ -200,28 +200,33 @@ angular.module('Home')
 
                         //PhoneNumber
 
-                        result[0].phone_numbers.forEach(function(entry){
+                            result[0].phone_numbers.forEach(function(entry){
 
-                            if(entry.phone_name.toLowerCase() === "home"){
-                                $scope.phoneNumbers.phone_home_number = entry.phone_number;
-                            }
-                            else if(entry.phone_name.toLowerCase() === "office"){
-                                $scope.phoneNumbers.phone_office_number = entry.phone_number;
-                            }else{
-                                $scope.phoneNumbers.phone_other_number = entry.phone_number;
-                            }
-                        });
+                                if(entry.phone_name.toLowerCase() === "home"){
+                                    $scope.phoneNumbers.phone_home_number = entry.phone_number;
+                                }
+                                else if(entry.phone_name.toLowerCase() === "office"){
+                                    $scope.phoneNumbers.phone_office_number = entry.phone_number;
+                                }else{
+                                    $scope.phoneNumbers.phone_other_number = entry.phone_number;
+                                }
+                            });
+
+
 
                         //$scope.selectAccT = result[0].user_type.user_type_id;
                         $scope.selectTypeUser = result[0].user_type.user_type_id;
-
-                        result[0].UserRelationship.forEach(function(entry){
-                            $scope.allUserSelcStakeHolder.push(entry);
-                        })
-
-
                         $scope.status_id = result[0].status_id;
                         $scope.selectAccT = result[0].user_type.user_type_id;
+
+
+                        if($scope.selectTypeUser == 3){
+
+                            result[0].UserRelationship.forEach(function(entry){
+                                $scope.allUserSelcStakeHolder.push(entry);
+                            })
+                        }
+
 
                         $scope.addTheMap();
                     }

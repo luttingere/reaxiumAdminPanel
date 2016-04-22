@@ -1,9 +1,14 @@
 /**
  * Created by Eduardo Luttinger on 05/04/2016.
  */
-angular.module('Home')
+angular.module('App')
 
-    .controller("UserController", function ($scope, UserService, uiGmapGoogleMapApi,$state,$rootScope,spinnerService) {
+    .controller("UserController", function ($scope,
+                                            UserService,
+                                            uiGmapGoogleMapApi,
+                                            $state,
+                                            $rootScope,
+                                            spinnerService) {
 
         console.log("Cargo el Controlador de Usuarios");
         $scope.control = {}
@@ -11,6 +16,8 @@ angular.module('Home')
         $scope.showAddressModal = false;
         $scope.showGeneralInfoModal = false;
         $scope.showNewUserModal = false;
+        $scope.showgrowlMessage = false;
+        $scope.showMessage = "";
 
         //menu sidebar
         $scope.menus = $rootScope.appMenus;
@@ -94,16 +101,23 @@ angular.module('Home')
          */
         $scope._init = function ($scope, UserService) {
 
-            var obj ={
-                isModeEdit:false,
-                idUser:0
-            }
             spinnerService.show("spinnerUserList");
-            UserService.setModeEdit(obj);
+
+            UserService.setModeEdit({isModeEdit:false,idUser:0});
+
             var myUserPromise = UserService.getUsers($scope.filterCriteria);
             myUserPromise.then(function (result) {
                 $scope.users = result;
                 spinnerService.hide("spinnerUserList");
+
+                var messageGrowl = UserService.getShowGrowlMessage();
+
+                if(messageGrowl.isShow){
+                    $scope.showgrowlMessage = true;
+                    $scope.showMessage = messageGrowl.message;
+                    UserService.setShowGrowlMessage({isShow:false,message:""});
+                }
+
             });
         }
 

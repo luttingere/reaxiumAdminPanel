@@ -1,7 +1,7 @@
 /**
  * Created by Eduardo Luttinger on 05/04/2016.
  */
-angular.module('Home')
+angular.module('App')
 
     .factory('UserLookup', function ($http,CONST_PROXY_URL) {
 
@@ -12,7 +12,9 @@ angular.module('Home')
             users: {},
             totalPages: 0,
             totalRecords: 0
-        }
+        };
+
+
         /**
          *
          * @returns {IPromise<TResult>|*}
@@ -143,6 +145,19 @@ angular.module('Home')
         lookup.getUserIdFound = function () {
             return userIdFound;
         }
+
+        lookup.newAccessUser = function(user){
+            return $http({
+                method:'POST',
+                url: CONST_PROXY_URL.PROXY_URL_CREATE_ACCESS_USER,
+                data:JSON.stringify(user),
+                headers: {'Content-Type':'application/json;charset=UTF-8'}
+            }).then(function(response){
+                return response.data.ReaxiumResponse;
+            })
+
+        }
+
         return lookup;
 
     })
@@ -158,6 +173,11 @@ angular.module('Home')
             latitude: 37.0902,
             longitude: -95.7129
         }
+
+        var showGrowl = {
+            isShow : false,
+            message:""
+        };
 
         var objUserById = {};
 
@@ -191,7 +211,7 @@ angular.module('Home')
         };
 
         this.getUsersFilter = function (filters) {
-            return UserSearch.allUserWithFilter(filters);
+            return UserLookup.allUserWithFilter(filters);
         };
 
         this.getAccessType = function(){
@@ -212,5 +232,17 @@ angular.module('Home')
 
         this.createNewUserStakeHolder = function(objNewUser){
             return UserLookup.newUserStakeHolder(objNewUser);
+        }
+
+        this.getShowGrowlMessage =  function (){
+            return showGrowl;
+        }
+
+        this.setShowGrowlMessage = function(obj){
+            showGrowl = obj;
+        }
+
+        this.createAccessUser = function(obj){
+            return UserLookup.newAccessUser(obj);
         }
     });

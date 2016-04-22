@@ -2,21 +2,27 @@
  * Created by VladimirIlich G&G on 7/4/2016.
  */
 
-angular.module('Home')
+angular.module('App')
 
-    .controller('UserNewCtrl', function ($scope, uiGmapGoogleMapApi, UserService, $log,$timeout,$rootScope,spinnerService) {
+    .controller('UserNewCtrl', function ($scope,
+                                         uiGmapGoogleMapApi,
+                                         UserService,
+                                         $log,
+                                         $timeout,
+                                         $rootScope,
+                                         spinnerService,
+                                         FILE_SYSTEM_ROUTE,
+                                         $state) {
 
-        $scope.selectAccT = null;
         $scope.selectTypeUser = null;
-        $scope.showBioPanel = false;
-        $scope.showRfid = false;
-        $scope.showLoginAndPass = false;
         $scope.showTableStakeHolder = false;
         $scope.modeEdit = false;
         $scope.userFilter = [];
         $scope.allUserSelcStakeHolder = [];
         $scope.showgrowlMessage = false;
         $scope.showMessage = "";
+        var nameImageUpload="";
+
 
         $scope.users = {
             document_id: "",
@@ -28,10 +34,10 @@ angular.module('Home')
             email: "",
             user_type_id: 0,
             status_id: 1,
-            user_photo: "/userimages/user_name_profile_picture.jpg",
+            access_type:1,
+            user_photo: FILE_SYSTEM_ROUTE.IMAGE_DEFAULT_USER,
             stakeholder_id: null
         };
-
 
         $scope.phoneNumbers = {
             phone_home_number: "",
@@ -39,10 +45,6 @@ angular.module('Home')
             phone_other_number: "",
         }
 
-       /* $scope.security.accessType = {
-            id_access_type: 0,
-            name_access_type: ""
-        }*/
 
         var addressObj = {
             address: "",
@@ -56,29 +58,6 @@ angular.module('Home')
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
-
-        /**
-         * watched variable typeAccess
-         */
-        $scope.$watch('selectAccT', function () {
-
-            $scope.showBioPanel = false;
-            $scope.showRfid = false;
-            $scope.showLoginAndPass = false;
-
-            switch (parseInt($scope.selectAccT)) {
-                case 1:
-                    $scope.showLoginAndPass = true;
-                    break;
-                case 2:
-                    $scope.showBioPanel = true;
-                    break;
-                case 3:
-                    $scope.showRfid = true;
-                    break;
-            }
-
-        });
 
         /**
          * watched variable selectTypeUser
@@ -121,7 +100,7 @@ angular.module('Home')
                         longitude:longitude
                     }
                 };
-                spinnerService.hide("spinnerNew");
+               // spinnerService.hide("spinnerNew");
             })
         }
 
@@ -168,9 +147,10 @@ angular.module('Home')
          */
         $scope.init = function () {
 
-            spinnerService.show("spinnerNew");
+           // spinnerService.show("spinnerNew");
 
             console.log("Iniciando controlador UserNewCtrl...");
+            UserService.setShowGrowlMessage({isShow:false,message:""});
 
             //validate mode edit
             if(UserService.getModeEdit().isModeEdit){
@@ -184,7 +164,7 @@ angular.module('Home')
 
                         $log.debug(result);
                         UserService.setObjUserById(result);
-
+                        $scope.users.user_photo = result[0].user_photo;
                         $scope.users.document_id = result[0].document_id;
                         $scope.users.first_name = result[0].first_name;
                         $scope.users.second_name = result[0].second_name;
@@ -196,6 +176,7 @@ angular.module('Home')
 
                         addressObj.latitude = result[0].address[0].latitude;
                         addressObj.longitude = result[0].address[0].longitude;
+                        addressObj.address = result[0].address[0].address;
                         $scope.address = result[0].address[0].address;
 
                         //PhoneNumber
@@ -234,7 +215,7 @@ angular.module('Home')
                         console.log("error cargando los datos para editar: "+err);
                     }
                     finally {
-                        spinnerService.hide("spinnerNew");
+                        //spinnerService.hide("spinnerNew");
                     }
 
                 });
@@ -388,13 +369,55 @@ angular.module('Home')
             }
         };
 
+
+        /**
+         * Method get obj Flow image upload
+         * @param file
+         * @param message
+         * @param flow
+         */
+        $scope.someHandlerMethod = function(file,message,flow){
+
+            console.log(message);
+            var obj = JSON.parse(message);
+
+            if(obj.success){
+                nameImageUpload = file.name;
+            }else{
+                nameImageUpload = FILE_SYSTEM_ROUTE.IMAGE_DEFAULT_USER;
+            }
+            console.log("Nombre archivo cargado: "+nameImageUpload);
+        }
+
         /**
          * Method save new user
          */
         $scope.saveNewUser = function () {
 
-            if($scope.selectTypeUser === "3"){
+            $scope.showgrowlMessage = false;
 
+            spinnerService.show("spinnerNew");
+
+            var pathImage = "";
+
+            if(UserService.getModeEdit().isModeEdit){
+                if(!isEmptyString(nameImageUpload)){
+                    pathImage = FILE_SYSTEM_ROUTE.FILE_SYSTEM_IMAGES + nameImageUpload;
+                }else{
+                    pathImage = $scope.users.user_photo;
+                }
+
+            }else{
+                if(!isEmptyString(nameImageUpload)){
+                    pathImage = FILE_SYSTEM_ROUTE.FILE_SYSTEM_IMAGES + nameImageUpload;
+                }else{
+                    pathImage = FILE_SYSTEM_ROUTE.IMAGE_DEFAULT_USER;
+                }
+            }
+
+            //validate user relationship stakeholder
+            if($scope.selectTypeUser == 3){
+                console.log("Entro aqui");
                 var aux = [];
 
                 $scope.allUserSelcStakeHolder.forEach(function (entry) {
@@ -412,7 +435,7 @@ angular.module('Home')
                             second_last_name: $scope.users.second_last_name,
                             user_type_id: parseInt($scope.selectTypeUser),
                             stakeholder_id: null,
-                            user_photo: "/userimages/user_name_profile_picture.jpg",
+                            user_photo: pathImage,
                             birthdate: formatDate($scope.users.birthdate),
                             email: $scope.users.email
 
@@ -444,7 +467,8 @@ angular.module('Home')
 
                 /*is evaluated if in edit mode*/
 
-                if(UserService.getModeEdit()){
+                if(UserService.getModeEdit().isModeEdit){
+
                     var obj = UserService.getObjUserById();
                     dataNewUserStakeHolder.ReaxiumParameters.Users.user_id = obj[0].user_id;
                     dataNewUserStakeHolder.ReaxiumParameters.PhoneNumbers[0].phone_number_id = obj[0].phone_numbers[0].phone_number_id;
@@ -452,22 +476,30 @@ angular.module('Home')
                     dataNewUserStakeHolder.ReaxiumParameters.PhoneNumbers[2].phone_number_id = obj[0].phone_numbers[2].phone_number_id;
                     dataNewUserStakeHolder.ReaxiumParameters.address[0].address_id = obj[0].address[0].address_id;
 
-
-
                 }
 
-                $log.debug("Objeto para enviar", dataNewUserStakeHolder);
+                $log.debug("Objeto para enviar stakeHolder", dataNewUserStakeHolder);
 
-               /* var promiseCreateUserStake = UserService.createNewUserStakeHolder(dataNewUserStakeHolder);
-                promiseCreateUserStake.then(function(response){
+                var validObj = validateParamNewUser(dataNewUserStakeHolder,3);
+
+                if(validObj.validate){
+
+                     var promiseCreateUserStake = UserService.createNewUserStakeHolder(dataNewUserStakeHolder);
+                     promiseCreateUserStake.then(function(response){
+                         UserService.setShowGrowlMessage({isShow:true,message:response.message});
+                         spinnerService.hide("spinnerNew");
+                         $state.go("allUser");
+                     });
+
+                }else{
                     $scope.showgrowlMessage = true;
-                    $scope.showMessage = response.message;
-
-
-                });*/
+                    $scope.showMessage = validObj.message;
+                    spinnerService.hide("spinnerNew");
+                }
 
             }
             else{
+                //new user normal
 
                var dataNewUser = {
                     ReaxiumParameters:{
@@ -480,7 +512,7 @@ angular.module('Home')
                             second_last_name: $scope.users.second_last_name,
                             user_type_id: parseInt($scope.selectTypeUser),
                             stakeholder_id: null,
-                            user_photo: "/userimages/user_name_profile_picture.jpg",
+                            user_photo: pathImage,
                             birthdate: formatDate($scope.users.birthdate),
                             email: $scope.users.email
 
@@ -509,7 +541,8 @@ angular.module('Home')
                     }
                 };
 
-                if(UserService.getModeEdit()){
+                if(UserService.getModeEdit().isModeEdit){
+
                     var obj = UserService.getObjUserById();
                     dataNewUser.ReaxiumParameters.Users.user_id = obj[0].user_id;
                     dataNewUser.ReaxiumParameters.PhoneNumbers[0].phone_number_id = obj[0].phone_numbers[0].phone_number_id;
@@ -517,24 +550,31 @@ angular.module('Home')
                     dataNewUser.ReaxiumParameters.PhoneNumbers[2].phone_number_id = obj[0].phone_numbers[2].phone_number_id;
                     dataNewUser.ReaxiumParameters.address[0].address_id = obj[0].address[0].address_id;
 
-
-
                 }
 
                 $log.debug("Objeto para enviar", dataNewUser);
 
+                var validObj = validateParamNewUser(dataNewUser,null);
 
-               /* var promiseCreateUser = UserService.createNewUser(dataNewUser);
-                promiseCreateUser.then(function(response){
+                if(validObj.validate){
+
+                     var promiseCreateUser = UserService.createNewUser(dataNewUser);
+                     promiseCreateUser.then(function(response){
+                         UserService.setShowGrowlMessage({isShow:true,message:response.message});
+                         spinnerService.hide("spinnerNew");
+                         $state.go("allUser");
+                     });
+
+                }else{
                     $scope.showgrowlMessage = true;
-                    $scope.showMessage = response.message;
+                    $scope.showMessage = validObj.message;
+                    spinnerService.hide("spinnerNew");
 
-                });*/
+                }
+
+
             }
 
-           // $log.debug("Objeto para enviar", dataNewUser);
         }
 
-        //var validateData = function(){}
-
-    })
+    });

@@ -18,7 +18,7 @@
 
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            <growl-notification class="fading" ng-if="showgrowlMessage">{{showMesagge}}</growl-notification>
+            <growl-notification class="fading" ng-if="showgrowlMessage">{{showMessage}}</growl-notification>
 
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
@@ -72,13 +72,6 @@
                                 </div>
                             </div>
                         </div><!-- ./col -->
-                        <div class="col-lg-3 col-xs-5">
-                            <div class="small-box">
-                                <div class="customIcon">
-                                    <i ui-sref="newUser" class="ion ion-plus-circled"></i>
-                                </div>
-                            </div>
-                        </div><!-- ./col -->
                     </div><!-- /.row -->
                     <!-- Main row -->
                     <div class="row">
@@ -88,7 +81,13 @@
 
                                     <div class="box">
                                         <div class="box-header">
+                                            <div class="small-box">
+                                                <div class="customIcon">
+                                                    <i ui-sref="newUser" class="ion ion-plus-circled"></i>
+                                                </div>
+                                            </div>
                                             <h3 class="box-title">System Users</h3>
+
                                         </div><!-- /.box-header -->
                                         <div class="box-body">
 

@@ -2,7 +2,7 @@
  * Created by VladimirIlich on 5/4/2016.
  */
 
-angular.module('Login')
+angular.module('App')
 
 .service('loginServices',function($http,$log,CONST_PROXY_URL){
 
@@ -17,7 +17,7 @@ angular.module('Login')
 
         var data = {
             ReaxiumParameters:{
-                UserAccessControl:{
+                UserAccessData:{
                     device_id : "1",
                     access_type_id : "1",
                     user_login_name : username,

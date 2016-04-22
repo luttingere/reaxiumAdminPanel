@@ -2,7 +2,7 @@
  * Created by VladimirIlich on 4/4/2016.
  */
 
-angular.module('Login')
+angular.module('App')
     .controller('loginController', function ($scope, $state, $log, $timeout, loginServices, spinnerService, $localStorage,$uibModal) {
 
         $scope.showgrowlMessage = false;

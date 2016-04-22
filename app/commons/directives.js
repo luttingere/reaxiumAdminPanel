@@ -1,7 +1,7 @@
 /**
  * Created by VladimirIlich on 7/4/2016.
  */
-angular.module('Home')
+angular.module('App')
 
     .directive('myAlert', function ($modal, $log) {
 

@@ -8,7 +8,7 @@
 
 <div class="skin-blue sidebar-mini">
 
-    <div class="wrapper">
+    <div class="wrapper" ng-controller="DeviceRelUserCtrl">
 
         <!--header-->
         <div ui-view="header"></div>
@@ -17,7 +17,7 @@
         <div ui-view="menu"></div>
 
         <!--content-->
-        <div class="content-wrapper">
+        <div class="content-wrapper" >
 
             <growl-notification class="fading" ng-if="showgrowlMessage">{{showMessage}}</growl-notification>
 
@@ -52,13 +52,12 @@
                             </div>
 
                             <div class="row">
-                                <div class="content" style="min-height: 0px;">
 
-                                    <div class="col-md-12">
-                                        <!--box Personal Information security-->
+                                <div class="col-lg-12">
+                                    <div class="content" style="min-height: 0px;">
                                         <div class="box box-primary box-solid">
                                             <div class="box-header bg-light-blue-active with-border">
-                                                <h3 class="box-title">Security User</h3>
+                                                <h3 class="box-title">Device RelationShip User</h3>
 
                                                 <div class="box-tools pull-right">
                                                     <button class="btn btn-box-tool" data-widget="collapse"><i
@@ -67,7 +66,7 @@
                                             </div><!-- /.box-header -->
                                             <div class="box-body">
                                                 <!--Search StakeHolder-->
-                                                <div class="col-md-8">
+                                                <div class="col-md-6">
                                                     <div class="box box-info">
                                                         <div class="box-body">
                                                             <table>
@@ -104,40 +103,53 @@
                                                     </div>
                                                 </div>
                                                 <!--Table StakeHolder-->
-                                                <div class="col-md-8" ng-show="showForm">
+                                                <div class="col-md-12" ng-show="showTable">
                                                     <div class="box box-info">
-                                                        <div class="box-header with-border">
-                                                            <h3 class="box-title">Login & Password</h3>
+                                                        <div class="box-header">
+                                                            <h3 class="box-title">System Users</h3>
                                                         </div><!-- /.box-header -->
-                                                        <!-- form start -->
                                                         <div class="box-body">
-                                                            <div class="form-group">
-                                                                <label for="inputEmail3"
-                                                                       class="col-sm-2 control-label">Login</label>
-
-                                                                <div class="col-sm-10">
-                                                                    <input type="text" class="form-control"
-                                                                           id="inputEmail3" placeholder="Login" ng-model="access.login">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="inputPassword3"
-                                                                       class="col-sm-2 control-label">Password</label>
-
-                                                                <div class="col-sm-10">
-                                                                    <input type="password" class="form-control"
-                                                                           id="inputPassword3"
-                                                                           placeholder="Password" ng-model="access.pass">
-                                                                </div>
-                                                            </div>
-
+                                                            <table id="userTable"
+                                                                   class="table table-bordered table-striped">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>Name</th>
+                                                                    <th>Last Name</th>
+                                                                    <th>ID</th>
+                                                                    <th>Biometric</th>
+                                                                    <th>Rfid</th>
+                                                                    <th>Login & Password</a></th>
+                                                                    <th>Actions</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr ng-repeat="user in allUserSelcStakeHolder">
+                                                                    <td>{{user.first_name + " " +
+                                                                        user.first_name}}
+                                                                    </td>
+                                                                    <td>{{user.second_name + " " +
+                                                                        user.second_name}}
+                                                                    </td>
+                                                                    <td>{{user.document_id}}</td>
+                                                                    <td style="text-align: center"><input type="radio" name="r3" class="flat-red" checked></td>
+                                                                    <td style="text-align: center"><input type="radio" name="r3" class="flat-red"></td>
+                                                                    <td style="text-align: center"><input type="radio" name="r3" class="flat-red"></td>
+                                                                    <td><a ng-click="deleteUserTable()"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
+                                                                </tr>
+                                                                </tbody>
+                                                                </tfoot>
+                                                            </table>
                                                         </div><!-- /.box-body -->
                                                     </div><!-- /.box -->
+
                                                 </div><!-- /.col -->
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
+
+
                             </div>
 
                             <div class="row">

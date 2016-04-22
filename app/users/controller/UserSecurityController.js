@@ -76,8 +76,8 @@ angular.module('App')
                         second_name: entry.second_name,
                         user_id: entry.user_id,
                         document_id: entry.document_id,
-                        email:entry.email==null,
-                        pic: "dist/img/fotoPerfil.jpg"
+                        email:entry.email,
+                        pic: entry.user_photo
                     };
 
                     $scope.userFilter.push(aux);

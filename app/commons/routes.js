@@ -86,12 +86,14 @@ angular.module("App")
                 url: '/deviceRelUser',
                 controller:'DeviceRelUserCtrl',
                 views: {
-                    '': {templateUrl: 'app/devices/views/RouteDashboard.html'},
-                    'header@routes': {templateUrl: 'app/home/views/header.html'},
-                    'menu@routes': {templateUrl: 'app/home/views/menu.html'},
-                    'footer@routes':{templateUrl: 'app/home/views/footer.html'}
+                    '': {templateUrl: 'app/devices/views/DeviceRelationUser.html'},
+                    'header@deviceRelUser': {templateUrl: 'app/home/views/header.html'},
+                    'menu@deviceRelUser': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@deviceRelUser':{templateUrl: 'app/home/views/footer.html'}
                 }
             })
+
+
 
 
         $urlRouterProvider.otherwise("/login");

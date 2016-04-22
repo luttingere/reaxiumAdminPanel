@@ -4,7 +4,13 @@
 
 angular.module("App")
 
-.controller("DeviceCtrl",function($scope,$state,$log,$rootScope,DeviceService,spinnerService,$sessionStorage){
+.controller("DeviceCtrl",function($scope,
+                                  $state,
+                                  $log,
+                                  $rootScope,
+                                  DeviceService,
+                                  spinnerService,
+                                  $sessionStorage){
 
     $scope.dataDevice={}
 
@@ -22,7 +28,7 @@ angular.module("App")
         console.log("Iniciando contolador DeviceCtrl");
 
         spinnerService.show("spinnerNew");
-
+        DeviceService.setRelUserDevice({isModeRel:false, id_device: ""});
         var promiseAllDevice = DeviceService.allDeviceSystem();
         promiseAllDevice.then(function(response){
             $scope.devices = response;
@@ -31,5 +37,12 @@ angular.module("App")
     }
 
     init();
+
+    $scope.addUserDevice = function(id_device){
+
+        DeviceService.setRelUserDevice({isModeRel:true, id_device: id_device});
+        $state.go("deviceRelUser");
+    }
+
 
 })

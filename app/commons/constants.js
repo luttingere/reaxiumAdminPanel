@@ -21,10 +21,11 @@ angular.module("App")
         PROXY_URL_ALL_DEVICES: "http://54.200.133.84/reaxium/Device/allDevicesInfo",
         PROXY_URL_ALL_ROUTES: "http://54.200.133.84/reaxium/Routes/allRoutesSystem"
 
-
     })
     // configuracion file system imagenes
     .constant('FILE_SYSTEM_ROUTE',{
         FILE_SYSTEM_IMAGES:'http://localhost:8080/ProyectosGandG/images/',
-        IMAGE_DEFAULT_USER:'http://localhost:8080/ProyectosGandG/images/profile-default.png'
+        IMAGE_DEFAULT_USER:'http://localhost:8080/ProyectosGandG/images/profile-default.png',
+        FILE_SYSTEM_IMAGES_PROD:'http://54.200.133.84/reaxium_user_images/',
+        IMAGE_DEFAULT_USER_PROD:'http://54.200.133.84/reaxium_user_images/profile-default.png'
     })

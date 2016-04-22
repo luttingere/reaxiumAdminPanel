@@ -3,7 +3,15 @@
  */
 
 angular.module('App')
-    .controller('loginController', function ($scope, $state, $log, $timeout, loginServices, spinnerService, $localStorage,$uibModal) {
+    .controller('loginController', function ($scope,
+                                             $state,
+                                             $log,
+                                             $timeout,
+                                             loginServices,
+                                             spinnerService,
+                                             $localStorage,
+                                             $uibModal,
+                                             $sessionStorage) {
 
         $scope.showgrowlMessage = false;
         $scope.showMesaggeAuthenticate = "";
@@ -35,8 +43,6 @@ angular.module('App')
         $scope.authenticateUser = function () {
 
             spinnerService.show('html5spinner');
-            //$scope.showspinner = true;
-           // usSpinnerService.spin('spinner-1');
 
             loginServices.proxyLogin($scope.data.settings.username, $scope.data.settings.password)
                 .success(function (data) {
@@ -44,6 +50,8 @@ angular.module('App')
                     $log.debug(data);
 
                     if (data.ReaxiumResponse.code === 0) {
+                        $sessionStorage.user_photo = data.ReaxiumResponse.object[0].user.user_photo;
+                        $sessionStorage.nameUser = data.ReaxiumResponse.object[0].user.first_name + ' ' +data.ReaxiumResponse.object[0].user.first_last_name;
                         $state.go('home');
                     } else {
                         $scope.showgrowlMessage = true;

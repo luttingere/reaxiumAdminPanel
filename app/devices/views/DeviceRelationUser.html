@@ -8,7 +8,7 @@
 
 <div class="skin-blue sidebar-mini">
 
-    <div class="wrapper" ng-controller="SecurityCrl">
+    <div class="wrapper">
 
         <!--header-->
         <div ui-view="header"></div>
@@ -17,7 +17,7 @@
         <div ui-view="menu"></div>
 
         <!--content-->
-        <div class="content-wrapper" >
+        <div class="content-wrapper">
 
             <growl-notification class="fading" ng-if="showgrowlMessage">{{showMessage}}</growl-notification>
 
@@ -162,9 +162,9 @@
             <br/>
         </div>
 
+        </div>
+
         <!--footer-->
         <div ui-view="footer"></div>
-
     </div>
-
 </div>

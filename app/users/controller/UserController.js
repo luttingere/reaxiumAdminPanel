@@ -8,7 +8,9 @@ angular.module('App')
                                             uiGmapGoogleMapApi,
                                             $state,
                                             $rootScope,
-                                            spinnerService) {
+                                            spinnerService,
+                                            $log,
+                                            $sessionStorage) {
 
         console.log("Cargo el Controlador de Usuarios");
         $scope.control = {}
@@ -23,6 +25,10 @@ angular.module('App')
         $scope.menus = $rootScope.appMenus;
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
+
+        //data user by session
+        $scope.photeUser = $sessionStorage.user_photo;
+        $scope.nameUser = $sessionStorage.nameUser;
 
         $scope.totalPages = 0;
         $scope.usersCount = 0;
@@ -55,12 +61,26 @@ angular.module('App')
         };
 
         $scope.getAllUsers = function () {
-            return UserService.getUsers($scope.filterCriteria).then(function (data) {
+
+            spinnerService.show("spinnerUserList");
+            UserService.setModeEdit({isModeEdit:false,idUser:0});
+
+             UserService.getUsers($scope.filterCriteria).then(function (data) {
                 $scope.users = data.users;
                 $scope.totalPages = data.totalPages;
                 console.log($scope.totalPages);
                 $scope.totalRecords = data.totalRecords;
+                 spinnerService.hide("spinnerUserList");
+
+                 var messageGrowl = UserService.getShowGrowlMessage();
+
+                 if(messageGrowl.isShow){
+                     $scope.showgrowlMessage = true;
+                     $scope.showMessage = messageGrowl.message;
+                 }
+
             }, function () {
+                 console.log("Cayo aqui noc.....")
                 $scope.users = [];
                 $scope.totalPages = 0;
                 $scope.totalRecords = 0;
@@ -93,33 +113,6 @@ angular.module('App')
             });
         };
 
-        /**
-         * Get all the user of the system
-         * @param $scope
-         * @param UserService
-         * @private
-         */
-        $scope._init = function ($scope, UserService) {
-
-            spinnerService.show("spinnerUserList");
-
-            UserService.setModeEdit({isModeEdit:false,idUser:0});
-
-            var myUserPromise = UserService.getUsers($scope.filterCriteria);
-            myUserPromise.then(function (result) {
-                $scope.users = result;
-                spinnerService.hide("spinnerUserList");
-
-                var messageGrowl = UserService.getShowGrowlMessage();
-
-                if(messageGrowl.isShow){
-                    $scope.showgrowlMessage = true;
-                    $scope.showMessage = messageGrowl.message;
-                    UserService.setShowGrowlMessage({isShow:false,message:""});
-                }
-
-            });
-        }
 
         /**
          * Get a  user of the system by his id
@@ -226,12 +219,6 @@ angular.module('App')
             $scope.showGeneralInfoModal = !$scope.showGeneralInfoModal;
         }
 
-        /**
-         * get the user's phone information and show it in a modal
-         * @param userId
-         */
-
-        $scope._init($scope, UserService);
 
         $scope.editMode = function(id){
 

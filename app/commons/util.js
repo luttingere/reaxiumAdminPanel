@@ -221,3 +221,11 @@ function validateAccess(obj){
 
     return response;
 }
+
+function isUndefined(obj){
+
+    if(obj== undefined){
+        return true;
+    }
+    return false;
+}

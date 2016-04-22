@@ -1,7 +1,11 @@
 
 angular.module('App')
 
-.controller('HomeController',function ($scope,$state,$rootScope,UserService) {
+.controller('HomeController',function ($scope,
+                                       $state,
+                                       $rootScope,
+                                       UserService,
+                                       $sessionStorage) {
 
     $scope.panelTimeline = false;
     //Menu
@@ -9,10 +13,8 @@ angular.module('App')
     //Search on the menu
     $scope.menuOptions = {searchWord: ''};
 
+    //data user by session
+    $scope.photeUser = $sessionStorage.user_photo;
+    $scope.nameUser = $sessionStorage.nameUser;
 
-   /* var init = function(){
-
-    }
-
-    init();*/
 });

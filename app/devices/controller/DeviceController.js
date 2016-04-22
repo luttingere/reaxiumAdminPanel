@@ -4,7 +4,7 @@
 
 angular.module("App")
 
-.controller("DeviceCtrl",function($scope,$state,$log,$rootScope,DeviceService,spinnerService){
+.controller("DeviceCtrl",function($scope,$state,$log,$rootScope,DeviceService,spinnerService,$sessionStorage){
 
     $scope.dataDevice={}
 
@@ -13,6 +13,9 @@ angular.module("App")
     //Search on the menu
     $scope.menuOptions = {searchWord: ''};
 
+    //data user by session
+    $scope.photeUser = $sessionStorage.user_photo;
+    $scope.nameUser = $sessionStorage.nameUser;
 
     var init = function(){
 

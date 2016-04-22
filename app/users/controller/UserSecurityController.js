@@ -4,7 +4,7 @@
 
 angular.module('App')
 
-.controller("SecurityCrl",function($scope,$rootScope,$state,$log,UserService,spinnerService){
+.controller("SecurityCrl",function($scope,$rootScope,$state,$log,UserService,spinnerService,$sessionStorage){
 
     $scope.showgrowlMessage = false;
     $scope.showMessage = "";
@@ -15,12 +15,16 @@ angular.module('App')
         pass:""
     }
     var objUser = {};
+
     //menu sidebar
     $scope.menus = $rootScope.appMenus;
 
     //Search on the menu
     $scope.menuOptions = {searchWord: ''};
 
+    //data user by session
+    $scope.photeUser = $sessionStorage.user_photo;
+    $scope.nameUser = $sessionStorage.nameUser;
 
     var init = function(){
 

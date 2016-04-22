@@ -82,6 +82,17 @@ angular.module("App")
                 }
             })
 
+            .state("deviceRelUser",{
+                url: '/deviceRelUser',
+                controller:'DeviceRelUserCtrl',
+                views: {
+                    '': {templateUrl: 'app/devices/views/RouteDashboard.html'},
+                    'header@routes': {templateUrl: 'app/home/views/header.html'},
+                    'menu@routes': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@routes':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
+
 
         $urlRouterProvider.otherwise("/login");
 

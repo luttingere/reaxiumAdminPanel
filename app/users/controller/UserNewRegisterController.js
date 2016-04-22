@@ -12,7 +12,8 @@ angular.module('App')
                                          $rootScope,
                                          spinnerService,
                                          FILE_SYSTEM_ROUTE,
-                                         $state) {
+                                         $state,
+                                         $sessionStorage) {
 
         $scope.selectTypeUser = null;
         $scope.showTableStakeHolder = false;
@@ -21,7 +22,9 @@ angular.module('App')
         $scope.allUserSelcStakeHolder = [];
         $scope.showgrowlMessage = false;
         $scope.showMessage = "";
+        $scope.headerName="";
         var nameImageUpload="";
+
 
 
         $scope.users = {
@@ -58,6 +61,9 @@ angular.module('App')
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
+        //data user by session
+        $scope.photeUser = $sessionStorage.user_photo;
+        $scope.nameUser = $sessionStorage.nameUser;
 
         /**
          * watched variable selectTypeUser
@@ -152,76 +158,6 @@ angular.module('App')
             console.log("Iniciando controlador UserNewCtrl...");
             UserService.setShowGrowlMessage({isShow:false,message:""});
 
-            //validate mode edit
-            if(UserService.getModeEdit().isModeEdit){
-
-                console.log("Esta en modo editar...");
-
-                var promiseUserById = UserService.getUsersById(UserService.getModeEdit().idUser);
-                promiseUserById.then(function(result){
-
-                    try{
-
-                        $log.debug(result);
-                        UserService.setObjUserById(result);
-                        $scope.users.user_photo = result[0].user_photo;
-                        $scope.users.document_id = result[0].document_id;
-                        $scope.users.first_name = result[0].first_name;
-                        $scope.users.second_name = result[0].second_name;
-                        $scope.users.first_last_name = result[0].first_last_name;
-                        $scope.users.second_last_name = result[0].second_last_name;
-
-                        $scope.users.birthdate = new Date(result[0].birthdate);
-                        $scope.users.email = result[0].email;
-
-                        addressObj.latitude = result[0].address[0].latitude;
-                        addressObj.longitude = result[0].address[0].longitude;
-                        addressObj.address = result[0].address[0].address;
-                        $scope.address = result[0].address[0].address;
-
-                        //PhoneNumber
-
-                            result[0].phone_numbers.forEach(function(entry){
-
-                                if(entry.phone_name.toLowerCase() === "home"){
-                                    $scope.phoneNumbers.phone_home_number = entry.phone_number;
-                                }
-                                else if(entry.phone_name.toLowerCase() === "office"){
-                                    $scope.phoneNumbers.phone_office_number = entry.phone_number;
-                                }else{
-                                    $scope.phoneNumbers.phone_other_number = entry.phone_number;
-                                }
-                            });
-
-
-
-                        //$scope.selectAccT = result[0].user_type.user_type_id;
-                        $scope.selectTypeUser = result[0].user_type.user_type_id;
-                        $scope.status_id = result[0].status_id;
-                        $scope.selectAccT = result[0].user_type.user_type_id;
-
-
-                        if($scope.selectTypeUser == 3){
-
-                            result[0].UserRelationship.forEach(function(entry){
-                                $scope.allUserSelcStakeHolder.push(entry);
-                            })
-                        }
-
-
-                        $scope.addTheMap();
-                    }
-                    catch (err){
-                        console.log("error cargando los datos para editar: "+err);
-                    }
-                    finally {
-                        //spinnerService.hide("spinnerNew");
-                    }
-
-                });
-            }else{
-                $scope.addTheMap();
-            }
             /**
              * call services AccessType
              */
@@ -243,6 +179,75 @@ angular.module('App')
                 $scope.allStatusUser = result;
 
             });
+
+            //validate mode edit
+            if(UserService.getModeEdit().isModeEdit){
+
+                console.log("Esta en modo editar...");
+
+                var promiseUserById = UserService.getUsersById(UserService.getModeEdit().idUser);
+                promiseUserById.then(function(result){
+
+                    try{
+
+                        $log.debug(result);
+                        UserService.setObjUserById(result);
+                        $scope.headerName = result[0].first_name +' '+result[0].first_last_name
+                        $scope.users.user_photo = result[0].user_photo;
+                        $scope.users.document_id = result[0].document_id;
+                        $scope.users.first_name = result[0].first_name;
+                        $scope.users.second_name = result[0].second_name;
+                        $scope.users.first_last_name = result[0].first_last_name;
+                        $scope.users.second_last_name = result[0].second_last_name;
+
+                        $scope.users.birthdate = new Date(result[0].birthdate);
+                        $scope.users.email = result[0].email;
+
+                        addressObj.latitude = result[0].address[0].latitude;
+                        addressObj.longitude = result[0].address[0].longitude;
+                        addressObj.address = result[0].address[0].address;
+                        $scope.address = result[0].address[0].address;
+
+                        //PhoneNumber
+
+                        result[0].phone_numbers.forEach(function(entry){
+
+                            if(entry.phone_name.toLowerCase() === "home"){
+                                $scope.phoneNumbers.phone_home_number = entry.phone_number;
+                            }
+                            else if(entry.phone_name.toLowerCase() === "office"){
+                                $scope.phoneNumbers.phone_office_number = entry.phone_number;
+                            }else{
+                                $scope.phoneNumbers.phone_other_number = entry.phone_number;
+                            }
+                        });
+
+
+                        $scope.selectTypeUser = result[0].user_type.user_type_id;
+                        $scope.status_id = result[0].status.status_id;
+                        $scope.selectAccT = result[0].user_type.user_type_id;
+
+
+                        if($scope.selectTypeUser == 3){
+
+                            result[0].UserRelationship.forEach(function(entry){
+                                $scope.allUserSelcStakeHolder.push(entry);
+                            })
+                        }
+
+                        $scope.addTheMap();
+                    }
+                    catch (err){
+                        console.log("error cargando los datos para editar: "+err);
+                    }
+                    finally {
+                        //spinnerService.hide("spinnerNew");
+                    }
+
+                });
+            }else{
+                $scope.addTheMap();
+            }
 
         }
 
@@ -417,7 +422,7 @@ angular.module('App')
 
             //validate user relationship stakeholder
             if($scope.selectTypeUser == 3){
-                console.log("Entro aqui");
+
                 var aux = [];
 
                 $scope.allUserSelcStakeHolder.forEach(function (entry) {
@@ -471,9 +476,20 @@ angular.module('App')
 
                     var obj = UserService.getObjUserById();
                     dataNewUserStakeHolder.ReaxiumParameters.Users.user_id = obj[0].user_id;
-                    dataNewUserStakeHolder.ReaxiumParameters.PhoneNumbers[0].phone_number_id = obj[0].phone_numbers[0].phone_number_id;
-                    dataNewUserStakeHolder.ReaxiumParameters.PhoneNumbers[1].phone_number_id = obj[0].phone_numbers[1].phone_number_id;
-                    dataNewUserStakeHolder.ReaxiumParameters.PhoneNumbers[2].phone_number_id = obj[0].phone_numbers[2].phone_number_id;
+
+                    if(!isUndefined(obj[0].phone_numbers[0])){
+                        dataNewUserStakeHolder.ReaxiumParameters.PhoneNumbers[0].phone_number_id = obj[0].phone_numbers[0].phone_number_id;
+                    }
+
+                    if(!isUndefined(obj[0].phone_numbers[1])){
+                        dataNewUserStakeHolder.ReaxiumParameters.PhoneNumbers[2].phone_number_id = obj[0].phone_numbers[1].phone_number_id;
+                    }
+
+                    if(!isUndefined(obj[0].phone_numbers[2])){
+                        dataNewUserStakeHolder.ReaxiumParameters.PhoneNumbers[2].phone_number_id = obj[0].phone_numbers[2].phone_number_id;
+                    }
+
+
                     dataNewUserStakeHolder.ReaxiumParameters.address[0].address_id = obj[0].address[0].address_id;
 
                 }
@@ -486,9 +502,17 @@ angular.module('App')
 
                      var promiseCreateUserStake = UserService.createNewUserStakeHolder(dataNewUserStakeHolder);
                      promiseCreateUserStake.then(function(response){
-                         UserService.setShowGrowlMessage({isShow:true,message:response.message});
-                         spinnerService.hide("spinnerNew");
-                         $state.go("allUser");
+                         if(response.code == 0){
+
+                             UserService.setShowGrowlMessage({isShow:true,message:response.message});
+                             spinnerService.hide("spinnerNew");
+                             $state.go("allUser");
+                         }
+                         else{
+                             $scope.showgrowlMessage = true;
+                             $scope.showMessage = response.message;
+                             spinnerService.hide("spinnerNew");
+                         }
                      });
 
                 }else{
@@ -545,9 +569,18 @@ angular.module('App')
 
                     var obj = UserService.getObjUserById();
                     dataNewUser.ReaxiumParameters.Users.user_id = obj[0].user_id;
-                    dataNewUser.ReaxiumParameters.PhoneNumbers[0].phone_number_id = obj[0].phone_numbers[0].phone_number_id;
-                    dataNewUser.ReaxiumParameters.PhoneNumbers[1].phone_number_id = obj[0].phone_numbers[1].phone_number_id;
-                    dataNewUser.ReaxiumParameters.PhoneNumbers[2].phone_number_id = obj[0].phone_numbers[2].phone_number_id;
+
+                    if(!isUndefined(obj[0].phone_numbers[0])){
+                        dataNewUser.ReaxiumParameters.PhoneNumbers[0].phone_number_id = obj[0].phone_numbers[0].phone_number_id;
+                    }
+                    if(!isUndefined(obj[0].phone_numbers[1])){
+                        dataNewUser.ReaxiumParameters.PhoneNumbers[1].phone_number_id = obj[0].phone_numbers[1].phone_number_id;
+                    }
+
+                    if(!isUndefined(obj[0].phone_numbers[2])){
+                        dataNewUser.ReaxiumParameters.PhoneNumbers[2].phone_number_id = obj[0].phone_numbers[2].phone_number_id;
+                    }
+
                     dataNewUser.ReaxiumParameters.address[0].address_id = obj[0].address[0].address_id;
 
                 }
@@ -560,12 +593,21 @@ angular.module('App')
 
                      var promiseCreateUser = UserService.createNewUser(dataNewUser);
                      promiseCreateUser.then(function(response){
-                         UserService.setShowGrowlMessage({isShow:true,message:response.message});
-                         spinnerService.hide("spinnerNew");
-                         $state.go("allUser");
+
+                         if(response.code == 0){
+                             UserService.setShowGrowlMessage({isShow:true,message:response.message});
+                             spinnerService.hide("spinnerNew");
+                             $state.go("allUser");
+                         }else{
+                             $scope.showgrowlMessage = true;
+                             $scope.showMessage = response.message;
+                             spinnerService.hide("spinnerNew");
+                         }
+
                      });
 
                 }else{
+                    console.log("que paso: "+validObj.message);
                     $scope.showgrowlMessage = true;
                     $scope.showMessage = validObj.message;
                     spinnerService.hide("spinnerNew");

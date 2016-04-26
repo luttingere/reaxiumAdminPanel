@@ -13,7 +13,8 @@ angular.module('App')
                                          spinnerService,
                                          FILE_SYSTEM_ROUTE,
                                          $state,
-                                         $sessionStorage) {
+                                         $sessionStorage,
+                                         growl) {
 
         $scope.selectTypeUser = null;
         $scope.showTableStakeHolder = false;
@@ -161,10 +162,10 @@ angular.module('App')
             /**
              * call services AccessType
              */
-            var myUserPromise = UserService.getAccessType();
+            /*var myUserPromise = UserService.getAccessType();
             myUserPromise.then(function (result) {
                 $scope.allAccessType = result;
-            });
+            });*/
 
             /***
              * call services AllUsersType
@@ -172,12 +173,16 @@ angular.module('App')
             var myUserTypePromise = UserService.getAllUsersType();
             myUserTypePromise.then(function (result) {
                 $scope.allUserType = result;
+            }).catch(function(err){
+                console.error("Error servicio allUserType: "+err);
             });
 
             var myStatusUsers = UserService.getAllStatusUser();
             myStatusUsers.then(function (result) {
                 $scope.allStatusUser = result;
 
+            }).catch(function(err){
+                console.error("Error servicio allStatusUser: "+err);
             });
 
             //validate mode edit
@@ -244,6 +249,8 @@ angular.module('App')
                         //spinnerService.hide("spinnerNew");
                     }
 
+                }).catch(function(err){
+                    console.error("Error servicio getUsersById "+err);
                 });
             }else{
                 $scope.addTheMap();
@@ -349,6 +356,8 @@ angular.module('App')
                     });
 
                 }
+            }).catch(function(err){
+                console.log("Error servicio filtro: "+err);
             });
         };
 
@@ -482,7 +491,7 @@ angular.module('App')
                     }
 
                     if(!isUndefined(obj[0].phone_numbers[1])){
-                        dataNewUserStakeHolder.ReaxiumParameters.PhoneNumbers[2].phone_number_id = obj[0].phone_numbers[1].phone_number_id;
+                        dataNewUserStakeHolder.ReaxiumParameters.PhoneNumbers[1].phone_number_id = obj[0].phone_numbers[1].phone_number_id;
                     }
 
                     if(!isUndefined(obj[0].phone_numbers[2])){
@@ -509,16 +518,16 @@ angular.module('App')
                              $state.go("allUser");
                          }
                          else{
-                             $scope.showgrowlMessage = true;
-                             $scope.showMessage = response.message;
                              spinnerService.hide("spinnerNew");
+                             growl.error(response.message);
                          }
+                     }).catch(function(err){
+                         console.error("Error creando usuario StakeHolder" +err);
                      });
 
                 }else{
-                    $scope.showgrowlMessage = true;
-                    $scope.showMessage = validObj.message;
                     spinnerService.hide("spinnerNew");
+                    growl.error(validObj.message);
                 }
 
             }
@@ -599,19 +608,15 @@ angular.module('App')
                              spinnerService.hide("spinnerNew");
                              $state.go("allUser");
                          }else{
-                             $scope.showgrowlMessage = true;
-                             $scope.showMessage = response.message;
                              spinnerService.hide("spinnerNew");
+                             growl.error(response.message)
                          }
 
                      });
 
                 }else{
-                    console.log("que paso: "+validObj.message);
-                    $scope.showgrowlMessage = true;
-                    $scope.showMessage = validObj.message;
                     spinnerService.hide("spinnerNew");
-
+                    growl.error(validObj.message);
                 }
 
 

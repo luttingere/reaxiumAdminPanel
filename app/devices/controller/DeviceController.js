@@ -29,10 +29,13 @@ angular.module("App")
 
         spinnerService.show("spinnerNew");
         DeviceService.setRelUserDevice({isModeRel:false, id_device: ""});
+
         var promiseAllDevice = DeviceService.allDeviceSystem();
         promiseAllDevice.then(function(response){
             $scope.devices = response;
             spinnerService.hide("spinnerNew");
+        }).catch(function (err){
+            console.log("Error en invocacion del servicio..."+err);
         })
     }
 

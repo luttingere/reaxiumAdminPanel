@@ -10,7 +10,8 @@ angular.module('App')
                                             $rootScope,
                                             spinnerService,
                                             $log,
-                                            $sessionStorage) {
+                                            $sessionStorage,
+                                            growl) {
 
         console.log("Cargo el Controlador de Usuarios");
         $scope.control = {}
@@ -18,7 +19,6 @@ angular.module('App')
         $scope.showAddressModal = false;
         $scope.showGeneralInfoModal = false;
         $scope.showNewUserModal = false;
-        $scope.showgrowlMessage = false;
         $scope.showMessage = "";
 
         //menu sidebar
@@ -75,16 +75,15 @@ angular.module('App')
                  var messageGrowl = UserService.getShowGrowlMessage();
 
                  if(messageGrowl.isShow){
-                     $scope.showgrowlMessage = true;
-                     $scope.showMessage = messageGrowl.message;
+                     growl.info(messageGrowl.message)
                  }
 
-            }, function () {
-                 console.log("Cayo aqui noc.....")
-                $scope.users = [];
-                $scope.totalPages = 0;
-                $scope.totalRecords = 0;
-            });
+            }).catch(function(err){
+                 console.error("Error invocando servicio getAllUsers "+err);
+                 $scope.users = [];
+                 $scope.totalPages = 0;
+                 $scope.totalRecords = 0;
+             });
         }
 
         //called when navigate to another page in the pagination

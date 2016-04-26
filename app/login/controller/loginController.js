@@ -10,11 +10,9 @@ angular.module('App')
                                              loginServices,
                                              spinnerService,
                                              $localStorage,
-                                             $uibModal,
-                                             $sessionStorage) {
+                                             $sessionStorage,
+                                             growl) {
 
-        $scope.showgrowlMessage = false;
-        $scope.showMesaggeAuthenticate = "";
         $scope.showspinner = false;
         $scope.data = {
             settings: {
@@ -45,7 +43,7 @@ angular.module('App')
             spinnerService.show('html5spinner');
 
             loginServices.proxyLogin($scope.data.settings.username, $scope.data.settings.password)
-                .success(function (data) {
+                .then(function (data) {
                     console.log("Invocacion del servicio exitosa");
                     $log.debug(data);
 
@@ -54,8 +52,7 @@ angular.module('App')
                         $sessionStorage.nameUser = data.ReaxiumResponse.object[0].user.first_name + ' ' +data.ReaxiumResponse.object[0].user.first_last_name;
                         $state.go('home');
                     } else {
-                        $scope.showgrowlMessage = true;
-                        $scope.showMesaggeAuthenticate = data.ReaxiumResponse.message;
+                        growl.error(data.ReaxiumResponse.message)
                         console.log("Error a ingresar al aplicativo: " + data.ReaxiumResponse.message)
                     }
 
@@ -64,9 +61,9 @@ angular.module('App')
                     console.log("Error invocacion del servicio" + error);
 
                 }).finally(function () {
-                //cleanInput();
+
                 spinnerService.hide('html5spinner');
-                //usSpinnerService.stop('spinner-1');
+
             })
 
 

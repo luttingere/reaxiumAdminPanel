@@ -8,7 +8,7 @@
  * @param obj
  * @returns {boolean}
  */
-Array.prototype.contains = function(obj) {
+Array.prototype.containsObj = function(obj) {
     var i = this.length;
     while (i--) {
         if (this[i] == obj) {

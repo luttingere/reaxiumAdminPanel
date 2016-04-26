@@ -119,6 +119,8 @@ angular.module('App')
                     UserService.setShowGrowlMessage({isShow:true,message:response.message});
                     spinnerService.hide("spinnerNew");
                     $state.go("allUser");
+                }).catch(function (err){
+                    console.error("Error salvando credenciales usuario" +err);
                 });
             }else{
                 UserService.setShowGrowlMessage({isShow:true,message:resValidate.message});

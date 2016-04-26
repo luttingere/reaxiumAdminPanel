@@ -19,7 +19,7 @@
         <!--content-->
         <div class="content-wrapper" >
 
-            <growl-notification class="fading" ng-if="showgrowlMessage">{{showMessage}}</growl-notification>
+                <div growl></div>
 
             <section class="content-header">
                 <h1>
@@ -116,25 +116,32 @@
                                                                     <th>Name</th>
                                                                     <th>Last Name</th>
                                                                     <th>ID</th>
+                                                                    <th>Login & Password</th>
                                                                     <th>Biometric</th>
-                                                                    <th>Rfid</th>
-                                                                    <th>Login & Password</a></th>
+                                                                    <th>Rfid</a></th>
                                                                     <th>Actions</th>
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                 <tr ng-repeat="user in allUserSelcStakeHolder">
-                                                                    <td>{{user.first_name + " " +
+                                                                    <td id="userId_{{user.user_id}}" ng-hide="true">{{user.user_id}}</td>
+                                                                    <td id="userName_{{user.user_id}}">{{user.first_name + " " +
                                                                         user.first_name}}
                                                                     </td>
-                                                                    <td>{{user.second_name + " " +
+                                                                    <td id="secondName_{{user.user_id}}">{{user.second_name + " " +
                                                                         user.second_name}}
                                                                     </td>
-                                                                    <td>{{user.document_id}}</td>
-                                                                    <td style="text-align: center"><input type="radio" name="r3" class="flat-red" checked></td>
-                                                                    <td style="text-align: center"><input type="radio" name="r3" class="flat-red"></td>
-                                                                    <td style="text-align: center"><input type="radio" name="r3" class="flat-red"></td>
-                                                                    <td><a ng-click="deleteUserTable()"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
+                                                                    <td id="documentId_{{user.user_id}}">{{user.document_id}}</td>
+                                                                    <td id="userPassword_{{user.user_id}}" style="text-align: center">
+                                                                        <input type="checkbox" name="r3"  value="{{user.login_and_pass.access_type_id}}-{{user.login_and_pass.user_access_data_id}}" ng-hide="{{user.login_and_pass.disable_login_and_pass != 1}}">
+                                                                    </td>
+                                                                    <td id="biometrico_{{user.user_id}}" style="text-align: center">
+                                                                        <input type="checkbox" name="r3"  value="{{user.biometric.access_type_id}}-{{user.biometric.user_access_data_id}}" ng-hide="{{user.biometric.disable_bio != 1}}">
+                                                                    </td>
+                                                                    <td  id="rfid_{{user.user_id}}" style="text-align: center">
+                                                                        <input type="checkbox" name="r3"  value="{{user.rfid.access_type_id}}-{{user.rfid.user_access_data_id}}" ng-hide="{{user.rfid.disable_rfid != 1}}">
+                                                                    </td>
+                                                                    <td id="delete_{{user.user_id}}"><a ng-click="deleteUserTable()"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
                                                                 </tr>
                                                                 </tbody>
                                                                 </tfoot>

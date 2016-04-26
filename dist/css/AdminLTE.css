@@ -4703,6 +4703,7 @@ table.text-center th {
   .content-wrapper,
   .right-side,
   .main-footer {
+    position:relative;
     margin-left: 0!important;
     min-height: 0!important;
     -webkit-transform: translate(0, 0) !important;

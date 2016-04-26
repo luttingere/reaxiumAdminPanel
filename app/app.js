@@ -10,8 +10,8 @@ angular.module('App', ['ui.router',
         'angucomplete-alt',
         'uiGmapgoogle-maps',
         'ui.bootstrap',
-        'growlNotifications',
-        'flow'])
+        'flow',
+        'angular-growl'])
 
     //Aqui lo primero que se ejecuta en angular como el document Ready en jquery
     .run(['$templateCache', '$rootScope', function ($templateCache, $rootScope) {
@@ -25,7 +25,7 @@ angular.module('App', ['ui.router',
 
         $rootScope.appMenus = [{
             'name': 'User Administration',
-            'icon_class':'fa fa-user',
+            'icon_class': 'fa fa-user',
             'subMenus': [
                 {
                     'name': 'All Users',
@@ -33,19 +33,19 @@ angular.module('App', ['ui.router',
                 },
                 {
                     'name': 'Security Users',
-                    'url' : "userSecurity"
+                    'url': "userSecurity"
                 }
             ]
         }, {
             'name': 'Device Administration',
-            'icon_class':'fa fa-hdd-o',
+            'icon_class': 'fa fa-hdd-o',
             'subMenus': [{
                 'name': 'All Device',
                 'url': "device"
             }]
         }, {
             'name': 'Routes Administration',
-            'icon_class':'fa fa-map-signs',
+            'icon_class': 'fa fa-map-signs',
             'subMenus': [{
                 'name': 'All routes',
                 'url': "routes"
@@ -56,28 +56,31 @@ angular.module('App', ['ui.router',
 
 
     //Configurando componentes
-    .config(['uiGmapGoogleMapApiProvider', 'flowFactoryProvider', function (uiGmapGoogleMapApiProvider,flowFactoryProvider) {
+    .config(['uiGmapGoogleMapApiProvider', 'flowFactoryProvider', 'growlProvider',
+        function (uiGmapGoogleMapApiProvider, flowFactoryProvider, growlProvider) {
 
-        flowFactoryProvider.defaults = {
-            target: 'upload.php',
-            permanentErrors: [404, 500, 501],
-            maxChunkRetries: 1,
-            chunkRetryInterval: 5000,
-            simultaneousUploads: 4,
-            singleFile: true
-        };
-        flowFactoryProvider.on('catchAll', function (event) {
-            //console.log('catchAll', arguments);
-        });
-        // Can be used with different implementations of Flow.js
-        // flowFactoryProvider.factory = fustyFlowFactory;
+            flowFactoryProvider.defaults = {
+                target: 'upload.php',
+                permanentErrors: [404, 500, 501],
+                maxChunkRetries: 1,
+                chunkRetryInterval: 5000,
+                simultaneousUploads: 4,
+                singleFile: true
+            };
+            flowFactoryProvider.on('catchAll', function (event) {
+                //console.log('catchAll', arguments);
+            });
+            // Can be used with different implementations of Flow.js
+            // flowFactoryProvider.factory = fustyFlowFactory;
 
-        uiGmapGoogleMapApiProvider.configure({
-            key: 'AIzaSyBzOVQq2CAsKnOTplH5Xfesys9_vnZg9Gs',
-            v: '3.20', //defaults to latest 3.X anyhow
-            libraries: 'weather,geometry,visualization,places',
-            china: true
-        });
+            uiGmapGoogleMapApiProvider.configure({
+                key: 'AIzaSyBzOVQq2CAsKnOTplH5Xfesys9_vnZg9Gs',
+                v: '3.20', //defaults to latest 3.X anyhow
+                libraries: 'weather,geometry,visualization,places',
+                china: true
+            });
 
-    }])
+            growlProvider.globalTimeToLive(3000);
+
+        }])
 

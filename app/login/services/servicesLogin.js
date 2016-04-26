@@ -4,7 +4,7 @@
 
 angular.module('App')
 
-.service('loginServices',function($http,$log,CONST_PROXY_URL){
+.service('loginServices',function($http,$log,$q,CONST_PROXY_URL){
 
     var config = {
         headers:{
@@ -14,6 +14,9 @@ angular.module('App')
 
 
     this.proxyLogin = function(username,password){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
 
         var data = {
             ReaxiumParameters:{
@@ -28,10 +31,14 @@ angular.module('App')
 
         var jsonObj = JSON.stringify(data);
 
-        console.log("Objetos json armados para consultar login: "+jsonObj);
+        $http.post(CONST_PROXY_URL.PROXY_URL_LOGIN,jsonObj,config)
+            .success(function(response){
+                defered.resolve(response);
+            }).error(function (err){
+                defered.reject(err);
+        });
 
-        return $http.post(CONST_PROXY_URL.PROXY_URL_LOGIN,jsonObj,config);
-
+        return promise;
     }
 
 })

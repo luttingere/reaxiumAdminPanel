@@ -3,7 +3,13 @@
  */
 
 angular.module("App")
-.controller("RouteCtrl",function($scope,$log,$state,$rootScope,RoutesServices,spinnerService,$sessionStorage){
+.controller("RouteCtrl",function($scope,
+                                 $log,
+                                 $state,
+                                 $rootScope,
+                                 RoutesServices,
+                                 spinnerService,
+                                 $sessionStorage){
 
     //menu sidebar
     $scope.menus = $rootScope.appMenus;
@@ -22,8 +28,9 @@ angular.module("App")
         var promiseAllRoutes = RoutesServices.allRoutesSystem();
         promiseAllRoutes.then(function(response){
             $scope.routes = response;
-
             spinnerService.hide("spinnerNew");
+        }).catch(function(err){
+            console.log("Error invocando servicio routes"+err);
         });
     }
 

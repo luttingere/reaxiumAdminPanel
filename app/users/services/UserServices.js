@@ -3,7 +3,7 @@
  */
 angular.module('App')
 
-    .factory('UserLookup', function ($http,CONST_PROXY_URL) {
+    .factory('UserLookup', function ($http, $q, CONST_PROXY_URL) {
 
         var lookup = {};
         var userIdFound = 0;
@@ -20,34 +20,59 @@ angular.module('App')
          * @returns {IPromise<TResult>|*}
          */
         lookup.allUsers = function (filterCriteria) {
-            console.log(filterCriteria);
-            return $http({
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            /* console.log(filterCriteria);
+             return $http({
+             method: 'POST',
+             data: JSON.stringify(filterCriteria),
+             url: 'http://54.200.133.84/reaxium/Users/allUsersInfoWithPagination',
+             }).then(function (response) {
+             userJson.users = response.data.ReaxiumResponse.object;
+             userJson.totalPages = response.data.ReaxiumResponse.totalPages;
+             userJson.totalRecords = response.data.ReaxiumResponse.totalRecords;
+             console.log(userJson);
+             return userJson;
+             });*/
+
+            $http({
                 method: 'POST',
                 data: JSON.stringify(filterCriteria),
-                url: 'http://54.200.133.84/reaxium/Users/allUsersInfoWithPagination',
-            }).then(function (response) {
-                userJson.users = response.data.ReaxiumResponse.object;
-                userJson.totalPages = response.data.ReaxiumResponse.totalPages;
-                userJson.totalRecords = response.data.ReaxiumResponse.totalRecords;
-                console.log(userJson);
-                return userJson;
-            });
+                url: CONST_PROXY_URL.PROXY_URL_ALL_USER_WITH_PAGINATE,
+            }).success(function (response) {
+                userJson.users = response.ReaxiumResponse.object;
+                userJson.totalPages = response.ReaxiumResponse.totalPages;
+                userJson.totalRecords = response.ReaxiumResponse.totalRecords;
+                defered.resolve(userJson);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+
+            return promise;
         };
         /**
          * search a user by his ID
          */
         lookup.userById = function (userId) {
-            return $http({
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
                 method: 'POST',
                 data: JSON.stringify({'ReaxiumParameters': {'Users': {'user_id': userId}}}),
-                url: 'http://54.200.133.84/reaxium/Users/userInfo',
-            }).then(function (response) {
-                var jsonObj = response.data.ReaxiumResponse.object;
+                url: CONST_PROXY_URL.PROXY_URL_USER_BY_ID,
+            }).success(function (response) {
+                var jsonObj = response.ReaxiumResponse.object;
                 userIdFound = jsonObj[0].user_id;
-                userData = jsonObj;
-                console.log('Respondio el servicio')
-                return userData;
-            });
+                defered.resolve(response.ReaxiumResponse.object);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+
+            return promise;
         };
 
         /**
@@ -55,45 +80,65 @@ angular.module('App')
          * @param filters
          * @returns {*}
          */
-        lookup.allUserWithFilter = function(filters){
+        lookup.allUserWithFilter = function (filters) {
 
-            return $http({
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
                 method: 'POST',
                 url: CONST_PROXY_URL.PROXY_URL_ALL_USER_WITH_FILTER,
-                data: JSON.stringify({ReaxiumParameters:{Users:{filter:filters}}}),
-                headers: {'Content-Type':'application/json;charset=UTF-8'}
-            }).then(function(response){
-                return response.data ;
-
-            },function(error){
-                console.log("Error invocando servicio allUsersWithFilter: "+error);
+                data: JSON.stringify({ReaxiumParameters: {Users: {filter: filters}}}),
+                headers: {'Content-Type': 'application/json;charset=UTF-8'}
+            }).success(function (response) {
+                defered.resolve(response);
+            }).error(function (err) {
+                defered.reject(err);
             });
+
+            return promise;
         };
 
         /**
          * Get Access type for user
          * @returns {*}
          */
-        lookup.getAllAccessType = function(){
-            return $http({
+        lookup.getAllAccessType = function () {
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
                 method: 'GET',
                 url: CONST_PROXY_URL.PROXY_URL_ACCESS_TYPE_LIST
-            }).then(function(response){
-                return response.data.ReaxiumResponse.object;
+            }).success(function (response) {
+                defered.resolve(response.ReaxiumResponse.object);
+            }).error(function (err) {
+                defered.reject(err);
             });
+
+            return promise;
         }
 
         /**
          * get User Types
          * @returns {*}
          */
-        lookup.allUsersType = function(){
-            return $http({
+        lookup.allUsersType = function () {
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
                 method: 'GET',
                 url: CONST_PROXY_URL.PROXY_URL_ALL_USERS_TYPE
-            }).then(function(response){
-               return response.data.ReaxiumResponse.object;
+            }).success(function (response) {
+                defered.resolve(response.ReaxiumResponse.object);
+            }).error(function (err) {
+                defered.reject(err);
             });
+
+            return promise;
         }
 
 
@@ -101,13 +146,22 @@ angular.module('App')
          * get status users
          * @returns {*}
          */
-        lookup.allStatusUser = function(){
-            return $http({
+        lookup.allStatusUser = function () {
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
                 method: 'GET',
                 url: CONST_PROXY_URL.PROXY_URL_ALL_STATUS_USER
-            }).then(function(response){
-                return response.data.ReaxiumResponse.object;
+            }).success(function (response) {
+                defered.resolve(response.ReaxiumResponse.object);
+            }).error(function (err) {
+                defered.reject(err);
             });
+
+            return promise;
+
         }
 
         /**
@@ -115,15 +169,23 @@ angular.module('App')
          * @param obj
          * @returns {*}
          */
-        lookup.newUser = function(obj){
-            return $http({
+        lookup.newUser = function (obj) {
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
                 method: 'POST',
                 url: CONST_PROXY_URL.PROXY_URL_CREATE_NEW_USER,
                 data: JSON.stringify(obj),
-                headers: {'Content-Type':'application/json;charset=UTF-8'}
-            }).then(function(response){
-                return response.data.ReaxiumResponse;
-            })
+                headers: {'Content-Type': 'application/json;charset=UTF-8'}
+            }).success(function (response) {
+                defered.resolve(response.ReaxiumResponse);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+
+            return promise;
         }
 
         /**
@@ -131,30 +193,47 @@ angular.module('App')
          * @param obj
          * @returns {*}
          */
-        lookup.newUserStakeHolder = function(obj){
-            return $http({
+        lookup.newUserStakeHolder = function (obj) {
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
                 method: 'POST',
                 url: CONST_PROXY_URL.PROXY_URL_CREATE_USER_STAKEHOLDER,
                 data: JSON.stringify(obj),
-                headers: {'Content-Type':'application/json;charset=UTF-8'}
-            }).then(function(response){
-                return response.data.ReaxiumResponse;
-            })
+                headers: {'Content-Type': 'application/json;charset=UTF-8'}
+            }).success(function (response) {
+                //return response.data.ReaxiumResponse;
+                defered.resolve(response.ReaxiumResponse);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+
+            return promise;
         }
 
         lookup.getUserIdFound = function () {
             return userIdFound;
         }
 
-        lookup.newAccessUser = function(user){
-            return $http({
-                method:'POST',
+        lookup.newAccessUser = function (user) {
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+
+            $http({
+                method: 'POST',
                 url: CONST_PROXY_URL.PROXY_URL_CREATE_ACCESS_USER,
-                data:JSON.stringify(user),
-                headers: {'Content-Type':'application/json;charset=UTF-8'}
-            }).then(function(response){
-                return response.data.ReaxiumResponse;
-            })
+                data: JSON.stringify(user),
+                headers: {'Content-Type': 'application/json;charset=UTF-8'}
+            }).success(function (response) {
+                //return response.data.ReaxiumResponse;
+                defered.resolve(response.ReaxiumResponse);
+            }).error(function (err) {
+                defered.reject(err);
+            });
 
         }
 
@@ -175,29 +254,29 @@ angular.module('App')
         }
 
         var showGrowl = {
-            isShow : false,
-            message:""
+            isShow: false,
+            message: ""
         };
 
         var objUserById = {};
 
 
-        this.getObjUserById = function(){
+        this.getObjUserById = function () {
             return objUserById;
         }
 
-        this.setObjUserById = function(obj){
+        this.setObjUserById = function (obj) {
             objUserById = obj;
         }
 
-        this.getAddressDefault = function(){
+        this.getAddressDefault = function () {
             return addressDefault;
         }
 
-        this.getModeEdit = function() {
+        this.getModeEdit = function () {
             return objModeEdit;
         };
-        this.setModeEdit = function(mode) {
+        this.setModeEdit = function (mode) {
             objModeEdit = mode;
         };
 
@@ -215,35 +294,35 @@ angular.module('App')
             return UserLookup.allUserWithFilter(filters);
         };
 
-        this.getAccessType = function(){
+        this.getAccessType = function () {
             return UserLookup.getAllAccessType();
         };
 
-        this.getAllUsersType = function(){
+        this.getAllUsersType = function () {
             return UserLookup.allUsersType();
         };
 
-        this.getAllStatusUser = function(){
+        this.getAllStatusUser = function () {
             return UserLookup.allStatusUser();
         };
 
-        this.createNewUser = function(objNewUser){
+        this.createNewUser = function (objNewUser) {
             return UserLookup.newUser(objNewUser);
         }
 
-        this.createNewUserStakeHolder = function(objNewUser){
+        this.createNewUserStakeHolder = function (objNewUser) {
             return UserLookup.newUserStakeHolder(objNewUser);
         }
 
-        this.getShowGrowlMessage =  function (){
+        this.getShowGrowlMessage = function () {
             return showGrowl;
         }
 
-        this.setShowGrowlMessage = function(obj){
+        this.setShowGrowlMessage = function (obj) {
             showGrowl = obj;
         }
 
-        this.createAccessUser = function(obj){
+        this.createAccessUser = function (obj) {
             return UserLookup.newAccessUser(obj);
         }
     });

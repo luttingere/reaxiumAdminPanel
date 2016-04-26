@@ -4,18 +4,22 @@
 
 angular.module("App")
 
-.factory("DeviceLookup",function($http,CONST_PROXY_URL){
+.factory("DeviceLookup",function($http,$q,CONST_PROXY_URL){
 
     var lookup = {};
 
     lookup.getAllDevice = function(){
 
-        return $http({
-            method:'GET',
-            url: CONST_PROXY_URL.PROXY_URL_ALL_DEVICES
-        }).then(function(response){
-            return response.data.ReaxiumResponse.object;
-        })
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+         $http.get(CONST_PROXY_URL.PROXY_URL_ALL_DEVICES)
+            .success(function(response){
+                defered.resolve(response.ReaxiumResponse.object);
+            }).error(function(err){
+                defered.reject(err);
+        });
+            return promise;
     }
 
 
@@ -26,18 +30,61 @@ angular.module("App")
      */
     lookup.allUserWithFilter = function(filters){
 
-        return $http({
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
             method: 'POST',
             url: CONST_PROXY_URL.PROXY_URL_ALL_USER_WITH_FILTER,
             data: JSON.stringify({ReaxiumParameters:{Users:{filter:filters}}}),
             headers: {'Content-Type':'application/json;charset=UTF-8'}
-        }).then(function(response){
-            return response.data ;
-
-        },function(error){
-            console.log("Error invocando servicio allUsersWithFilter: "+error);
+        }).success(function(response){
+            defered.resolve(response);
+        }).error(function(err){
+            defered.reject(err);
         });
+
+        return promise;
     };
+
+    lookup.getAccessTypeByUser = function(obj){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_CHECK_ACCESS_BY_USER,
+            data: JSON.stringify(obj),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+            defered.resolve(response);
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise;
+    }
+
+
+    lookup.createAccessUserDevice = function(obj){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_CREATE_ACCESS_USER_BY_DEVICE,
+            data: JSON.stringify(obj),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+            defered.resolve(response);
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise;
+    }
 
     return lookup;
 })
@@ -63,5 +110,13 @@ angular.module("App")
 
     this.getAllUsersFilter = function(filterCriteria){
         return DeviceLookup.allUserWithFilter(filterCriteria);
+    }
+
+    this.getTypeAccessByUser = function(obj){
+        return DeviceLookup.getAccessTypeByUser(obj);
+    }
+
+    this.newCreateAccessUserByDevice = function(obj){
+        return DeviceLookup.createAccessUserDevice(obj);
     }
 })

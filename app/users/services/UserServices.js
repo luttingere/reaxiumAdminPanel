@@ -235,6 +235,7 @@ angular.module('App')
                 defered.reject(err);
             });
 
+            return promise;
         }
 
         return lookup;

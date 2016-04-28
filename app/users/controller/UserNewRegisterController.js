@@ -208,10 +208,11 @@ angular.module('App')
                         $scope.users.birthdate = new Date(result[0].birthdate);
                         $scope.users.email = result[0].email;
 
-                        addressObj.latitude = result[0].address[0].latitude;
-                        addressObj.longitude = result[0].address[0].longitude;
-                        addressObj.address = result[0].address[0].address;
-                        $scope.address = result[0].address[0].address;
+
+                        addressObj.latitude = (result[0].address.length > 0) ? result[0].address[0].latitude :  UserService.getAddressDefault().latitude;
+                        addressObj.longitude = (result[0].address.length > 0) ? result[0].address[0].longitude :  UserService.getAddressDefault().longitude;
+                        addressObj.address = (result[0].address.length > 0) ? result[0].address[0].address : "No disponible";
+                        $scope.address = (result[0].address.length > 0) ? result[0].address[0].address : "No disponible";
 
                         //PhoneNumber
 
@@ -227,10 +228,9 @@ angular.module('App')
                             }
                         });
 
-
-                        $scope.selectTypeUser = result[0].user_type.user_type_id;
+                        $scope.selectTypeUser = (result[0].user_type != null) ? result[0].user_type.user_type_id : 0;
                         $scope.status_id = result[0].status.status_id;
-                        $scope.selectAccT = result[0].user_type.user_type_id;
+                        $scope.selectAccT = (result[0].user_type != null) ? result[0].user_type.user_type_id : 0;
 
 
                         if($scope.selectTypeUser == 3){

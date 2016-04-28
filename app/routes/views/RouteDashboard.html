@@ -34,6 +34,8 @@
             <!-- Main content -->
             <section class="content">
                 <!-- Small boxes (Stat box) -->
+                <div growl></div>
+
                 <div class="row">
                     <div class="col-lg-3 col-xs-4">
                         <!-- small box -->
@@ -82,7 +84,7 @@
                                     <div class="box-header">
                                         <div class="small-box">
                                             <div class="customIcon">
-                                                <i  class="ion ion-plus-circled"></i>
+                                                <i ui-sref="routesNewRegister" class="ion ion-plus-circled"></i>
                                             </div>
                                         </div>
                                         <h3 class="box-title">System Devices</h3>
@@ -91,15 +93,15 @@
                                     <div class="box-body">
 
                                         <div>
-                                            <input class="form-control reduceSize" placeholder="Search here..." on-enter-blur on-blur-change="filterResult()" ng-model="userCtrl.filterCriteria.ReaxiumParameters.filter" type="text" />
+                                            <input class="form-control reduceSize" placeholder="Search here..." on-enter-blur on-blur-change="filterResult()" ng-model="filterCriteria.ReaxiumParameters.filter" type="text" />
                                         </div>
 
                                         <table id="userTable" class="table table-bordered table-striped">
                                             <thead>
                                             <tr>
-                                                <!--<th ng-repeat="header in userCtrl.userTableHeaders">
-                                                    <sort-by onsort="onSort" sortdir="userCtrl.filterCriteria.ReaxiumParameters.sortDir" sortedby="userCtrl.filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
-                                                </th>-->
+                                                <th ng-repeat="header in userTableHeaders">
+                                                    <sort-by onsort="onSort" sortdir="filterCriteria.ReaxiumParameters.sortDir" sortedby="filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
+                                                </th>
                                                 <th>Route Number</th>
                                                 <th>Route Name</th>
                                                 <th>Route Address</th>
@@ -113,18 +115,18 @@
                                                 <td>{{obj.route_name}}</td>
                                                 <td>{{obj.route_address}}</td>
                                                 <td>{{obj.routes_stops_count}}</td>
-                                                <td><a><small><i class="fa fa-fw fa-trash"></i></small></i></a> - <a ng-click="editMode(user.user_id)"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
+                                                <td><a><small><i class="fa fa-fw fa-trash"></i></small></i></a> - <a ng-click="editMode(obj.id_route)"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
                                             </tr>
                                             </tbody>
                                             </tfoot>
                                         </table>
-                                        <!--<div ng-show="userCtrl.totalRecords == 0">
+                                        <div ng-show="totalRecords == 0">
                                             <h3>No Customers Found</h3>
                                         </div>
-                                        <div ng-show="userCtrl.totalPages > 1" class="align-center">
-                                            <uib-pagination total-items="userCtrl.totalRecords" ng-model="userCtrl.filterCriteria.ReaxiumParameters.page" items-per-page="userCtrl.filterCriteria.ReaxiumParameters.limit" previous-text="previous" next-text="next" last-text="last"
-                                                            direction-links="true" rotate="false" ng-change="userCtrl.selectPage()"></uib-pagination>
-                                        </div>-->
+                                        <div ng-show="totalPages > 1" class="align-center">
+                                            <uib-pagination total-items="totalRecords" ng-model="filterCriteria.ReaxiumParameters.page" items-per-page="filterCriteria.ReaxiumParameters.limit" previous-text="previous" next-text="next" last-text="last"
+                                                            direction-links="true" rotate="false" ng-change="selectPage()"></uib-pagination>
+                                        </div>
                                     </div><!-- /.box-body -->
 
                                 </div><!-- /.box -->
@@ -136,6 +138,8 @@
                 </div>
 
             </section>
+            <br/>
+            <br/>
             <br/>
             <br/>
         </div>

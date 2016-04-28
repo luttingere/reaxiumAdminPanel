@@ -71,17 +71,6 @@ angular.module("App")
                 }
             })
 
-            .state("routes",{
-                url: '/routes',
-                controller:'RouteCtrl',
-                views: {
-                    '': {templateUrl: 'app/routes/views/RouteDashboard.html'},
-                    'header@routes': {templateUrl: 'app/home/views/header.html'},
-                    'menu@routes': {templateUrl: 'app/home/views/menu.html'},
-                    'footer@routes':{templateUrl: 'app/home/views/footer.html'}
-                }
-            })
-
             .state("deviceRelUser",{
                 url: '/deviceRelUser',
                 controller:'DeviceRelUserCtrl',
@@ -93,6 +82,27 @@ angular.module("App")
                 }
             })
 
+            .state("routes",{
+                url: '/routes',
+                controller:'RouteCtrl',
+                views: {
+                    '': {templateUrl: 'app/routes/views/RouteDashboard.html'},
+                    'header@routes': {templateUrl: 'app/home/views/header.html'},
+                    'menu@routes': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@routes':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
+
+            .state("routesNewRegister",{
+                url:'/routesNewRegister',
+                controller:'RouteNewCtrl',
+                views:{
+                    '': {templateUrl: 'app/routes/views/RouteNewRegister.html'},
+                    'header@routesNewRegister': {templateUrl: 'app/home/views/header.html'},
+                    'menu@routesNewRegister': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@routesNewRegister':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
 
 
 

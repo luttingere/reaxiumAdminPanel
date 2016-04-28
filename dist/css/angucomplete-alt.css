@@ -19,6 +19,11 @@
     background-color: #ffffff;
 }
 
+
+.stops .angucomplete-dropdown{
+    width: 400px;
+}
+
 .angucomplete-searching {
     color: #acacac;
     font-size: 14px;

@@ -19,11 +19,14 @@ angular.module("App")
         PROXY_URL_DELETE_USER: "http://54.200.133.84/reaxium/Users/deleteUser",
         PROXY_URL_CREATE_ACCESS_USER: "http://54.200.133.84/reaxium/Access/createAccessNewUser",
         PROXY_URL_ALL_DEVICES: "http://54.200.133.84/reaxium/Device/allDevicesInfo",
-        PROXY_URL_ALL_ROUTES: "http://54.200.133.84/reaxium/Routes/allRoutesSystem",
+        PROXY_URL_ALL_ROUTES: "http://54.200.133.84/reaxium/Routes/allRoutesWithPagination",
         PROXY_URL_ALL_USER_WITH_PAGINATE: "http://54.200.133.84/reaxium/Users/allUsersInfoWithPagination",
         PROXY_URL_CHECK_ACCESS_BY_USER: "http://54.200.133.84/reaxium/Access/checkAccessControlByUser",
-        PROXY_URL_CREATE_ACCESS_USER_BY_DEVICE: "http://54.200.133.84/reaxium/Access/addDeviceAccessData"
-
+        PROXY_URL_CREATE_ACCESS_USER_BY_DEVICE: "http://54.200.133.84/reaxium/Access/addDeviceAccessData",
+        PROXY_URL_ALL_STOPS: "http://54.200.133.84/reaxium/Routes/allStopsSystem",
+        PROXY_URL_STOPS_WITH_FILTER: "http://54.200.133.84/reaxium/Routes/allStopsWithFilter",
+        PROXY_URL_CREATE_ROUTE: "http://54.200.133.84/reaxium/Routes/createRoutes",
+        PROXY_URL_GET_ROUTE_BY_ID_WITH_STOPS: "http://54.200.133.84/reaxium/Routes/getRouteByIdRelationStop"
     })
     // configuracion file system imagenes
     .constant('FILE_SYSTEM_ROUTE',{
@@ -31,10 +34,12 @@ angular.module("App")
         IMAGE_DEFAULT_USER:'http://localhost:8080/ProyectosGandG/images/profile-default.png',
         FILE_SYSTEM_IMAGES_PROD:'http://54.200.133.84/reaxium_user_images/',
         IMAGE_DEFAULT_USER_PROD:'http://54.200.133.84/reaxium_user_images/profile-default.png',
+        IMAGE_MARKER_MAP:"http://54.200.133.84/reaxium_user_images/Map-Marker.png"
 
     })
     .constant('GLOBAL_CONSTANT',{
         ACCESS_LOGIN_AND_PASS: 1,
         ACCESS_BIOMETRIC: 2,
-        ACCESS_RFID: 3
+        ACCESS_RFID: 3,
+        SUCCESS_RESPONSE_SERVICE:0
     })

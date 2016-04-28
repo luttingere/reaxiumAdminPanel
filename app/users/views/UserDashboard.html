@@ -84,7 +84,9 @@
                                         <div class="box-header">
                                             <div class="small-box">
                                                 <div class="customIcon">
-                                                    <i ui-sref="newUser" class="ion ion-plus-circled"></i>
+                                                    <a ui-sref="newUser" data-toggle="tooltip" title="Add User">
+                                                        <i class="ion ion-plus-circled"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                             <h3 class="box-title">System Users</h3>
@@ -122,7 +124,7 @@
                                                     <td><a href="" ng-click="userCtrl.showGeneralInformation(user.user_id)">Information</a>
                                                     </td>
                                                     <td>{{user.status.status_name | lowerCase | capitalize}}</td>
-                                                    <td><a><small><i class="fa fa-fw fa-trash"></i></small></i></a> - <a ng-click="editMode(user.user_id)"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
+                                                    <td><a data-toggle="tooltip" title="Delete User"><small><i class="fa fa-fw fa-trash"></i></small></i></a> - <a ng-click="editMode(user.user_id)" data-toggle="tooltip" title="Edit User"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
                                                 </tr>
                                                 </tbody>
                                                 </tfoot>

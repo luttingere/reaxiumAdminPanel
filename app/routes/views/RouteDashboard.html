@@ -84,7 +84,9 @@
                                     <div class="box-header">
                                         <div class="small-box">
                                             <div class="customIcon">
-                                                <i ui-sref="routesNewRegister" class="ion ion-plus-circled"></i>
+                                                <a ui-sref="routesNewRegister" data-toggle="tooltip" title="Add Route">
+                                                    <i class="ion ion-plus-circled"></i>
+                                                </a>
                                             </div>
                                         </div>
                                         <h3 class="box-title">System Devices</h3>
@@ -115,7 +117,7 @@
                                                 <td>{{obj.route_name}}</td>
                                                 <td>{{obj.route_address}}</td>
                                                 <td>{{obj.routes_stops_count}}</td>
-                                                <td><a><small><i class="fa fa-fw fa-trash"></i></small></i></a> - <a ng-click="editMode(obj.id_route)"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
+                                                <td><a data-toggle="tooltip" title="Delete Route"><small><i class="fa fa-fw fa-trash"></i></small></i></a> - <a ng-click="editMode(obj.id_route)" data-toggle="tooltip" title="Edit Route"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
                                             </tr>
                                             </tbody>
                                             </tfoot>

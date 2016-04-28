@@ -66,7 +66,7 @@ angular.module("App")
                         latitude: 25.7824618,
                         longitude: -80.3011209
                     },
-                    zoom: 16,
+                    zoom: 10,
                     bounds: {},
                     options: {"MapTypeId": maps.MapTypeId.ROADMAP}
                 };

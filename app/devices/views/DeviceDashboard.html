@@ -113,7 +113,7 @@
                                                 <td>{{obj.device_description}}</td>
                                                 <td>{{obj.status.status_name}}</td>
                                                 <td>{{obj.applications[0].application_name}}</td>
-                                                <td><a><small><i class="fa fa-fw fa-trash"></i></small></i></a> - <a ng-click="addUserDevice(obj.device_id)"><small><i class="fa fa-fw fa-plus-circle"></i> </small></a></td>
+                                                <td><a data-toggle="tooltip" title="Delete Device"><small><i class="fa fa-fw fa-trash"></i></small></i></a> - <a ng-click="addUserDevice(obj.device_id)" data-toggle="tooltip" title="Device Relation User"><small><i class="fa fa-fw fa-exchange"></i> </small></a></td>
                                             </tr>
                                             </tbody>
                                             </tfoot>

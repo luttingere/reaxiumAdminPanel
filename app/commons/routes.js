@@ -26,7 +26,7 @@ angular.module("App")
                     '': {templateUrl: 'app/home/views/home.html'},
                     'header@home': {templateUrl: 'app/home/views/header.html'},
                     'menu@home': {templateUrl: 'app/home/views/menu.html'},
-                    'footer@allUser':{templateUrl: 'app/home/views/footer.html'}
+                    'footer@home':{templateUrl: 'app/home/views/footer.html'}
                 }
             })
             .state("allUser",{
@@ -73,12 +73,34 @@ angular.module("App")
 
             .state("deviceRelUser",{
                 url: '/deviceRelUser',
-                controller:'DeviceRelUserCtrl',
+                controller:'DeviceAccessUserCtrl',
                 views: {
                     '': {templateUrl: 'app/devices/views/DeviceRelationUser.html'},
                     'header@deviceRelUser': {templateUrl: 'app/home/views/header.html'},
                     'menu@deviceRelUser': {templateUrl: 'app/home/views/menu.html'},
                     'footer@deviceRelUser':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
+
+            .state("deviceRelRoute",{
+                url: '/deviceRelRoute',
+                controller:'DeviceRelRouteCtrl',
+                views: {
+                    '': {templateUrl: 'app/devices/views/DeviceRelationRoute.html'},
+                    'header@deviceRelRoute': {templateUrl: 'app/home/views/header.html'},
+                    'menu@deviceRelRoute': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@deviceRelRoute':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
+
+            .state("deviceNew",{
+                url:"/deviceNew",
+                controller:'DeviceNewCtrl',
+                views: {
+                    '': {templateUrl: 'app/devices/views/DeviceNewRegister.html'},
+                    'header@deviceNew': {templateUrl: 'app/home/views/header.html'},
+                    'menu@deviceNew': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@deviceNew':{templateUrl: 'app/home/views/footer.html'}
                 }
             })
 
@@ -103,8 +125,6 @@ angular.module("App")
                     'footer@routesNewRegister':{templateUrl: 'app/home/views/footer.html'}
                 }
             })
-
-
 
         $urlRouterProvider.otherwise("/login");
 

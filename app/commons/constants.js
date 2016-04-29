@@ -26,7 +26,12 @@ angular.module("App")
         PROXY_URL_ALL_STOPS: "http://54.200.133.84/reaxium/Routes/allStopsSystem",
         PROXY_URL_STOPS_WITH_FILTER: "http://54.200.133.84/reaxium/Routes/allStopsWithFilter",
         PROXY_URL_CREATE_ROUTE: "http://54.200.133.84/reaxium/Routes/createRoutes",
-        PROXY_URL_GET_ROUTE_BY_ID_WITH_STOPS: "http://54.200.133.84/reaxium/Routes/getRouteByIdRelationStop"
+        PROXY_URL_GET_ROUTE_BY_ID_WITH_STOPS: "http://54.200.133.84/reaxium/Routes/getRouteByIdRelationStop",
+        PROXY_URL_ALL_DEVICES_WITH_PAGINATE:"http://54.200.133.84/reaxium/Device/allDeviceWithPagination",
+        PROXY_URL_CREATE_DEVICES:"http://54.200.133.84/reaxium/Device/createDevice",
+        PROXY_URL_ALL_ROUTE_WITH_FILTER: "http://54.200.133.84/reaxium/Routes/allRouteWithFilter",
+        PROXY_URL_ASSOCIATE_A_DEVICE_WITH_ROUTE: "http://54.200.133.84/reaxium/Device/associateADeviceWithRoute"
+
     })
     // configuracion file system imagenes
     .constant('FILE_SYSTEM_ROUTE',{

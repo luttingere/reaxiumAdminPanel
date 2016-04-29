@@ -24,18 +24,6 @@ angular.module('App')
             var defered = $q.defer();
             var promise = defered.promise;
 
-            /* console.log(filterCriteria);
-             return $http({
-             method: 'POST',
-             data: JSON.stringify(filterCriteria),
-             url: 'http://54.200.133.84/reaxium/Users/allUsersInfoWithPagination',
-             }).then(function (response) {
-             userJson.users = response.data.ReaxiumResponse.object;
-             userJson.totalPages = response.data.ReaxiumResponse.totalPages;
-             userJson.totalRecords = response.data.ReaxiumResponse.totalRecords;
-             console.log(userJson);
-             return userJson;
-             });*/
 
             $http({
                 method: 'POST',
@@ -238,6 +226,29 @@ angular.module('App')
             return promise;
         }
 
+        lookup.delete = function(id_user){
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+
+            $http({
+                method: 'POST',
+                url: CONST_PROXY_URL.PROXY_URL_DELETE_USER,
+                data: JSON.stringify({ReaxiumParameters:{Users:{user_id:id_user}}}),
+                headers: {'Content-Type': 'application/json;charset=UTF-8'}
+            }).success(function (response) {
+                defered.resolve(response);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+
+            return promise;
+
+
+        }
+
+
         return lookup;
 
     })
@@ -325,5 +336,9 @@ angular.module('App')
 
         this.createAccessUser = function (obj) {
             return UserLookup.newAccessUser(obj);
+        }
+
+        this.deleteUser = function(id_user){
+            return UserLookup.delete(id_user);
         }
     });

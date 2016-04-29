@@ -26,17 +26,17 @@
                     <small>Control panel</small>
                 </h1>
                 <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
-                    <li class="active">User Dashboard</li>
+                    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li class="active">Device Dashboard</li>
                 </ol>
             </section>
 
             <!-- Main content -->
             <section class="content">
                 <!-- Small boxes (Stat box) -->
-                <div class="row">
+               <!-- <div class="row">
                     <div class="col-lg-3 col-xs-4">
-                        <!-- small box -->
+
                         <div class="small-box bg-blue">
                             <div class="inner">
                                 <h3>100</h3>
@@ -46,9 +46,9 @@
                                 <i class="ion ion-stats-bars"></i>
                             </div>
                         </div>
-                    </div><!-- ./col -->
+                    </div>
                     <div class="col-lg-3 col-xs-4">
-                        <!-- small box -->
+
                         <div class="small-box bg-blue">
                             <div class="inner">
                                 <h3>30<sup style="font-size: 20px">%</sup></h3>
@@ -58,9 +58,7 @@
                                 <i class="ion ion-stats-bars"></i>
                             </div>
                         </div>
-                    </div><!-- ./col -->
-                    <div class="col-lg-3 col-xs-4">
-                        <!-- small box -->
+
                         <div class="small-box bg-blue">
                             <div class="inner">
                                 <h3>70</h3>
@@ -70,19 +68,22 @@
                                 <i class="ion ion-stats-bars"></i>
                             </div>
                         </div>
-                    </div><!-- ./col -->
-                </div><!-- /.row -->
+                    </div>
+                </div>-->
+                <div growl></div>
                 <!-- Main row -->
                 <div class="row">
                     <section class="content">
                         <div class="row">
                             <div class="col-xs-12">
 
-                                <div class="box">
+                                <div class="box  box-info">
                                     <div class="box-header">
                                         <div class="small-box">
                                             <div class="customIcon">
-                                                <i  class="ion ion-plus-circled"></i>
+                                                <a ui-sref="deviceNew" data-toggle="tooltip" title="Add Device">
+                                                    <i  class="ion ion-plus-circled"></i>
+                                                </a>
                                             </div>
                                         </div>
                                         <h3 class="box-title">System Devices</h3>
@@ -91,17 +92,15 @@
                                     <div class="box-body">
 
                                         <div>
-                                            <input class="form-control reduceSize" placeholder="Search here..." on-enter-blur on-blur-change="filterResult()" ng-model="userCtrl.filterCriteria.ReaxiumParameters.filter" type="text" />
+                                            <input class="form-control reduceSize" placeholder="Search here..." on-enter-blur on-blur-change="filterResult()" ng-model="filterCriteria.ReaxiumParameters.filter" type="text" />
                                         </div>
 
                                         <table id="userTable" class="table table-bordered table-striped">
                                             <thead>
                                             <tr>
-                                                <!--<th ng-repeat="header in userCtrl.userTableHeaders">
-                                                    <sort-by onsort="onSort" sortdir="userCtrl.filterCriteria.ReaxiumParameters.sortDir" sortedby="userCtrl.filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
-                                                </th>-->
-                                                <th>Device Name</th>
-                                                <th>Device Description</th>
+                                                <th ng-repeat="header in deviceTableHeaders">
+                                                    <sort-by onsort="onSort" sortdir="filterCriteria.ReaxiumParameters.sortDir" sortedby="filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
+                                                </th>
                                                 <th>Status</th>
                                                 <th>Application RelationShip</th>
                                                 <th>Actions</th>
@@ -113,18 +112,22 @@
                                                 <td>{{obj.device_description}}</td>
                                                 <td>{{obj.status.status_name}}</td>
                                                 <td>{{obj.applications[0].application_name}}</td>
-                                                <td><a data-toggle="tooltip" title="Delete Device"><small><i class="fa fa-fw fa-trash"></i></small></i></a> - <a ng-click="addUserDevice(obj.device_id)" data-toggle="tooltip" title="Device Relation User"><small><i class="fa fa-fw fa-exchange"></i> </small></a></td>
+                                                <td>
+                                                    <a data-toggle="tooltip" title="Delete Device" ng-click="deleteDevice()"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -
+                                                    <a ng-click="accessUserDevice(obj.device_id)" data-toggle="tooltip" title="Device Access Control"><small><i class="fa fa-fw fa-unlock-alt"></i> </small></a>-
+                                                    <a data-toggle="tooltip" title="Device Relation Route" ng-click="deviceRelRoute(obj.device_id)"><small><i class="fa fa-fw fa-exchange"></i></small></i></a>
+                                                </td>
                                             </tr>
                                             </tbody>
                                             </tfoot>
                                         </table>
-                                        <!--<div ng-show="userCtrl.totalRecords == 0">
+                                        <div ng-show="totalRecords == 0">
                                             <h3>No Customers Found</h3>
                                         </div>
-                                        <div ng-show="userCtrl.totalPages > 1" class="align-center">
-                                            <uib-pagination total-items="userCtrl.totalRecords" ng-model="userCtrl.filterCriteria.ReaxiumParameters.page" items-per-page="userCtrl.filterCriteria.ReaxiumParameters.limit" previous-text="previous" next-text="next" last-text="last"
-                                                            direction-links="true" rotate="false" ng-change="userCtrl.selectPage()"></uib-pagination>
-                                        </div>-->
+                                        <div ng-show="totalPages > 1" class="align-center">
+                                            <uib-pagination total-items="totalRecords" ng-model="filterCriteria.ReaxiumParameters.page" items-per-page="filterCriteria.ReaxiumParameters.limit" previous-text="previous" next-text="next" last-text="last"
+                                                            direction-links="true" rotate="false" ng-change="selectPage()"></uib-pagination>
+                                        </div>
                                     </div><!-- /.box-body -->
 
                                 </div><!-- /.box -->
@@ -134,13 +137,15 @@
                     </section><!-- /.content -->
 
                 </div>
+                <br/>
+                <br/>
             </section>
-
         </div>
 
         <!--footer-->
-        <div ui-view="footer"></div>
+        <div ui-view="footer" style="position: fixed; bottom: 0px; width: 100%"></div>
 
     </div>
+
 
 </div>

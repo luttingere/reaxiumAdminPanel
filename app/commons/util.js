@@ -235,6 +235,30 @@ function validateAccess(obj) {
     return response;
 }
 
+function validateFieldsNewRoute(){}
+
+
+
+function validateFieldNewDevice(name_device,desc_device){
+
+    var response = {
+        validate: true,
+        message: ""
+    };
+
+    if(isEmptyString(name_device)){
+        response.validate = false;
+        response.message = "Name device  empty";
+    }
+    else if(isEmptyString(desc_device)){
+        response.validate=false;
+        response.message = "Description device empty";
+    }
+
+    return response;
+}
+
+
 function isUndefined(obj) {
 
     if (obj == undefined) {

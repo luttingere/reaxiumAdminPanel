@@ -28,7 +28,7 @@
                         <small>Control panel</small>
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+                        <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Home</a></li>
                         <li class="active">User Dashboard</li>
                     </ol>
                 </section>
@@ -36,9 +36,9 @@
                 <!-- Main content -->
                 <section class="content">
                     <!-- Small boxes (Stat box) -->
-                    <div class="row">
+                    <!--<div class="row">
                         <div class="col-lg-3 col-xs-4">
-                            <!-- small box -->
+
                             <div class="small-box bg-blue">
                                 <div class="inner">
                                     <h3>100</h3>
@@ -48,9 +48,9 @@
                                     <i class="ion ion-stats-bars"></i>
                                 </div>
                             </div>
-                        </div><!-- ./col -->
+                        </div>
                         <div class="col-lg-3 col-xs-4">
-                            <!-- small box -->
+
                             <div class="small-box bg-blue">
                                 <div class="inner">
                                     <h3>30<sup style="font-size: 20px">%</sup></h3>
@@ -60,9 +60,9 @@
                                     <i class="ion ion-stats-bars"></i>
                                 </div>
                             </div>
-                        </div><!-- ./col -->
+                        </div>
                         <div class="col-lg-3 col-xs-4">
-                            <!-- small box -->
+
                             <div class="small-box bg-blue">
                                 <div class="inner">
                                     <h3>70</h3>
@@ -72,16 +72,16 @@
                                     <i class="ion ion-stats-bars"></i>
                                 </div>
                             </div>
-                        </div><!-- ./col -->
-                    </div><!-- /.row -->
+                        </div>
+                    </div>-->
                     <!-- Main row -->
                     <div class="row">
                         <section class="content">
                             <div class="row">
                                 <div class="col-xs-12">
 
-                                    <div class="box">
-                                        <div class="box-header">
+                                    <div class="box  box-info">
+                                        <div class="box-header ">
                                             <div class="small-box">
                                                 <div class="customIcon">
                                                     <a ui-sref="newUser" data-toggle="tooltip" title="Add User">
@@ -124,7 +124,8 @@
                                                     <td><a href="" ng-click="userCtrl.showGeneralInformation(user.user_id)">Information</a>
                                                     </td>
                                                     <td>{{user.status.status_name | lowerCase | capitalize}}</td>
-                                                    <td><a data-toggle="tooltip" title="Delete User"><small><i class="fa fa-fw fa-trash"></i></small></i></a> - <a ng-click="editMode(user.user_id)" data-toggle="tooltip" title="Edit User"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
+                                                    <td><a data-toggle="tooltip" title="Delete User" ng-click="deleteUser(user.user_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -
+                                                        <a ng-click="editMode(user.user_id)" data-toggle="tooltip" title="Edit User"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
                                                 </tr>
                                                 </tbody>
                                                 </tfoot>
@@ -145,7 +146,10 @@
                         </section><!-- /.content -->
 
                     </div>
+                    <br/>
+                    <br/>
                 </section>
+
                 <modal title="Users Phone Intomation" visible="userCtrl.showPhoneModal">
                     <div class="box box-widget widget-user">
                         <!-- Add the bg color to the header using any of the bg-* classes -->
@@ -202,7 +206,6 @@
                         </div>
                     </div>
                 </modal>
-
                 <modal title="User Address" visible="userCtrl.showAddressModal">
 
                     <div class="box box-widget widget-user">
@@ -239,8 +242,10 @@
                 </modal>
                 <div class="control-sidebar-bg"></div>
 
+            </div>
         </div>
 
+        <div ui-view="footer" style="position: fixed; bottom: 0px; width: 100%"></div>
     </div>
 </div>
 

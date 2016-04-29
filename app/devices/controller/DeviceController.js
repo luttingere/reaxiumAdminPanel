@@ -10,7 +10,9 @@ angular.module("App")
                                   $rootScope,
                                   DeviceService,
                                   spinnerService,
-                                  $sessionStorage){
+                                  $sessionStorage,
+                                  growl,
+                                  $confirm){
 
     $scope.dataDevice={}
 
@@ -23,29 +25,105 @@ angular.module("App")
     $scope.photeUser = $sessionStorage.user_photo;
     $scope.nameUser = $sessionStorage.nameUser;
 
-    var init = function(){
+    $scope.totalPages = 0;
+
+    /**
+     * cabecera de la tabla de usuarios
+     * @type {*[]}
+     */
+    $scope.deviceTableHeaders = [{
+        title: 'Device Name',
+        value: 'device_name'
+    }, {
+        title: 'Device Description',
+        value: 'device_description'
+    }
+    ];
+
+    //default criteria that will be sent to the server
+    $scope.filterCriteria = {
+        ReaxiumParameters: {
+            page: 1,
+            limit:5,
+            sortDir: 'asc',
+            sortedBy: 'device_name',
+            filter: ''
+        }
+    };
+
+
+    $scope.getDevices = function(){
 
         console.log("Iniciando contolador DeviceCtrl");
 
         spinnerService.show("spinnerNew");
         DeviceService.setRelUserDevice({isModeRel:false, id_device: ""});
+        DeviceService.setRelRouteDevice({isDeviceRelRoute:false,id_device: ""});
 
-        var promiseAllDevice = DeviceService.allDeviceSystem();
-        promiseAllDevice.then(function(response){
-            $scope.devices = response;
-            spinnerService.hide("spinnerNew");
-        }).catch(function (err){
-            console.log("Error en invocacion del servicio..."+err);
-        })
+        DeviceService.allDeviceWithPagination($scope.filterCriteria)
+            .then(function(data){
+                $log.debug(data);
+                $scope.devices = data.devices;
+                $scope.totalPages = data.totalPages;
+                $scope.totalRecords = data.totalRecords;
+                spinnerService.hide("spinnerNew");
+
+                var messageGrowl = DeviceService.getShowGrowlMessage();
+
+                if(messageGrowl.isShow){
+                    growl.info(messageGrowl.message)
+                }
+
+            }).catch(function(err){
+            console.error("Error en invocacion del servicio..."+err);
+            spinnerService.hide("spinnerUserList");
+        });
+
     }
 
-    init();
 
-    $scope.addUserDevice = function(id_device){
+    //called when navigate to another page in the pagination
+    $scope.selectPage = function () {
+        $scope.getDevices();
+    };
+
+    //Will be called when filtering the grid, will reset the page number to one
+    $scope.filterResult = function () {
+        $scope.filterCriteria.ReaxiumParameters.page = 1;
+        $scope.getDevices();
+
+    };
+
+    //call back function that we passed to our custom directive sortBy, will be called when clicking on any field to sort
+    $scope.onSort = function (sortedBy, sortDir) {
+        console.log("OnSort");
+        $scope.filterCriteria.ReaxiumParameters.sortDir = sortDir;
+        $scope.filterCriteria.ReaxiumParameters.sortedBy = sortedBy;
+        $scope.filterCriteria.ReaxiumParameters.page = 1;
+        $scope.getDevices();
+    };
+
+
+    $scope.selectPage(1);
+
+    $scope.accessUserDevice = function(id_device){
 
         DeviceService.setRelUserDevice({isModeRel:true, id_device: id_device});
         $state.go("deviceRelUser");
     }
 
+
+    $scope.deviceRelRoute = function(id_device){
+        DeviceService.setRelRouteDevice({isDeviceRelRoute:true,id_device:id_device});
+        $state.go("deviceRelRoute");
+    }
+
+    $scope.deleteDevice = function(id_device){
+
+        $confirm({text: 'Are you sure you want to delete?'})
+            .then(function() {
+
+            });
+    }
 
 })

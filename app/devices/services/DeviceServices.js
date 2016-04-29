@@ -8,6 +8,12 @@ angular.module("App")
 
     var lookup = {};
 
+    var deviceJson = {
+        devices: {},
+        totalPages: 0,
+        totalRecords: 0
+    };
+
     lookup.getAllDevice = function(){
 
         var defered = $q.defer();
@@ -64,7 +70,7 @@ angular.module("App")
         });
 
         return promise;
-    }
+    };
 
 
     lookup.createAccessUserDevice = function(obj){
@@ -84,7 +90,93 @@ angular.module("App")
         });
 
         return promise;
+    };
+
+
+    lookup.getDeviceWithPagination = function(obj){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_ALL_DEVICES_WITH_PAGINATE,
+            data: JSON.stringify(obj),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+
+            deviceJson.devices = response.ReaxiumResponse.object;
+            deviceJson.totalPages = response.ReaxiumResponse.totalPages;
+            deviceJson.totalRecords = response.ReaxiumResponse.totalRecords;
+
+            defered.resolve(deviceJson);
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise
+    };
+
+    lookup.newRegisterDevice = function(obj){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_CREATE_DEVICES,
+            data: JSON.stringify(obj),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+
+            defered.resolve(response);
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise
+    };
+
+    lookup.allRouteWithFilter = function(filters){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_ALL_ROUTE_WITH_FILTER,
+            data: JSON.stringify({ReaxiumParameters:{ReaxiumRoutes:{filter:filters}}}),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+            defered.resolve(response);
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise
+
+    };
+
+
+    lookup.associateADeviceWithRoute = function(obj){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_ASSOCIATE_A_DEVICE_WITH_ROUTE,
+            data: JSON.stringify(obj),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+            defered.resolve(response);
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise
     }
+
 
     return lookup;
 })
@@ -94,6 +186,33 @@ angular.module("App")
     var relUserDevice ={
         isModeRel:false,
         id_device:""
+    }
+
+    var relRouteDevice={
+        isDeviceRelRoute:false,
+        id_device:""
+    }
+
+    var showGrowl = {
+        isShow: false,
+        message: ""
+    };
+
+
+    this.getRelRouteDevice = function(){
+        return relRouteDevice;
+    }
+
+    this.setRelRouteDevice = function(obj){
+        relRouteDevice=obj;
+    }
+
+    this.getShowGrowlMessage = function () {
+        return showGrowl;
+    }
+
+    this.setShowGrowlMessage = function (obj) {
+        showGrowl = obj;
     }
 
     this.getRelUserDevice = function(){
@@ -118,5 +237,21 @@ angular.module("App")
 
     this.newCreateAccessUserByDevice = function(obj){
         return DeviceLookup.createAccessUserDevice(obj);
+    }
+
+    this.allDeviceWithPagination = function(obj){
+        return DeviceLookup.getDeviceWithPagination(obj);
+    }
+
+    this.createDevice = function(obj){
+        return DeviceLookup.newRegisterDevice(obj);
+    }
+
+    this.getRouteWithFilter = function(filter){
+        return DeviceLookup.allRouteWithFilter(filter);
+    }
+
+    this.getAssociateADeviceWithRoute = function(obj){
+        return DeviceLookup.associateADeviceWithRoute(obj);
     }
 })

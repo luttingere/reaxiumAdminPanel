@@ -1,0 +1,176 @@
+<spinner name="spinnerNew" ng-cloak="">
+    <div class="overlay"></div>
+    <div class="spinner">
+        <div class="test"><i class="fa fa-refresh fa-spin fa-5x"></i></div>
+    </div>
+    <div class="please-wait">Please Wait...</div>
+</spinner>
+
+<div class="skin-blue sidebar-mini">
+
+    <div class="wrapper" ng-controller="DeviceRelRouteCtrl">
+
+        <!--Header-->
+        <div ui-view="header"></div>
+
+        <!--Menu-->
+        <div ui-view="menu"></div>
+
+        <!--Content-->
+        <div class="content-wrapper">
+
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>Device RelationShip Route</h1>
+                <ol class="breadcrumb">
+                    <li><a ui-sref="device"><i class="fa fa-dashboard"></i>Device Dashboard</a></li>
+                    <li><a class="active">Device RelationShip Route</a></li>
+                </ol>
+
+            </section>
+
+            <section class="content">
+                <div growl></div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="content" style="min-height: 0px;">
+                            <div class="box box-primary">
+                                <div class="box-header bg-light-blue-active with-border ">
+                                    <h3 class="box-title">Device Info</h3>
+                                </div><!-- /.box-header -->
+                                <!-- form start -->
+                                <form class="form-horizontal">
+                                    <div class="box-body">
+                                        <div class="col-md-6">
+                                            <div class="box box-info">
+                                                <div class="box-body">
+                                                    <table>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td style="width: 400px;">
+                                                                <div angucomplete-alt id="ex2"
+                                                                     placeholder="Search route"
+                                                                     pause="300"
+                                                                     selected-object="selectedRoute"
+                                                                     local-data="routesFilter"
+                                                                     local-search="localSearch"
+                                                                     title-field="route_number,route_name"
+                                                                     minlength="2"
+                                                                     description-field="route_address"
+                                                                     image-field="pic"
+                                                                     input-class="form-control form-control-small"
+                                                                     match-class="highlight">
+                                                                </div>
+                                                            </td>
+                                                            <td ng-show="selectedRoute">
+                                                                <button class="btn btn-info btn-flat"
+                                                                        type="button"
+                                                                        ng-click="addRoute(selectedRoute)">
+                                                                    Go!
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!--Table StakeHolder-->
+                                        <div class="col-md-12" >
+                                            <div class="box box-info">
+                                                <div class="box-header">
+                                                    <h3 class="box-title">Routes</h3>
+                                                </div><!-- /.box-header -->
+                                                <div class="box-body">
+                                                    <table id="userTable"
+                                                           class="table table-bordered table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Route  Number</th>
+                                                            <th>Route Name</th>
+                                                            <th>Route Address</th>
+                                                            <th>Quantity Stop</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr ng-repeat="route in allUserSelcStakeHolder">
+                                                            <td>{{route.route_number}}</td>
+                                                            <td>{{route.route_name}}</td>
+                                                            <td>{{route.route_address}}</td>
+                                                            <td>{{route.routes_stops_count}}</td>
+                                                            <td id="delete_{{route.id_route}}"><a ng-click="deleteUserTable()"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
+                                                        </tr>
+                                                        </tbody>
+                                                        </tfoot>
+                                                    </table>
+                                                </div><!-- /.box-body -->
+                                            </div><!-- /.box -->
+
+                                        </div><!-- /.col -->
+                                    </div><!-- /.box-body -->
+                                </form>
+                            </div><!-- /.box -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="content" style="min-height: 0px;">
+                            <div class="box box-primary">
+                                <div class="box-header bg-light-blue-active with-border ">
+                                    <h3 class="box-title">Route Date</h3>
+                                </div><!-- /.box-header -->
+                                <!-- form start -->
+                                <form class="form-horizontal">
+                                    <div class="box-body">
+                                        <div class="col-md-8">
+                                            <div class="box box-info">
+                                                <div class="box-body">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-6">
+                                                            <label>Start Date</label>
+                                                            <uib-timepicker ng-model="mytime_start" ng-change="changed_start()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label>End Date</label>
+                                                            <uib-timepicker ng-model="mytime_end" ng-change="changed_end()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.box-body -->
+                                </form>
+                            </div><!-- /.box -->
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Main content -->
+
+                <div class="row">
+                    <div class="content" style="min-height: 0px;">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <button class="btn btn-block btn-primary btn-lg"
+                                    ng-click="saveDeviceRelRoute()">Save
+                            </button>
+                            <br/>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    <br/>
+                </div>
+            </section>
+
+        </div>
+
+        <!--Footer-->
+        <div ui-view="footer"></div>
+
+    </div>
+</div>

@@ -11,7 +11,8 @@ angular.module('App', ['ui.router',
         'uiGmapgoogle-maps',
         'ui.bootstrap',
         'flow',
-        'angular-growl'])
+        'angular-growl',
+        'angular-confirm'])
 
     //Aqui lo primero que se ejecuta en angular como el document Ready en jquery
     .run(['$templateCache', '$rootScope', function ($templateCache, $rootScope) {
@@ -32,17 +33,19 @@ angular.module('App', ['ui.router',
                     'url': "allUser"
                 },
                 {
-                    'name': 'Security Users',
+                    'name': 'User Access',
                     'url': "userSecurity"
                 }
             ]
         }, {
             'name': 'Device Administration',
             'icon_class': 'fa fa-hdd-o',
-            'subMenus': [{
-                'name': 'All Device',
-                'url': "device"
-            }]
+            'subMenus': [
+                {
+                    'name': 'All Device',
+                    'url': "device"
+                }
+            ]
         }, {
             'name': 'Routes Administration',
             'icon_class': 'fa fa-map-signs',

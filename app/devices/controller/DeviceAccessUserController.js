@@ -3,7 +3,7 @@
  */
 
 angular.module("App")
-    .controller("DeviceRelUserCtrl", function ($scope,
+    .controller("DeviceAccessUserCtrl", function ($scope,
                                                $state,
                                                $sessionStorage,
                                                $rootScope,
@@ -25,6 +25,8 @@ angular.module("App")
         $scope.userFilter = [];
         $scope.allUserSelcStakeHolder = [];
         $scope.showTable = false;
+
+
         /**
          * Method compare input with list server users filter
          * @param str

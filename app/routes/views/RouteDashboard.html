@@ -26,7 +26,7 @@
                     <small>Control panel</small>
                 </h1>
                 <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Home</a></li>
                     <li class="active">User Dashboard</li>
                 </ol>
             </section>
@@ -36,9 +36,9 @@
                 <!-- Small boxes (Stat box) -->
                 <div growl></div>
 
-                <div class="row">
+               <!-- <div class="row">
                     <div class="col-lg-3 col-xs-4">
-                        <!-- small box -->
+
                         <div class="small-box bg-blue">
                             <div class="inner">
                                 <h3>100</h3>
@@ -48,9 +48,9 @@
                                 <i class="ion ion-stats-bars"></i>
                             </div>
                         </div>
-                    </div><!-- ./col -->
+                    </div>
                     <div class="col-lg-3 col-xs-4">
-                        <!-- small box -->
+
                         <div class="small-box bg-blue">
                             <div class="inner">
                                 <h3>30<sup style="font-size: 20px">%</sup></h3>
@@ -60,9 +60,9 @@
                                 <i class="ion ion-stats-bars"></i>
                             </div>
                         </div>
-                    </div><!-- ./col -->
+                    </div>
                     <div class="col-lg-3 col-xs-4">
-                        <!-- small box -->
+
                         <div class="small-box bg-blue">
                             <div class="inner">
                                 <h3>70</h3>
@@ -72,15 +72,15 @@
                                 <i class="ion ion-stats-bars"></i>
                             </div>
                         </div>
-                    </div><!-- ./col -->
-                </div><!-- /.row -->
+                    </div>
+                </div>-->
                 <!-- Main row -->
                 <div class="row">
                     <section class="content">
                         <div class="row">
                             <div class="col-xs-12">
 
-                                <div class="box">
+                                <div class="box  box-info">
                                     <div class="box-header">
                                         <div class="small-box">
                                             <div class="customIcon">
@@ -101,12 +101,9 @@
                                         <table id="userTable" class="table table-bordered table-striped">
                                             <thead>
                                             <tr>
-                                                <th ng-repeat="header in userTableHeaders">
+                                                <th ng-repeat="header in routeTableHeaders">
                                                     <sort-by onsort="onSort" sortdir="filterCriteria.ReaxiumParameters.sortDir" sortedby="filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
                                                 </th>
-                                                <th>Route Number</th>
-                                                <th>Route Name</th>
-                                                <th>Route Address</th>
                                                 <th>Quantity Stop</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -117,7 +114,8 @@
                                                 <td>{{obj.route_name}}</td>
                                                 <td>{{obj.route_address}}</td>
                                                 <td>{{obj.routes_stops_count}}</td>
-                                                <td><a data-toggle="tooltip" title="Delete Route"><small><i class="fa fa-fw fa-trash"></i></small></i></a> - <a ng-click="editMode(obj.id_route)" data-toggle="tooltip" title="Edit Route"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
+                                                <td><a data-toggle="tooltip" title="Delete Route" ng-click="deleteRoute()"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -
+                                                    <a ng-click="editMode(obj.id_route)" data-toggle="tooltip" title="Edit Route"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
                                             </tr>
                                             </tbody>
                                             </tfoot>
@@ -138,16 +136,13 @@
                     </section><!-- /.content -->
 
                 </div>
-
+                <br/>
+                <br/>
             </section>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
         </div>
 
         <!--footer-->
-        <div ui-view="footer"></div>
+        <div ui-view="footer" style="position: fixed; bottom: 0px; width: 100%"></div>
 
     </div>
 

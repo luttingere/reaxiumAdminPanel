@@ -73,7 +73,7 @@ v2.0.0
 - New skins and modified previous skins
 - Change in color scheme to a more complementing scheme
 - Added footer support
-- Removed pace.js from the main app.js
+- Removed pace.js from the main funcionalityApp.js
 - Added support for collapsed sidebar as an initial state (add .sidebar-collapse to the body tag)
 - Added boxed layout (.layout-boxed)
 - Enhanced consistency in padding and margining

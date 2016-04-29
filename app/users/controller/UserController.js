@@ -11,7 +11,8 @@ angular.module('App')
                                             spinnerService,
                                             $log,
                                             $sessionStorage,
-                                            growl) {
+                                            growl,
+                                            $confirm) {
 
         console.log("Cargo el Controlador de Usuarios");
         $scope.control = {}
@@ -94,10 +95,11 @@ angular.module('App')
         //Will be called when filtering the grid, will reset the page number to one
         $scope.filterResult = function () {
             $scope.filterCriteria.ReaxiumParameters.page = 1;
-            $scope.getAllUsers().then(function () {
+            $scope.getAllUsers();
+            /*$scope.getAllUsers().then(function () {
                 //The request fires correctly but sometimes the ui doesn't update, that's a fix
                 $scope.filterCriteria.ReaxiumParameters.page = 1;
-            });
+            });*/
         };
 
         //call back function that we passed to our custom directive sortBy, will be called when clicking on any field to sort
@@ -106,10 +108,11 @@ angular.module('App')
             $scope.filterCriteria.ReaxiumParameters.sortDir = sortDir;
             $scope.filterCriteria.ReaxiumParameters.sortedBy = sortedBy;
             $scope.filterCriteria.ReaxiumParameters.page = 1;
-            $scope.getAllUsers().then(function () {
+            $scope.getAllUsers();
+           /* $scope.getAllUsers().then(function () {
                 //The request fires correctly but sometimes the ui doesn't update, that's a fix
                 $scope.filterCriteria.ReaxiumParameters.page = 1;
-            });
+            });*/
         };
 
 
@@ -229,6 +232,16 @@ angular.module('App')
 
             $state.go("newUser");
         }
+
+        $scope.deleteUser = function(id_user){
+
+            $confirm({text: 'Are you sure you want to delete?'})
+                .then(function() {
+
+                });
+        }
+
+
         $scope.selectPage(1);
         return $scope;
 

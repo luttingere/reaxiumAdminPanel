@@ -10,7 +10,8 @@ angular.module("App")
                                  RoutesServices,
                                  spinnerService,
                                  $sessionStorage,
-                                 growl){
+                                 growl,
+                                 $confirm){
 
     //menu sidebar
     $scope.menus = $rootScope.appMenus;
@@ -80,10 +81,7 @@ angular.module("App")
     //Will be called when filtering the grid, will reset the page number to one
     $scope.filterResult = function () {
         $scope.filterCriteria.ReaxiumParameters.page = 1;
-        $scope.getAllRoutes().then(function () {
-            //The request fires correctly but sometimes the ui doesn't update, that's a fix
-            $scope.filterCriteria.ReaxiumParameters.page = 1;
-        });
+        $scope.getAllRoutes();
     };
 
     //call back function that we passed to our custom directive sortBy, will be called when clicking on any field to sort
@@ -92,10 +90,7 @@ angular.module("App")
         $scope.filterCriteria.ReaxiumParameters.sortDir = sortDir;
         $scope.filterCriteria.ReaxiumParameters.sortedBy = sortedBy;
         $scope.filterCriteria.ReaxiumParameters.page = 1;
-        $scope.getAllRoutes().then(function () {
-            //The request fires correctly but sometimes the ui doesn't update, that's a fix
-            $scope.filterCriteria.ReaxiumParameters.page = 1;
-        });
+        $scope.getAllRoutes();
     };
 
     //init search page 1
@@ -105,6 +100,14 @@ angular.module("App")
         console.info('ruta seleccionada: '+id_route);
         RoutesServices.setModeEdit({isModeEdit:true,id_route:id_route});
         $state.go('routesNewRegister');
+    }
+
+    $scope.deleteRoute = function(id_route){
+
+        $confirm({text: 'Are you sure you want to delete?'})
+            .then(function() {
+
+            });
     }
 
 });

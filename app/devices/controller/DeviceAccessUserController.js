@@ -38,12 +38,15 @@ angular.module("App")
             invokeServiceUserFilter(str);
 
             $scope.userFilter.forEach(function (person) {
-                matches.push(person);
-                var fullName = person.first_name + ' ' + person.second_name;
-                if ((person.first_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
-                    (person.second_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
-                    (fullName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0)) {
 
+                if (!person.first_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0 ||
+                    !person.second_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0 ||
+                    !person.document_id.indexOf(str.toString()) >= 0 ||
+                    !person.first_last_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0 ||
+                    !person.second_last_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0 ||
+                    !person.email.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0){
+
+                    matches.push(person);
                 }
             });
 
@@ -69,9 +72,11 @@ angular.module("App")
                         var aux = {
                             first_name: entry.first_name,
                             second_name: entry.second_name,
+                            first_last_name:entry.first_last_name,
+                            second_last_name:entry.second_last_name,
                             user_id: entry.user_id,
                             document_id: entry.document_id,
-                            email: entry.email,
+                            email:entry.email,
                             pic: entry.user_photo
                         };
 
@@ -284,7 +289,8 @@ angular.module("App")
                     .then(function (response) {
                         spinnerService.hide("spinnerNew");
                         if(response.ReaxiumResponse.code == 0){
-                            growl.success(response.ReaxiumResponse.message);
+                            DeviceService.setShowGrowlMessage({isShow:true,message:response.ReaxiumResponse.message});
+                            $state.go('device');
                         }else{
                             growl.error(response.ReaxiumResponse.message);
                         }

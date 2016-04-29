@@ -111,6 +111,24 @@ angular.module("App")
 
         }
 
+        lookUpRoute.deleteRoute = function(id_route){
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
+                method: 'POST',
+                data: JSON.stringify({ReaxiumParameters:{ReaxiumRoutes:{id_route:id_route}}}),
+                url: CONST_PROXY_URL.PROXY_URL_DELETE_ROUTE
+            }).success(function (response) {
+                defered.resolve(response);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+
+            return promise;
+
+        }
 
         return lookUpRoute;
     })
@@ -126,6 +144,15 @@ angular.module("App")
             id_route: "0"
         };
 
+
+        this.cleanGrowlRoute = function(){
+            this.setShowGrowlMessage({isShow:false,message: ""});
+        }
+
+
+        this.cleanModeEditRoute = function(){
+            this.setModeEdit({isModeEdit: false, id_route: "0"});
+        }
 
         this.getShowGrowlMessage = function () {
             return showGrowl;
@@ -160,6 +187,10 @@ angular.module("App")
 
         this.getRouteByIdWithStops = function (obj) {
             return RouteLookup.getRouteById(obj);
+        }
+
+        this.deleteRoute = function(id_route){
+            return RouteLookup.deleteRoute(id_route);
         }
 
     })

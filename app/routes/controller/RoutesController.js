@@ -11,7 +11,9 @@ angular.module("App")
                                  spinnerService,
                                  $sessionStorage,
                                  growl,
-                                 $confirm){
+                                 $confirm,
+                                 GLOBAL_MESSAGE,
+                                 GLOBAL_CONSTANT){
 
     //menu sidebar
     $scope.menus = $rootScope.appMenus;
@@ -50,13 +52,17 @@ angular.module("App")
 
     $scope.getAllRoutes = function(){
         console.info("Iniciando Controlador RouteCtrl");
+
         spinnerService.show("spinnerNew");
-        RoutesServices.setModeEdit({isModeEdit:false,id_route:""});
+        RoutesServices.cleanModeEditRoute();
 
         RoutesServices.allRoutesWithPagination($scope.filterCriteria)
             .then(function(data){
                 spinnerService.hide("spinnerNew");
-                if(RoutesServices.getShowGrowlMessage().isShow){growl.info(RoutesServices.getShowGrowlMessage().message);}
+                if(RoutesServices.getShowGrowlMessage().isShow){
+                    growl.info(RoutesServices.getShowGrowlMessage().message);
+                    RoutesServices.cleanGrowlRoute();
+                }
                 $scope.routes = data.routes;
                 $scope.totalPages = data.totalPages;
                 $scope.totalRecords = data.totalRecords;
@@ -68,6 +74,7 @@ angular.module("App")
             $scope.routes = [];
             $scope.totalPages = 0;
             $scope.totalRecords = 0;
+            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
         });
 
     }
@@ -104,9 +111,20 @@ angular.module("App")
 
     $scope.deleteRoute = function(id_route){
 
-        $confirm({text: 'Are you sure you want to delete?'})
+        $confirm({text: GLOBAL_MESSAGE.MESSAGE_CONFIRM_ACTION})
             .then(function() {
-
+                RoutesServices.deleteRoute(id_route)
+                    .then(function(resp){
+                        if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+                            $scope.selectPage(1);
+                            growl.success(resp.ReaxiumResponse.message);
+                        }else{
+                            growl.error(resp.ReaxiumResponse.message);
+                        }
+                    }).catch(function(err){
+                        console.error("Error invocando servicio delete: "+err);
+                        growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                });
             });
     }
 

@@ -12,7 +12,9 @@ angular.module("App")
                                   spinnerService,
                                   $sessionStorage,
                                   growl,
-                                  $confirm){
+                                  $confirm,
+                                  GLOBAL_MESSAGE,
+                                  GLOBAL_CONSTANT){
 
     $scope.dataDevice={}
 
@@ -57,8 +59,8 @@ angular.module("App")
         console.log("Iniciando contolador DeviceCtrl");
 
         spinnerService.show("spinnerNew");
-        DeviceService.setRelUserDevice({isModeRel:false, id_device: ""});
-        DeviceService.setRelRouteDevice({isDeviceRelRoute:false,id_device: ""});
+        DeviceService.cleanRelUserDevice();
+        DeviceService.cleanRelRouteDevice();
 
         DeviceService.allDeviceWithPagination($scope.filterCriteria)
             .then(function(data){
@@ -71,12 +73,14 @@ angular.module("App")
                 var messageGrowl = DeviceService.getShowGrowlMessage();
 
                 if(messageGrowl.isShow){
-                    growl.info(messageGrowl.message)
+                    growl.info(messageGrowl.message);
+                    DeviceService.cleanGrowlDevice();
                 }
 
             }).catch(function(err){
             console.error("Error en invocacion del servicio..."+err);
             spinnerService.hide("spinnerUserList");
+            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
         });
 
     }
@@ -107,7 +111,6 @@ angular.module("App")
     $scope.selectPage(1);
 
     $scope.accessUserDevice = function(id_device){
-
         DeviceService.setRelUserDevice({isModeRel:true, id_device: id_device});
         $state.go("deviceRelUser");
     }
@@ -120,9 +123,20 @@ angular.module("App")
 
     $scope.deleteDevice = function(id_device){
 
-        $confirm({text: 'Are you sure you want to delete?'})
+        $confirm({text: GLOBAL_MESSAGE.MESSAGE_CONFIRM_ACTION})
             .then(function() {
-
+                DeviceService.deleteDevice(id_device)
+                    .then(function(resp){
+                        if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+                            $scope.selectPage(1);
+                            growl.success(resp.ReaxiumResponse.message);
+                        }else{
+                            growl.error(resp.ReaxiumResponse.message);
+                        }
+                    }).catch(function(err){
+                        console.error("Error invocando servicio delete: "+err);
+                        growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                });
             });
     }
 

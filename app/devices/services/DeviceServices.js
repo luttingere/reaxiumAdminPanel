@@ -178,6 +178,25 @@ angular.module("App")
     }
 
 
+    lookup.deleteDevice = function(id_device){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_DELETE_DEVICE,
+            data: JSON.stringify({ReaxiumParameters:{ReaxiumDevice:{device_id:id_device}}}),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+            defered.resolve(response);
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise
+    }
+
     return lookup;
 })
 
@@ -198,6 +217,18 @@ angular.module("App")
         message: ""
     };
 
+
+    this.cleanGrowlDevice = function(){
+        this.setShowGrowlMessage({ isShow: false, message: ""});
+    }
+
+    this.cleanRelUserDevice = function(){
+        this.setRelUserDevice({isModeRel:false,id_device:""});
+    }
+
+    this.cleanRelRouteDevice = function(){
+        this.setRelRouteDevice({isDeviceRelRoute:false, id_device:""});
+    }
 
     this.getRelRouteDevice = function(){
         return relRouteDevice;
@@ -253,5 +284,9 @@ angular.module("App")
 
     this.getAssociateADeviceWithRoute = function(obj){
         return DeviceLookup.associateADeviceWithRoute(obj);
+    }
+
+    this.deleteDevice = function(id_device){
+        return DeviceLookup.deleteDevice(id_device);
     }
 })

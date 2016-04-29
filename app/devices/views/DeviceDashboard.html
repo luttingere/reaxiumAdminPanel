@@ -113,7 +113,7 @@
                                                 <td>{{obj.status.status_name}}</td>
                                                 <td>{{obj.applications[0].application_name}}</td>
                                                 <td>
-                                                    <a data-toggle="tooltip" title="Delete Device" ng-click="deleteDevice()"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -
+                                                    <a data-toggle="tooltip" title="Delete Device" ng-click="deleteDevice(obj.device_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -
                                                     <a ng-click="accessUserDevice(obj.device_id)" data-toggle="tooltip" title="Device Access Control"><small><i class="fa fa-fw fa-unlock-alt"></i> </small></a>-
                                                     <a data-toggle="tooltip" title="Device Relation Route" ng-click="deviceRelRoute(obj.device_id)"><small><i class="fa fa-fw fa-exchange"></i></small></i></a>
                                                 </td>

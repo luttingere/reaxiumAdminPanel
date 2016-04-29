@@ -12,7 +12,9 @@ angular.module('App')
                                             $log,
                                             $sessionStorage,
                                             growl,
-                                            $confirm) {
+                                            $confirm,
+                                            GLOBAL_MESSAGE,
+                                            GLOBAL_CONSTANT) {
 
         console.log("Cargo el Controlador de Usuarios");
         $scope.control = {}
@@ -64,7 +66,7 @@ angular.module('App')
         $scope.getAllUsers = function () {
 
             spinnerService.show("spinnerUserList");
-            UserService.setModeEdit({isModeEdit:false,idUser:0});
+            UserService.cleanModeEdit();
 
              UserService.getUsers($scope.filterCriteria).then(function (data) {
                 $scope.users = data.users;
@@ -76,7 +78,8 @@ angular.module('App')
                  var messageGrowl = UserService.getShowGrowlMessage();
 
                  if(messageGrowl.isShow){
-                     growl.info(messageGrowl.message)
+                     growl.info(messageGrowl.message);
+                     UserService.cleanGrowl();
                  }
 
             }).catch(function(err){
@@ -84,6 +87,8 @@ angular.module('App')
                  $scope.users = [];
                  $scope.totalPages = 0;
                  $scope.totalRecords = 0;
+                 spinnerService.hide("spinnerUserList");
+                 growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
              });
         }
 
@@ -221,23 +226,39 @@ angular.module('App')
             $scope.showGeneralInfoModal = !$scope.showGeneralInfoModal;
         }
 
-
+        /**
+         * Edit User Mode
+         * @param id
+         */
         $scope.editMode = function(id){
 
-            var obj ={
-                isModeEdit:true,
-                idUser:parseInt(id)
-            }
+            var obj ={isModeEdit:true,idUser:parseInt(id)};
             UserService.setModeEdit(obj);
-
             $state.go("newUser");
         }
 
+
+        /**
+         * Delete User
+         * @param id_user
+         */
         $scope.deleteUser = function(id_user){
 
             $confirm({text: 'Are you sure you want to delete?'})
                 .then(function() {
-
+                    UserService.deleteUser(id_user)
+                        .then(function(resp){
+                           if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+                               $scope.selectPage(1);
+                               growl.success(resp.ReaxiumResponse.message);
+                           }else{
+                             growl.error(resp.ReaxiumResponse.message);
+                           }
+                        })
+                        .catch(function(err){
+                            console.error("Error invocando servicio delete: "+err);
+                            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                        });
                 });
         }
 

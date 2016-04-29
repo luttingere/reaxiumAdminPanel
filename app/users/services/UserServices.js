@@ -205,6 +205,11 @@ angular.module('App')
             return userIdFound;
         }
 
+        /**
+         * New Access User
+         * @param user
+         * @returns {d.promise|*|promise}
+         */
         lookup.newAccessUser = function (user) {
 
             var defered = $q.defer();
@@ -226,7 +231,12 @@ angular.module('App')
             return promise;
         }
 
-        lookup.delete = function(id_user){
+        /**
+         * Delete User
+         * @param id_user
+         * @returns {d.promise|*|promise}
+         */
+        lookup.deleteUser = function(id_user){
 
             var defered = $q.defer();
             var promise = defered.promise;
@@ -272,6 +282,13 @@ angular.module('App')
 
         var objUserById = {};
 
+        this.cleanGrowl = function(){
+            this.setShowGrowlMessage({isShow:false,message:""});
+        }
+
+        this.cleanModeEdit = function(){
+            this.setModeEdit({isModeEdit:false,idUser:0});
+        }
 
         this.getObjUserById = function () {
             return objUserById;
@@ -339,6 +356,6 @@ angular.module('App')
         }
 
         this.deleteUser = function(id_user){
-            return UserLookup.delete(id_user);
+            return UserLookup.deleteUser(id_user);
         }
     });

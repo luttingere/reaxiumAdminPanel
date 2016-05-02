@@ -95,7 +95,7 @@
                                                                 <td>{{obj.route.routes_stops_count}}</td>
                                                                 <td>{{obj.start_date | transforDate | date:'mediumTime'}}</td>
                                                                 <td>{{obj.end_date  | transforDate | date:'mediumTime'}}</td>
-                                                                <td><a data-toggle="tooltip" title="Delete Device" ng-click="deleteRoute()"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
+                                                                <td><a data-toggle="tooltip" title="Delete Device" ng-click="deleteRoute(obj.id_device_routes)"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
                                                             </tr>
                                                             </tbody>
                                                             </tfoot>
@@ -108,22 +108,7 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-
-                       <!-- <div class="row" ng-show="showTableRoute">
-                            <div class="content" style="min-height: 0px;">
-                                <div class="col-md-4"></div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-block btn-primary btn-lg"
-                                            ng-click="saveAccessUser()">Save
-                                    </button>
-                                    <br/>
-                                </div>
-                                <div class="col-md-4"></div>
-                            </div>
-                            <br/>
-                        </div>-->
 
                     </div>
                 </div>

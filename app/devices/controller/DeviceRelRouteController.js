@@ -33,7 +33,7 @@ angular.module("App")
     $scope.mytime_end = new Date();;
     $scope.hstep = 1;
     $scope.mstep = 1;
-    $scope.ismeridian = false;
+    //$scope.ismeridian = true;
 
 
     var init = function(){
@@ -144,11 +144,15 @@ angular.module("App")
 
             spinnerService.show("spinnerNew");
 
-            var start_date = $filter('date')($scope.mytime_start,'shortTime');
-            var end_date = $filter('date')($scope.mytime_end,'shortTime');
+            console.log($scope.mytime_start);
+            console.log($scope.mytime_end);
 
-            start_date = (start_date.indexOf('A')>0) ? start_date.replace('AM','') : start_date.replace('PM','');
-            end_date = (end_date.indexOf('A')>0) ? end_date.replace('AM','') : end_date.replace('PM','');
+            var start_date = $filter('date')($scope.mytime_start,'HH:mm:ss');
+            var end_date = $filter('date')($scope.mytime_end,'HH:mm:ss');
+
+            console.log(start_date);
+            console.log(end_date);
+
 
             var objSend = {
                 ReaxiumParameters:{
@@ -160,6 +164,8 @@ angular.module("App")
                     }
                 }
             }
+
+
 
             console.log(objSend);
 

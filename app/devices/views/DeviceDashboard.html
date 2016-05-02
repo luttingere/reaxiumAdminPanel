@@ -62,6 +62,7 @@
                                         <table id="userTable" class="table table-bordered table-striped">
                                             <thead>
                                             <tr>
+                                                <th>Device ID</th>
                                                 <th ng-repeat="header in deviceTableHeaders">
                                                     <sort-by onsort="onSort" sortdir="filterCriteria.ReaxiumParameters.sortDir" sortedby="filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
                                                 </th>
@@ -74,6 +75,7 @@
                                                 <td>{{obj.device_id}}</td>
                                                 <td>{{obj.device_name}}</td>
                                                 <td>{{obj.device_description}}</td>
+                                                <td>{{obj.configured}}</td>
                                                 <td>{{obj.status.status_name | lowerCase | capitalize}}</td>
                                                 <td>
                                                     <a data-toggle="tooltip" title="Delete Device" ng-click="deleteDevice(obj.device_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -

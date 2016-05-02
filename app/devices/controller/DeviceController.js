@@ -35,16 +35,18 @@ angular.module("App")
      */
     $scope.deviceTableHeaders = [
         {
-            title:'ID Device'
-        },
-        {
             title: 'Device Name',
             value: 'device_name'
         },
+
         {
             title: 'Device Description',
             value: 'device_description'
-        }
+        },
+        {
+            title:'Configured',
+            value:'configured'
+        },
     ];
 
     //default criteria that will be sent to the server

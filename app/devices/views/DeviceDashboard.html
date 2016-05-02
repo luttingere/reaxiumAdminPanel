@@ -33,43 +33,7 @@
 
             <!-- Main content -->
             <section class="content">
-                <!-- Small boxes (Stat box) -->
-               <!-- <div class="row">
-                    <div class="col-lg-3 col-xs-4">
 
-                        <div class="small-box bg-blue">
-                            <div class="inner">
-                                <h3>100</h3>
-                                <p>Active devices</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-xs-4">
-
-                        <div class="small-box bg-blue">
-                            <div class="inner">
-                                <h3>30<sup style="font-size: 20px">%</sup></h3>
-                                <p>Devices IN</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                        </div>
-
-                        <div class="small-box bg-blue">
-                            <div class="inner">
-                                <h3>70</h3>
-                                <p>Devices OUT</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
                 <div growl></div>
                 <!-- Main row -->
                 <div class="row">
@@ -102,16 +66,15 @@
                                                     <sort-by onsort="onSort" sortdir="filterCriteria.ReaxiumParameters.sortDir" sortedby="filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
                                                 </th>
                                                 <th>Status</th>
-                                                <th>Application RelationShip</th>
                                                 <th>Actions</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr ng-repeat="obj in devices">
+                                                <td>{{obj.device_id}}</td>
                                                 <td>{{obj.device_name}}</td>
                                                 <td>{{obj.device_description}}</td>
-                                                <td>{{obj.status.status_name}}</td>
-                                                <td>{{obj.applications[0].application_name}}</td>
+                                                <td>{{obj.status.status_name | lowerCase | capitalize}}</td>
                                                 <td>
                                                     <a data-toggle="tooltip" title="Delete Device" ng-click="deleteDevice(obj.device_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -
                                                     <a ng-click="accessUserDevice(obj.device_id)" data-toggle="tooltip" title="Device Access Control"><small><i class="fa fa-fw fa-unlock-alt"></i> </small></a>-

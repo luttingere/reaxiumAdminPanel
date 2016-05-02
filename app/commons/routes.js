@@ -104,6 +104,18 @@ angular.module("App")
                 }
             })
 
+            .state("deviceViewRoute",{
+                url:"/deviceViewRoute",
+                controller:'DeviceViewRouteCtrl',
+                views: {
+                    '': {templateUrl: 'app/devices/views/DeviceViewRoute.html'},
+                    'header@deviceViewRoute': {templateUrl: 'app/home/views/header.html'},
+                    'menu@deviceViewRoute': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@deviceViewRoute':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
+
+
             .state("routes",{
                 url: '/routes',
                 controller:'RouteCtrl',

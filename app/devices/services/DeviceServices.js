@@ -197,6 +197,46 @@ angular.module("App")
         return promise
     }
 
+
+    lookup.routeByDeviceId = function(id_device){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_GET_ROUTE_BY_DEVICE,
+            data: JSON.stringify({ReaxiumParameters:{ReaxiumDevice:{device_id:id_device}}}),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+            defered.resolve(response);
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise
+
+    }
+
+    lookup.deleteRouteByDevice = function(id_device_route){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_DELETE_ROUTE_BY_DEVICE,
+            data: JSON.stringify({ReaxiumParameters:{ReaxiumDevice:{id_device_routes:id_device_route}}}),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+            defered.resolve(response);
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise
+    }
+
     return lookup;
 })
 
@@ -288,5 +328,13 @@ angular.module("App")
 
     this.deleteDevice = function(id_device){
         return DeviceLookup.deleteDevice(id_device);
+    }
+
+    this.getRoutesByDeviceId = function(id_device){
+        return DeviceLookup.routeByDeviceId(id_device);
+    }
+
+    this.deleteRouteByDevice = function(id_device){
+        return DeviceLookup.deleteRouteByDevice(id_device);
     }
 })

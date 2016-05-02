@@ -33,13 +33,18 @@ angular.module("App")
      * cabecera de la tabla de usuarios
      * @type {*[]}
      */
-    $scope.deviceTableHeaders = [{
-        title: 'Device Name',
-        value: 'device_name'
-    }, {
-        title: 'Device Description',
-        value: 'device_description'
-    }
+    $scope.deviceTableHeaders = [
+        {
+            title:'ID Device'
+        },
+        {
+            title: 'Device Name',
+            value: 'device_name'
+        },
+        {
+            title: 'Device Description',
+            value: 'device_description'
+        }
     ];
 
     //default criteria that will be sent to the server

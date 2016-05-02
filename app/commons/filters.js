@@ -20,10 +20,22 @@ angular.module('App')
         }
     })
 
-    .filter('upperCase',function(){
+    .filter('upperCase', function () {
+        return function (text) {
+            if (text != null) {
+                return text.toUpperCase();
+            }
+        }
+    })
+
+    .filter('transforDate', function () {
         return function(text){
             if(text != null){
-                return text.toUpperCase();
+
+                var pos = text.indexOf('+');
+
+                return text.substring(0,pos);
+
             }
         }
     })

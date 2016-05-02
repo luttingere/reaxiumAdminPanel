@@ -44,6 +44,10 @@ angular.module('App', ['ui.router',
                 {
                     'name': 'All Device',
                     'url': "device"
+                },
+                {
+                    'name':'View routes relation device',
+                    'url':'deviceViewRoute'
                 }
             ]
         }, {

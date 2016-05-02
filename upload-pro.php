@@ -43,7 +43,7 @@ if (!empty($_FILES)) foreach ($_FILES as $file) {
 
 	// check the error status
 	if ($file['error'] != 0) {
-		_log('error '.$file['error'].' in file '.$_POST['flowFilename']);
+		//_log('error '.$file['error'].' in file '.$_POST['flowFilename']);
 		continue;
 	}
 
@@ -60,25 +60,25 @@ if (!empty($_FILES)) foreach ($_FILES as $file) {
 
 	// move the temporary file
 	if (!move_uploaded_file($file['tmp_name'], $dest_file)) {
-		_log('Error saving (move_uploaded_file) chunk '.$_POST['flowChunkNumber'].' for file '.$_POST['flowFilename']);
+		//_log('Error saving (move_uploaded_file) chunk '.$_POST['flowChunkNumber'].' for file '.$_POST['flowFilename']);
 	} else {
 
 		// check if all the parts present, and create the final destination file
 		$succesUpload = createFileFromChunks($temp_dir, $_POST['flowFilename'],$_POST['flowChunkSize'], $_POST['flowTotalSize']);
 
 
-			echo json_encode([
-					'success' => (!$succesUpload) ? false : true,
-					'files' => $_FILES,
-					'get' => $_GET,
-					'post' => $_POST,
+		echo json_encode([
+				'success' => (!$succesUpload) ? false : true,
+				'files' => $_FILES,
+				'get' => $_GET,
+				'post' => $_POST,
 
-					'flowTotalSize' => isset($_FILES['file']) ? $_FILES['file']['size'] : $_GET['flowTotalSize'],
-					'flowIdentifier' => isset($_FILES['file']) ? $_FILES['file']['name'] . '-' . $_FILES['file']['size']
-							: $_GET['flowIdentifier'],
-					'flowFilename' => isset($_FILES['file']) ? $_FILES['file']['name'] : $_GET['flowFilename'],
-					'flowRelativePath' => isset($_FILES['file']) ? $_FILES['file']['tmp_name'] : $_GET['flowRelativePath']
-			]);
+				'flowTotalSize' => isset($_FILES['file']) ? $_FILES['file']['size'] : $_GET['flowTotalSize'],
+				'flowIdentifier' => isset($_FILES['file']) ? $_FILES['file']['name'] . '-' . $_FILES['file']['size']
+						: $_GET['flowIdentifier'],
+				'flowFilename' => isset($_FILES['file']) ? $_FILES['file']['name'] : $_GET['flowFilename'],
+				'flowRelativePath' => isset($_FILES['file']) ? $_FILES['file']['tmp_name'] : $_GET['flowRelativePath']
+		]);
 
 	}
 
@@ -158,11 +158,11 @@ function createFileFromChunks($temp_dir, $fileName, $chunkSize, $totalSize) {
 		if (($fp = fopen('../reaxium_user_images/'.$fileName, 'w')) !== false) {
 			for ($i=1; $i<=$total_files; $i++) {
 				fwrite($fp, file_get_contents($temp_dir.'/'.$fileName.'.part'.$i));
-				_log('writing chunk '.$i);
+				//_log('writing chunk '.$i);
 			}
 			fclose($fp);
 		} else {
-			_log('cannot create the destination file');
+			//_log('cannot create the destination file');
 			$response = false;
 		}
 

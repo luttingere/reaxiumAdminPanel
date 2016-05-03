@@ -214,6 +214,63 @@ function validateParamNewUser(obj, mode) {
     return response;
 }
 
+/**
+ * validate the business fields
+ * @param obj
+ * @returns {{validate: boolean, message: string}}
+ */
+function validateParamNewBusiness(obj) {
+
+    var response = {
+        validate: true,
+        message: ""
+    };
+
+
+    var objBusiness = obj.ReaxiumParameters.Business;
+    var phone = obj.ReaxiumParameters.BusinessPhoneNumbers;
+    var objAddress = obj.ReaxiumParameters.BusinessAddress;
+
+
+    //validar datos del usuario
+    if (objBusiness.business_name == undefined || isEmptyString(objBusiness.business_name)) {
+
+        response.validate = false;
+        response.message = "Business name cannot be empty";
+
+    } else if (objBusiness.business_id_number == undefined || isEmptyString(objBusiness.business_id_number)) {
+
+        response.validate = false;
+        response.message = "Business DNI cannot be empty";
+
+    } else if (phone.phone_name == undefined || isEmptyString(phone.phone_name)) {
+
+        response.validate = false;
+        response.message = "Business phone name cannot be empty";
+
+    } else if (phone.phone_number == undefined || isEmptyString(phone.phone_number)) {
+
+        response.validate = false;
+        response.message = "Business phone number cannot be empty";
+
+    } else if (objAddress.address == undefined || isEmptyString(objAddress.address)) {
+        response.validate = false;
+        response.message = "Address Invalid";
+
+    } else if (objAddress.latitude == undefined || isEmptyString(objAddress.latitude)) {
+
+        response.validate = false;
+        response.message = "Address latitude Invalid";
+
+    } else if (objAddress.longitude == undefined || isEmptyString(objAddress.longitude)) {
+        response.validate = false;
+        response.message = "Address longitude Invalid";
+    }
+
+
+    return response;
+}
+
 
 function validateAccess(obj) {
 
@@ -235,23 +292,23 @@ function validateAccess(obj) {
     return response;
 }
 
-function validateFieldsNewRoute(){}
+function validateFieldsNewRoute() {
+}
 
 
-
-function validateFieldNewDevice(name_device,desc_device){
+function validateFieldNewDevice(name_device, desc_device) {
 
     var response = {
         validate: true,
         message: ""
     };
 
-    if(isEmptyString(name_device)){
+    if (isEmptyString(name_device)) {
         response.validate = false;
         response.message = "Name device  empty";
     }
-    else if(isEmptyString(desc_device)){
-        response.validate=false;
+    else if (isEmptyString(desc_device)) {
+        response.validate = false;
         response.message = "Description device empty";
     }
 

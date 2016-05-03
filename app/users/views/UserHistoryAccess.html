@@ -1,0 +1,111 @@
+<spinner name="spinnerNew" ng-cloak="">
+    <div class="overlay"></div>
+    <div class="spinner">
+        <div class="test"><i class="fa fa-refresh fa-spin fa-5x"></i></div>
+    </div>
+    <div class="please-wait">Please Wait...</div>
+</spinner>
+
+<div class="skin-blue sidebar-mini">
+
+    <div class="wrapper" ng-controller="UserHistoryAccessController as userCtrl">
+
+        <!--header-->
+        <div ui-view="header"></div>
+
+        <!--menu-->
+        <div ui-view="menu"></div>
+
+        <div class="content-wrapper">
+
+            <section class="content-header">
+                <h1>
+                    Users History Access
+                    <small>Control panel</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li class="active">User History Access</li>
+                </ol>
+            </section>
+
+            <section class="content">
+
+                <div growl></div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="content" style="min-height: 0px;">
+                                    <div class="box box-primary box-solid">
+                                        <div class="box-header bg-light-blue-active with-border">
+                                            <h3 class="box-title">Pick a User</h3>
+
+                                        </div><!-- /.box-header -->
+                                        <div class="box-body">
+                                            <!--Search User-->
+                                            <div class="col-md-5">
+                                                <div class="box box-info">
+                                                    <div class="box-body">
+                                                        <table>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td style="width: 400px;">
+                                                                    <div angucomplete-alt id="autoCompleteUserSearch"
+                                                                         placeholder="Search a user"
+                                                                         pause="300"
+                                                                         selected-object="selectedPerson"
+                                                                         local-data="userFilter"
+                                                                         local-search="userAutoCompleteSearch"
+                                                                         title-field="first_name,first_last_name"
+                                                                         minlength="2"
+                                                                         description-field="email"
+                                                                         image-field="pic"
+                                                                         input-class="form-control form-control-small"
+                                                                         match-class="highlight">
+                                                                    </div>
+                                                                </td>
+                                                                <td ng-show="selectedPerson">
+                                                                    <button class="btn btn-info btn-flat"
+                                                                            type="button"
+                                                                            ng-click="showUserAccessInformation(selectedPerson)">
+                                                                        Go!
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="box-body box-profile col-md-6 {{showUserBox}}">
+                                                <img class="profile-user-img img-responsive img-circle" style="height: 120px; width: 120px;" src="{{userSelected.photo}}" alt="User profile picture">
+                                                <h3 class="profile-username text-center">{{userSelected.fullName}}</h3>
+                                                <p class="text-muted text-center">{{userSelected.dni}}</p>
+                                                <p class="text-muted text-center">{{userSelected.userType}}</p>
+                                            </div><!-- /.widget-user-image -->
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+
+        <!--footer-->
+        <div ui-view="footer" style="position: fixed; bottom: 0px; width: 100%"></div>
+
+    </div>
+
+</div>

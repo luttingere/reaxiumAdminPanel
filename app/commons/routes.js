@@ -59,7 +59,26 @@ angular.module("App")
                     'footer@userSecurity':{templateUrl: 'app/home/views/footer.html'}
                 }
             })
-
+            .state("AllBusiness",{
+                url: '/AllBusiness',
+                controller:'BusinessController',
+                views: {
+                    '': {templateUrl: 'app/business/views/BusinessDashboard.html'},
+                    'header@AllBusiness': {templateUrl: 'app/home/views/header.html'},
+                    'menu@AllBusiness': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@AllBusiness':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
+            .state("newBusiness",{
+                url: '/newBusiness',
+                controller:'BusinessNewCtrl',
+                views: {
+                    '': {templateUrl: 'app/business/views/BusinessNewRegister.html'},
+                    'header@newBusiness': {templateUrl: 'app/home/views/header.html'},
+                    'menu@newBusiness': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@newBusiness':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
             .state("device",{
                 url: '/device',
                 controller:'DeviceCtrl',

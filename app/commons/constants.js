@@ -17,6 +17,16 @@ angular.module("App")
         PROXY_URL_ALL_USER_WITH_PAGINATE: "http://54.200.133.84/reaxium/Users/allUsersInfoWithPagination",
         PROXY_URL_CREATE_USER_STAKEHOLDER: "http://54.200.133.84/reaxium/Users/createStakeholderUser",
 
+
+        /*Proxy Business*/
+        PROXY_URL_CREATE_NEW_BUSINESS: "http://54.200.133.84/reaxium/Business/createBusiness",
+        PROXY_URL_ALL_BUSINESS_WITH_PAGINATE: "http://54.200.133.84/reaxium/Business/allBusiness",
+        PROXY_URL_ALL_BUSINESS_WITH_FILTER: "http://54.200.133.84/reaxium/Business/allBusinessFiltered",
+        PROXY_URL_DELETE_BUSINESS: "http://54.200.133.84/reaxium/Business/deleteBusiness",
+        PROXY_URL_BUSINESS_BY_ID: "http://54.200.133.84/reaxium/Business/businessById",
+        PROXY_URL_DELETE_BUSINESS_BY_ID: "http://54.200.133.84/reaxium/Business/deleteBusiness",
+
+
         /*Proxy Access*/
         PROXY_URL_LOGIN: "http://54.200.133.84/reaxium/Access/checkUserAccess",
         PROXY_URL_CREATE_ACCESS_USER: "http://54.200.133.84/reaxium/Access/createAccessNewUser",

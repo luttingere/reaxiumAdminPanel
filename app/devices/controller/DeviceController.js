@@ -38,7 +38,6 @@ angular.module("App")
             title: 'Device Name',
             value: 'device_name'
         },
-
         {
             title: 'Device Description',
             value: 'device_description'
@@ -86,7 +85,7 @@ angular.module("App")
 
             }).catch(function(err){
             console.error("Error en invocacion del servicio..."+err);
-            spinnerService.hide("spinnerUserList");
+            spinnerService.hide("spinnerNew");
             growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
         });
 

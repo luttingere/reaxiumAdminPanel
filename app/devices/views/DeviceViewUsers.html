@@ -8,7 +8,7 @@
 
 <div class="skin-blue sidebar-mini">
 
-    <div class="wrapper" ng-controller="DeviceViewRouteCtrl">
+    <div class="wrapper" ng-controller="DeviceViewUsersCtrl">
 
         <!--header-->
         <div ui-view="header"></div>
@@ -20,7 +20,7 @@
 
             <section class="content-header">
                 <h1>
-                    Device View Routes
+                    Device View Users
                     <small>Control panel</small>
                 </h1>
                 <ol class="breadcrumb">
@@ -40,12 +40,8 @@
                                 <div class="content" style="min-height: 0px;">
                                     <div class="box box-primary box-solid">
                                         <div class="box-header bg-light-blue-active with-border">
-                                            <h3 class="box-title">Device View Routes Control</h3>
+                                            <h3 class="box-title">Device View Users Control</h3>
 
-                                            <!--<div class="box-tools pull-right">
-                                                <button class="btn btn-box-tool" data-widget="collapse"><i
-                                                        class="fa fa-plus"></i></button>
-                                            </div>--><!-- /.box-tools -->
                                         </div><!-- /.box-header -->
                                         <div class="box-body">
                                             <!--Search StakeHolder-->
@@ -71,31 +67,27 @@
                                             <div class="col-md-12" ng-show="showTableRoute">
                                                 <div class="box box-info">
                                                     <div class="box-header">
-                                                        <h3 class="box-title">Routes Relation with Device</h3>
+                                                        <h3 class="box-title">Users Relation with Device</h3>
                                                     </div><!-- /.box-header -->
                                                     <div class="box-body">
                                                         <table id="userTable"
                                                                class="table table-bordered table-striped">
                                                             <thead>
                                                             <tr>
-                                                                <th>Route Number</th>
-                                                                <th>Route Name</th>
-                                                                <th>Route Address</th>
-                                                                <th>Quantity Stop</th>
-                                                                <th>Start Date</th>
-                                                                <th>End Date</th>
+                                                                <th>Name</th>
+                                                                <th>Last Name</th>
+                                                                <th>DNI</th>
+                                                                <th>Status</th>
                                                                 <th>Actions</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            <tr ng-repeat="obj in listRoutesByDevice">
-                                                                <td>{{obj.route.route_number}}</td>
-                                                                <td>{{obj.route.route_name}}</td>
-                                                                <td>{{obj.route.route_address}}</td>
-                                                                <td>{{obj.route.routes_stops_count}}</td>
-                                                                <td>{{obj.start_date | transforDate | date:'mediumTime'}}</td>
-                                                                <td>{{obj.end_date  | transforDate | date:'mediumTime'}}</td>
-                                                                <td><a data-toggle="tooltip" title="Delete Device" ng-click="deleteRoute(obj.id_device_routes)"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
+                                                            <tr ng-repeat="obj in listUsersByDevice">
+                                                                <td>{{obj.UserAccessData.user.first_name}}</td>
+                                                                <td>{{obj.UserAccessData.user.first_last_name}}</td>
+                                                                <td>{{obj.UserAccessData.user.document_id}}</td>
+                                                                <td>{{obj.UserAccessData.user.status.status_name | lowerCase | capitalize}}</td>
+                                                                <td><a data-toggle="tooltip" title="Delete Device" ng-click="deleteUser(obj.user_access_data_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
                                                             </tr>
                                                             </tbody>
                                                             </tfoot>

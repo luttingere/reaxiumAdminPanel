@@ -35,43 +35,43 @@ angular.module('App', ['ui.router',
                     }
                 ]
             }, {
-            'name': 'User Administration',
-            'icon_class': 'fa fa-user',
-            'subMenus': [
-                {
-                    'name': 'All Users',
-                    'url': "allUser"
-                },
-                {
-                    'name': 'User Access',
-                    'url': "userSecurity"
-                }
-            ]
-        }, {
-            'name': 'Device Administration',
-            'icon_class': 'fa fa-hdd-o',
-            'subMenus': [
-                {
-                    'name': 'All Device',
-                    'url': "device"
-                },
-                {
-                    'name':'View routes relation device',
-                    'url':'deviceViewRoute'
-                },
-                {
-                    'name':'View users relation device',
-                    'url':'deviceViewUsers'
-                }
-            ]
-        }, {
-            'name': 'Routes Administration',
-            'icon_class': 'fa fa-map-signs',
-            'subMenus': [{
-                'name': 'All routes',
-                'url': "routes"
-            }]
-        }];
+                'name': 'User Administration',
+                'icon_class': 'fa fa-user',
+                'subMenus': [
+                    {
+                        'name': 'All Users',
+                        'url': "allUser"
+                    },
+                    {
+                        'name': 'User Access',
+                        'url': "userSecurity"
+                    }
+                ]
+            }, {
+                'name': 'Device Administration',
+                'icon_class': 'fa fa-hdd-o',
+                'subMenus': [
+                    {
+                        'name': 'All Device',
+                        'url': "device"
+                    },
+                    {
+                        'name': 'View routes relation device',
+                        'url': 'deviceViewRoute'
+                    },
+                    {
+                        'name': 'View users relation device',
+                        'url': 'deviceViewUsers'
+                    }
+                ]
+            }, {
+                'name': 'Routes Administration',
+                'icon_class': 'fa fa-map-signs',
+                'subMenus': [{
+                    'name': 'All routes',
+                    'url': "routes"
+                }]
+            }];
 
     }])
 

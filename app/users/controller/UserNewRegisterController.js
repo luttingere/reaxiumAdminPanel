@@ -318,11 +318,11 @@ angular.module('App')
             $scope.userFilter.forEach(function (person) {
                 matches.push(person);
                 var fullName = person.first_name + ' ' + person.second_name;
-                if ((person.first_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
-                    (person.second_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
-                    (fullName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0)) {
-
-                }
+                //if ((person.first_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
+                //    (person.second_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
+                //    (fullName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0)) {
+                //
+                //}
             });
 
             return matches;

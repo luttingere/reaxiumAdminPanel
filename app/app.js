@@ -45,6 +45,10 @@ angular.module('App', ['ui.router',
                     {
                         'name': 'Add Access User',
                         'url': "userSecurity"
+                    },
+                    {
+                        'name': 'User History Access',
+                        'url': "userHistoryAccess"
                     }
                 ]
             }, {

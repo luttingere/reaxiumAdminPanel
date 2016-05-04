@@ -59,6 +59,16 @@ angular.module("App")
                     'footer@userSecurity':{templateUrl: 'app/home/views/footer.html'}
                 }
             })
+            .state("userHistoryAccess",{
+                url: '/userHistoryAccess',
+                controller:'UserHistoryAccessController',
+                views: {
+                    '': {templateUrl: 'app/users/views/UserHistoryAccess.html'},
+                    'header@userHistoryAccess': {templateUrl: 'app/home/views/header.html'},
+                    'menu@userHistoryAccess': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@userHistoryAccess':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
             .state("AllBusiness",{
                 url: '/AllBusiness',
                 controller:'BusinessController',

@@ -28,8 +28,8 @@
         <ul class="sidebar-menu">
             <li class="header">Admin Options</li>
             <li><a ui-sref="home"><i class="fa fa-home"></i>Home</a></li>
-            <li class="active treeview"
-                ng-repeat="menu in menus | filter:{name:menuOptions.searchWord}">
+            <!--class="active treeview"-->
+            <li ng-repeat="menu in menus | filter:{name:menuOptions.searchWord}">
                 <a>
                     <i class="{{menu.icon_class}}"></i> <span>{{menu.name}}</span> <i
                         class="fa fa-angle-left pull-right"></i>

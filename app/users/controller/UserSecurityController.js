@@ -11,7 +11,8 @@ angular.module('App')
                                    UserService,
                                    spinnerService,
                                    $sessionStorage,
-                                   growl){
+                                   growl,
+                                   GLOBAL_CONSTANT){
 
     $scope.showgrowlMessage = false;
     $scope.showMessage = "";
@@ -24,7 +25,7 @@ angular.module('App')
     var objUser = {};
 
     //menu sidebar
-    $scope.menus = $rootScope.appMenus;
+    $scope.menus = addActiveClassMenu($rootScope.appMenus,GLOBAL_CONSTANT.ID_USER_MENU);
 
     //Search on the menu
     $scope.menuOptions = {searchWord: ''};

@@ -58,15 +58,22 @@ angular.module("App")
          * add a google map with the location of the user address
          */
         $scope.addTheMap = function () {
+
+            var latitude = RoutesServices.getModeEdit().isModeEdit ? $scope.polylines[0].path[0].latitude : RoutesServices.getAddressDefault().latitude;
+            var longitude = RoutesServices.getModeEdit().isModeEdit ? $scope.polylines[0].path[0].longitude : RoutesServices.getAddressDefault().longitude;
+
+            console.log("latitude: "+latitude);
+            console.log("longitude: "+longitude);
+
             uiGmapGoogleMapApi.then(function (maps) {
                 console.log("Google map cargado...");
                 maps.visualRefresh = true;
                 $scope.map = {
                     center: {
-                        latitude: 25.7824618,
-                        longitude: -80.3011209
+                        latitude: latitude,
+                        longitude: longitude
                     },
-                    zoom: 10,
+                    zoom: 14,
                     bounds: {},
                     options: {"MapTypeId": maps.MapTypeId.ROADMAP}
                 };
@@ -293,41 +300,49 @@ angular.module("App")
 
         $scope.saveRoute = function () {
 
-            spinnerService.show("spinnerNew");
+            if($scope.allListStopSelect.length > 0 && $scope.nameRoute != "" && $scope.numberRoute != ""){
 
-            var objSend = {
-                ReaxiumParameters: {
-                    ReaxiumRoutes: {
-                        stops: []
+                spinnerService.show("spinnerNew");
+
+                var objSend = {
+                    ReaxiumParameters: {
+                        ReaxiumRoutes: {
+                            stops: []
+                        }
                     }
-                }
-            };
+                };
 
-            $scope.allListStopSelect.forEach(function (entry) {
                 objSend.ReaxiumParameters.ReaxiumRoutes.route_name = $scope.nameRoute;
                 objSend.ReaxiumParameters.ReaxiumRoutes.route_number = $scope.numberRoute;
                 objSend.ReaxiumParameters.ReaxiumRoutes.route_address = "Miami, Florida, EE. UU.";
-                objSend.ReaxiumParameters.ReaxiumRoutes.stops.push({id_stop: entry.id_stop});
-            });
 
-            $log.debug("Objeto para enviar", objSend);
+                $scope.allListStopSelect.forEach(function (entry) {
+                    objSend.ReaxiumParameters.ReaxiumRoutes.stops.push({id_stop: entry.id_stop});
+                });
 
-            RoutesServices.newCreateRoute(objSend)
-                .then(function (res) {
-                    spinnerService.hide("spinnerNew");
-                    if (res.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
-                        RoutesServices.setShowGrowlMessage({isShow:true,message:res.ReaxiumResponse.message});
-                        $state.go("routes");
-                    }
-                    else {
-                        console.error("Error creado nueva ruta "+res.ReaxiumResponse.message);
-                        growl.error("Error create new route ");
-                    }
-                }).catch(function (err) {
+                $log.debug("Objeto para enviar", objSend);
+
+                RoutesServices.newCreateRoute(objSend)
+                    .then(function (res) {
+                        spinnerService.hide("spinnerNew");
+                        if (res.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
+                            RoutesServices.setShowGrowlMessage({isShow:true,message:res.ReaxiumResponse.message});
+                            $state.go("routes");
+                        }
+                        else {
+                            console.error("Error creado nueva ruta "+res.ReaxiumResponse.message);
+                            growl.error("Error create new route ");
+                        }
+                    }).catch(function (err) {
                     spinnerService.hide("spinnerNew");
                     console.error("Error creado nueva ruta " + err);
-                     growl.error("Error create new route ");
+                    growl.error("Error create new route ");
                 });
+            }
+            else{
+                console.log("Add stops to save the new route");
+                growl.warning("Add stops to save the new route");
+            }
 
         }
     });

@@ -92,10 +92,10 @@ angular.module("App")
                 });
 
             }else{
-                console.error()
+                console.info(result.ReaxiumResponse.message);
             }
         }).catch(function (err) {
-            console.log("Error invocando service filter" + err);
+            console.error("Error invocando service filter" + err);
         });
     };
 
@@ -116,7 +116,6 @@ angular.module("App")
     $scope.deleteUserTable = function () {
 
         $scope.allUserSelcStakeHolder = [];
-        //$scope.showTable = false;
     }
 
     var clearInput = function (id) {
@@ -185,7 +184,7 @@ angular.module("App")
             });
 
         }else{
-            growl.info("Add a route to save");
+            growl.warning("Add a route to save");
         }
 
     }

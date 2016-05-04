@@ -128,7 +128,7 @@
                                                                 <td  id="rfid_{{user.user_id}}" style="text-align: center">
                                                                     <input type="checkbox" name="r3"  value="{{user.rfid.access_type_id}}-{{user.rfid.user_access_data_id}}" ng-hide="{{user.rfid.disable_rfid != 1}}">
                                                                 </td>
-                                                                <td id="delete_{{user.user_id}}"><a ng-click="deleteUserTable()"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
+                                                                <td id="delete_{{user.user_id}}"><a ng-click="deleteUserTable(user.user_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
                                                             </tr>
                                                             </tbody>
                                                             </tfoot>

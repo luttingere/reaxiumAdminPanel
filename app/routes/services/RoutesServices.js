@@ -144,6 +144,15 @@ angular.module("App")
             id_route: "0"
         };
 
+        var addressRouteDefault = {
+            latitude: 25.7824618,
+            longitude: -80.3011209
+        };
+
+
+        this.getAddressDefault = function () {
+            return addressRouteDefault;
+        }
 
         this.cleanGrowlRoute = function(){
             this.setShowGrowlMessage({isShow:false,message: ""});

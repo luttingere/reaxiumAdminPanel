@@ -4,7 +4,14 @@
 
 angular.module('App')
 
-.controller("SecurityCrl",function($scope,$rootScope,$state,$log,UserService,spinnerService,$sessionStorage){
+.controller("SecurityCrl",function($scope,
+                                   $rootScope,
+                                   $state,
+                                   $log,
+                                   UserService,
+                                   spinnerService,
+                                   $sessionStorage,
+                                   growl){
 
     $scope.showgrowlMessage = false;
     $scope.showMessage = "";
@@ -105,7 +112,7 @@ angular.module('App')
         spinnerService.show("spinnerNew");
         var resValidate = validateAccess($scope.access);
 
-        if(objUser != null && objUser != undefined){
+        if(objUser != null && objUser != undefined && $scope.access.login != "" && $scope.access.pass != ""){
             if(resValidate.validate){
                 var objJson ={
                     ReaxiumParameters:{
@@ -120,7 +127,6 @@ angular.module('App')
 
                 var promiseAccessNew = UserService.createAccessUser(objJson);
                 promiseAccessNew.then(function(response){
-                    $log.debug("respuesta Servicio",response);
                     UserService.setShowGrowlMessage({isShow:true,message:response.message});
                     spinnerService.hide("spinnerNew");
                     $state.go("allUser");
@@ -134,9 +140,8 @@ angular.module('App')
             }
         }
         else{
-            UserService.setShowGrowlMessage({isShow:true,message:resValidate.message});
             spinnerService.hide("spinnerNew");
-            $state.go("allUser");
+            growl.warning("Login and Pass empty");
         }
     }
 

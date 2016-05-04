@@ -273,7 +273,7 @@ angular.module('App')
         var addressDefault = {
             latitude: 37.0902,
             longitude: -95.7129
-        }
+        };
 
         var showGrowl = {
             isShow: false,

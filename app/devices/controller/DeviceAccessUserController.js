@@ -91,74 +91,78 @@ angular.module("App")
 
         $scope.addUser = function (str) {
 
-            spinnerService.show("spinnerNew");
-            $log.debug(str.originalObject);
+            if(!seachObjList(str.originalObject.user_id)){
 
-            var device_id = DeviceService.getRelUserDevice().id_device;
+                spinnerService.show("spinnerNew");
+                $log.debug(str.originalObject);
 
-            DeviceService.getTypeAccessByUser({ReaxiumParameters: {ReaxiumDevice: {user_id: str.originalObject.user_id,device_id:device_id}}})
-                .then(function (response) {
+                var device_id = DeviceService.getRelUserDevice().id_device;
 
+                DeviceService.getTypeAccessByUser({ReaxiumParameters: {ReaxiumDevice: {user_id: str.originalObject.user_id,device_id:device_id}}})
+                    .then(function (response) {
+
+                        spinnerService.hide("spinnerNew");
+
+                        var dataUser = response.ReaxiumResponse;
+
+                        if (dataUser.code == 0) {
+                            growl.success("Valid user to relate with device");
+                            $log.debug(response);
+                            var obj = {
+                                device_id: device_id,
+                                user_id: str.originalObject.user_id,
+                                document_id: str.originalObject.document_id,
+                                first_name: str.originalObject.first_name,
+                                second_name: str.originalObject.second_name,
+                                login_and_pass: {},
+                                biometric: {},
+                                rfid: {}
+
+                            };
+
+                            var arrayData = searchAccessTypeId(dataUser.object);
+
+                            var disable_login_and_pass = (!arrayData.containsObj(GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS)) ? 0 : 1;
+                            var disable_bio = (!arrayData.containsObj(GLOBAL_CONSTANT.ACCESS_BIOMETRIC)) ? 0 : 1;
+                            var disable_rfid = (!arrayData.containsObj(GLOBAL_CONSTANT.ACCESS_RFID)) ? 0 : 1;
+
+                            obj.login_and_pass = {
+                                disable_login_and_pass: disable_login_and_pass,
+                                access_type_id: GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS,
+                                user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS)
+                            };
+
+                            obj.biometric = {
+                                disable_bio: disable_bio,
+                                access_type_id: GLOBAL_CONSTANT.ACCESS_BIOMETRIC,
+                                user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_BIOMETRIC)
+                            };
+
+                            obj.rfid = {
+                                disable_rfid: disable_rfid,
+                                access_type_id: GLOBAL_CONSTANT.ACCESS_RFID,
+                                user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_RFID)
+                            };
+
+
+                            $log.debug(obj);
+                            $scope.allUserSelcStakeHolder.push(obj);
+                            $scope.showTable = true;
+
+                        } else {
+                            console.log("Error no se encuentra data pata el usuario");
+                            growl.error(response.ReaxiumResponse.message);
+                        }
+                    }).catch(function (err) {
+                    console.error("Error invocando serviico " + err);
                     spinnerService.hide("spinnerNew");
+                });
 
-                    var dataUser = response.ReaxiumResponse;
-
-                    if (dataUser.code == 0) {
-                        growl.success("Valid user to relate with device");
-                        $log.debug(response);
-                        var obj = {
-                            device_id: device_id,
-                            user_id: str.originalObject.user_id,
-                            document_id: str.originalObject.document_id,
-                            first_name: str.originalObject.first_name,
-                            second_name: str.originalObject.second_name,
-                            login_and_pass: {},
-                            biometric: {},
-                            rfid: {}
-
-                        };
-
-                        var arrayData = searchAccessTypeId(dataUser.object);
-
-                        $log.debug("Arreglo de mierda", arrayData);
-                        var disable_login_and_pass = (!arrayData.containsObj(GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS)) ? 0 : 1;
-                        var disable_bio = (!arrayData.containsObj(GLOBAL_CONSTANT.ACCESS_BIOMETRIC)) ? 0 : 1;
-                        var disable_rfid = (!arrayData.containsObj(GLOBAL_CONSTANT.ACCESS_RFID)) ? 0 : 1;
-
-                        obj.login_and_pass = {
-                            disable_login_and_pass: disable_login_and_pass,
-                            access_type_id: GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS,
-                            user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS)
-                        };
-
-                        obj.biometric = {
-                            disable_bio: disable_bio,
-                            access_type_id: GLOBAL_CONSTANT.ACCESS_BIOMETRIC,
-                            user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_BIOMETRIC)
-                        };
-
-                        obj.rfid = {
-                            disable_rfid: disable_rfid,
-                            access_type_id: GLOBAL_CONSTANT.ACCESS_RFID,
-                            user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_RFID)
-                        };
-
-
-                        $log.debug(obj);
-                        $scope.allUserSelcStakeHolder.push(obj);
-                        $scope.showTable = true;
-
-                    } else {
-                        console.log("Error no se encuentra data pata el usuario");
-                        growl.error(response.ReaxiumResponse.message);
-                    }
-                }).catch(function (err) {
-                console.error("Error invocando serviico " + err);
-                spinnerService.hide("spinnerNew");
-            });
+            }else{
+                growl.warning("User is already added");
+            }
 
             clearInput('ex2');
-
 
         };
 
@@ -231,9 +235,25 @@ angular.module("App")
         }
 
 
-        $scope.deleteUserTable = function () {
-            $scope.allUserSelcStakeHolder = [];
-            $scope.showTable = false;
+        $scope.deleteUserTable = function(user_id) {
+
+            console.log("Delete Element: " + user_id);
+            var index = -1;
+            for (var i = 0, len = $scope.allUserSelcStakeHolder.length; i < len; i++) {
+                if ($scope.allUserSelcStakeHolder[i].user_id == user_id) {
+                    index = i;
+                    break;
+                }
+            }
+
+            console.log("Delete Element Pos: " + index);
+            $scope.allUserSelcStakeHolder.splice(index, 1);
+
+            if($scope.allUserSelcStakeHolder.length == 0){
+                $scope.showTable = false;
+            }
+
+
         }
 
         var clearInput = function (id) {
@@ -247,8 +267,6 @@ angular.module("App")
 
 
         $scope.saveAccessUser = function () {
-
-            spinnerService.show("spinnerNew");
 
             var arrayObject = [];
 
@@ -265,6 +283,8 @@ angular.module("App")
             });
 
             if (isEmptyArray(arrayObject)) {
+
+                spinnerService.show("spinnerNew");
 
                 arrayObject.forEach(function (entry) {
 
@@ -300,11 +320,28 @@ angular.module("App")
                     console.log("Error: "+err);
                 });
 
-
             } else {
-                growl.error("Select type access please!");
+                growl.warning("Add users access");
             }
 
+        }
+
+
+        function seachObjList(id_user){
+
+            var validate = false;
+
+            if($scope.allUserSelcStakeHolder.length > 0){
+
+                $scope.allUserSelcStakeHolder.forEach(function(entry){
+
+                    if(entry.user_id == id_user){
+                        validate = true;
+                    }
+                });
+            }
+
+            return validate;
         }
 
     })

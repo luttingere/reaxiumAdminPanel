@@ -46,6 +46,7 @@ angular.module("App")
         PROXY_URL_GET_ROUTE_BY_DEVICE: "http://54.200.133.84/reaxium/Routes/deviceGetRoutes",
         PROXY_URL_DELETE_ROUTE_BY_DEVICE: "http://54.200.133.84/reaxium/Device/deleteRouteByDevice",
         PROXY_URL_GET_USERS_ACCESS_BY_DEVICE:"http://54.200.133.84/reaxium/Device/getUsersByDevice",
+        PROXY_URL_DELETE_USERS_ACCESS_BY_DEVICE:"http://54.200.133.84/reaxium/Device/deleteUserAccessDevice",
 
 
         /*Proxy Routes*/

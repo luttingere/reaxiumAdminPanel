@@ -71,17 +71,24 @@ angular.module("App")
         DeviceService.allDeviceWithPagination($scope.filterCriteria)
             .then(function(data){
                 $log.debug(data);
-                $scope.devices = data.devices;
-                $scope.totalPages = data.totalPages;
-                $scope.totalRecords = data.totalRecords;
-                spinnerService.hide("spinnerNew");
 
-                var messageGrowl = DeviceService.getShowGrowlMessage();
+                if(data.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+                    $scope.devices = data.devices;
+                    $scope.totalPages = data.totalPages;
+                    $scope.totalRecords = data.totalRecords;
 
-                if(messageGrowl.isShow){
-                    growl.info(messageGrowl.message);
-                    DeviceService.cleanGrowlDevice();
+                    var messageGrowl = DeviceService.getShowGrowlMessage();
+
+                    if(messageGrowl.isShow){
+                        growl.info(messageGrowl.message);
+                        DeviceService.cleanGrowlDevice();
+                    }
+                }else{
+                    console.info(data.message);
+                    growl.error(data.message);
                 }
+
+                spinnerService.hide("spinnerNew");
 
             }).catch(function(err){
             console.error("Error en invocacion del servicio..."+err);

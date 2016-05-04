@@ -127,12 +127,14 @@ angular.module('App')
          * @param UserService
          * @private
          */
-        $scope.findByUserId = function (userId) {
+        $scope.findByUserId = function (userId,$scope,loadMap) {
             if (UserService.getUserIdFound() != userId) {
                 var myPhonePromise = UserService.getUsersById(userId);
                 myPhonePromise.then(function (result) {
                     $scope.userFound = result[0];
-                    $scope.addTheMap();
+                    if(loadMap){
+                        $scope.addTheMap();
+                    }
                 });
             }
         }
@@ -141,21 +143,25 @@ angular.module('App')
          * add a google map with the location of the user address
          */
         $scope.addTheMap = function () {
+
+            var latitude = isUndefined($scope.userFound.address[0]) ? UserService.getAddressDefault().latitude : $scope.userFound.address[0].latitude;
+            var longitude = isUndefined($scope.userFound.address[0]) ? UserService.getAddressDefault().longitude : $scope.userFound.address[0].longitude;
+
             uiGmapGoogleMapApi.then(function (maps) {
                 console.log("Google map cargado");
                 maps.visualRefresh = true;
                 $scope.map = {
                     center: {
-                        latitude: $scope.userFound.address[0].latitude,
-                        longitude: $scope.userFound.address[0].longitude
+                        latitude: latitude,
+                        longitude:longitude
                     },
                     zoom: 16,
                     options: {"MapTypeId": maps.MapTypeId.HYBRID}
                 };
                 $scope.marker = {
                     coords: {
-                        latitude: $scope.userFound.address[0].latitude,
-                        longitude: $scope.userFound.address[0].longitude
+                        latitude: latitude,
+                        longitude: longitude
                     }
                 };
 
@@ -202,7 +208,7 @@ angular.module('App')
          */
         $scope.showPhoneInformation = function (userId) {
             console.log("showPhoneInformation");
-            $scope.findByUserId(userId, $scope);
+            $scope.findByUserId(userId, $scope,false);
             $scope.showPhoneModal = !$scope.showPhoneModal;
         }
 
@@ -212,7 +218,7 @@ angular.module('App')
          */
         $scope.showAddressInformation = function (userId) {
             console.log("showAddressInformation");
-            $scope.findByUserId(userId, $scope);
+            $scope.findByUserId(userId, $scope,true);
             $scope.showAddressModal = !$scope.showAddressModal;
         }
 
@@ -222,7 +228,7 @@ angular.module('App')
          */
         $scope.showGeneralInformation = function (userId) {
             console.log("showGeneralInformation");
-            $scope.findByUserId(userId, $scope);
+            $scope.findByUserId(userId, $scope,false);
             $scope.showGeneralInfoModal = !$scope.showGeneralInfoModal;
         }
 

@@ -29,7 +29,7 @@
                 </ol>
             </section>
 
-            <section class="content">
+            <section class="content" style="min-height:575px;">
 
                 <div growl></div>
 
@@ -74,12 +74,18 @@
                                                         <h3 class="box-title">Routes Relation with Device</h3>
                                                     </div><!-- /.box-header -->
                                                     <div class="box-body">
+
+                                                        <div>
+                                                            <input class="form-control reduceSize" placeholder="Search here..." on-enter-blur on-blur-change="filterResult()" ng-model="filterCriteria.ReaxiumParameters.ReaxiumDevice.filter" type="text" />
+                                                        </div>
+
                                                         <table id="userTable"
                                                                class="table table-bordered table-striped">
                                                             <thead>
                                                             <tr>
-                                                                <th>Route Number</th>
-                                                                <th>Route Name</th>
+                                                                <th ng-repeat="header in deviceTableHeaders">
+                                                                    <sort-by onsort="onSort" sortdir="filterCriteria.ReaxiumParameters.ReaxiumDevice.sortDir" sortedby="filterCriteria.ReaxiumParameters.ReaxiumDevice.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
+                                                                </th>
                                                                 <th>Route Address</th>
                                                                 <th>Quantity Stop</th>
                                                                 <th>Start Date</th>
@@ -100,6 +106,13 @@
                                                             </tbody>
                                                             </tfoot>
                                                         </table>
+                                                        <div ng-show="totalRecords == 0">
+                                                            <h3>No Customers Found</h3>
+                                                        </div>
+                                                        <div ng-show="totalPages > 1" class="align-center">
+                                                            <uib-pagination total-items="totalRecords" ng-model="filterCriteria.ReaxiumParameters.ReaxiumDevice.page" items-per-page="filterCriteria.ReaxiumParameters.ReaxiumDevice.limit" previous-text="previous" next-text="next" last-text="last"
+                                                                            direction-links="true" rotate="false" ng-change="selectPage()"></uib-pagination>
+                                                        </div>
                                                     </div><!-- /.box-body -->
                                                 </div><!-- /.box -->
 
@@ -112,13 +125,17 @@
 
                     </div>
                 </div>
+
             </section>
 
         </div>
 
-
+        <div ui-view="footer"></div>
         <!--footer-->
-        <div ui-view="footer" style="position: fixed; bottom: 0px; width: 100%"></div>
+       <!-- <div style="position: fixed; bottom: 0px; width: 100%" ng-cl>
+            <div ui-view="footer" ></div><!--style="position: fixed; bottom: 0px; width: 100%"
+        </div>-->
+
 
     </div>
 

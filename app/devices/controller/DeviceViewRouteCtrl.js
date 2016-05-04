@@ -25,27 +25,67 @@ angular.module("App")
         $scope.photeUser = $sessionStorage.user_photo;
         $scope.nameUser = $sessionStorage.nameUser;
 
-        $scope.listRoutesByDevice = [];
+        //$scope.listRoutesByDevice = [];
         $scope.showTableRoute = false;
         $scope.deviceId = "";
+
+        $scope.totalPages = 0;
+
+        //default criteria that will be sent to the server
+        $scope.filterCriteria = {
+            ReaxiumParameters: {
+                ReaxiumDevice:{
+                    device_id: "",
+                    page: 1,
+                    limit:5,
+                    sortDir: 'asc',
+                    sortedBy: 'route_name',
+                    filter: ''
+                }
+            }
+        };
+
+
+        /**
+         * cabecera de la tabla de usuarios
+         * @type {*[]}
+         */
+        $scope.deviceTableHeaders = [
+            {
+                title: 'Route Number',
+                value: 'route_number'
+            },
+            {
+                title: 'Route Name',
+                value: 'route_name'
+            }
+        ];
+
+
 
         $scope.searchDevice = function () {
 
             if ($scope.deviceId != "") {
 
+                console.log("Search Device....");
+
                 spinnerService.show("spinnerNew");
 
-                DeviceService.getRoutesByDeviceId($scope.deviceId)
+                $scope.filterCriteria.ReaxiumParameters.ReaxiumDevice.device_id = $scope.deviceId;
+
+                DeviceService.getRoutesByDeviceId($scope.filterCriteria)
                     .then(function (resp) {
 
-                        if (resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
-                            $log.debug(resp);
-                            $scope.listRoutesByDevice = resp.ReaxiumResponse.object;
+                        if (resp.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
+                            //$log.debug(resp);
+                            $scope.listRoutesByDevice = resp.routes;
+                            $scope.totalPages = resp.totalPages;
+                            $scope.totalRecords = resp.totalRecords;
                             $scope.showTableRoute = true;
                         }
                         else {
-                            console.info("Error: " + resp.ReaxiumResponse.message);
-                            growl.error(resp.ReaxiumResponse.message);
+                            console.info("Error: " + resp.message);
+                            growl.error(resp.message);
                         }
                         spinnerService.hide("spinnerNew");
                     })
@@ -61,6 +101,29 @@ angular.module("App")
         }
 
 
+        //called when navigate to another page in the pagination
+        $scope.selectPage = function () {
+            $scope.searchDevice();
+        };
+
+        //Will be called when filtering the grid, will reset the page number to one
+        $scope.filterResult = function () {
+            $scope.filterCriteria.ReaxiumParameters.ReaxiumDevice.page = 1;
+            $scope.searchDevice();
+
+        };
+
+        //call back function that we passed to our custom directive sortBy, will be called when clicking on any field to sort
+        $scope.onSort = function (sortedBy, sortDir) {
+            console.log("OnSort");
+            $scope.filterCriteria.ReaxiumParameters.ReaxiumDevice.sortDir = sortDir;
+            $scope.filterCriteria.ReaxiumParameters.ReaxiumDevice.sortedBy = sortedBy;
+            $scope.filterCriteria.ReaxiumParameters.ReaxiumDevice.page = 1;
+            $scope.searchDevice();
+        };
+
+
+
         $scope.deleteRoute = function(id_device){
 
             $confirm({text: GLOBAL_MESSAGE.MESSAGE_CONFIRM_ACTION})
@@ -71,7 +134,8 @@ angular.module("App")
                     DeviceService.deleteRouteByDevice(id_device)
                         .then(function(resp){
                             if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
-                                deleteRouteListScope(id_device);
+                                $scope.filterCriteria.ReaxiumParameters.ReaxiumDevice.page = 1;
+                                $scope.searchDevice();
                                 growl.success(resp.ReaxiumResponse.message);
                             }else{
                                 console.error("Error: "+resp.ReaxiumResponse.message);
@@ -89,7 +153,7 @@ angular.module("App")
         }
 
 
-        function deleteRouteListScope(id_device_routes){
+       /* function deleteRouteListScope(id_device_routes){
 
             if($scope.listRoutesByDevice.length > 0){
 
@@ -104,7 +168,7 @@ angular.module("App")
                 $scope.listRoutesByDevice.splice(index, 1);
             }
 
-        }
+        }*/
 
 
     })

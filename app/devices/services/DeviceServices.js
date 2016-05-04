@@ -9,7 +9,25 @@ angular.module("App")
     var lookup = {};
 
     var deviceJson = {
+        code:"",
+        message:"",
         devices: {},
+        totalPages: 0,
+        totalRecords: 0
+    };
+
+    var routeDeviceJson = {
+        code:"",
+        message:"",
+        routes:{},
+        totalPages: 0,
+        totalRecords: 0
+    };
+
+    var usersDeviceJson = {
+        code:"",
+        message:"",
+        users:{},
         totalPages: 0,
         totalRecords: 0
     };
@@ -104,7 +122,8 @@ angular.module("App")
             data: JSON.stringify(obj),
             headers: {'Content-Type':'application/json;charset=UTF-8'}
         }).success(function(response){
-
+            deviceJson.code = response.ReaxiumResponse.code;
+            deviceJson.message = response.ReaxiumResponse.message;
             deviceJson.devices = response.ReaxiumResponse.object;
             deviceJson.totalPages = response.ReaxiumResponse.totalPages;
             deviceJson.totalRecords = response.ReaxiumResponse.totalRecords;
@@ -198,7 +217,7 @@ angular.module("App")
     }
 
 
-    lookup.routeByDeviceId = function(id_device){
+    lookup.routeByDeviceId = function(obj){
 
         var defered = $q.defer();
         var promise = defered.promise;
@@ -206,10 +225,16 @@ angular.module("App")
         $http({
             method: 'POST',
             url: CONST_PROXY_URL.PROXY_URL_GET_ROUTE_BY_DEVICE,
-            data: JSON.stringify({ReaxiumParameters:{ReaxiumDevice:{device_id:id_device}}}),
+            data: JSON.stringify(obj),
             headers: {'Content-Type':'application/json;charset=UTF-8'}
         }).success(function(response){
-            defered.resolve(response);
+            routeDeviceJson.code = response.ReaxiumResponse.code;
+            routeDeviceJson.message = response.ReaxiumResponse.message;
+            routeDeviceJson.routes = response.ReaxiumResponse.object;
+            routeDeviceJson.totalPages = response.ReaxiumResponse.totalPages;
+            routeDeviceJson.totalRecords = response.ReaxiumResponse.totalRecords;
+
+            defered.resolve(routeDeviceJson);
         }).error(function(err){
             defered.reject(err);
         });
@@ -238,7 +263,7 @@ angular.module("App")
     }
 
 
-    lookup.getUsersByDevices = function(device_id){
+    lookup.getUsersByDevices = function(obj){
 
         var defered = $q.defer();
         var promise = defered.promise;
@@ -246,7 +271,34 @@ angular.module("App")
         $http({
             method: 'POST',
             url: CONST_PROXY_URL.PROXY_URL_GET_USERS_ACCESS_BY_DEVICE,
-            data: JSON.stringify({ReaxiumParameters:{ReaxiumDevice:{device_id:device_id}}}),
+            data: JSON.stringify(obj),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+            usersDeviceJson.code = response.ReaxiumResponse.code;
+            usersDeviceJson.message = response.ReaxiumResponse.message;
+            usersDeviceJson.users = response.ReaxiumResponse.object;
+            usersDeviceJson.totalPages = response.ReaxiumResponse.totalPages;
+            usersDeviceJson.totalRecords = response.ReaxiumResponse.totalRecords;
+            defered.resolve(usersDeviceJson);
+
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise
+
+    }
+
+
+    lookup.deleteUserAccessDevice = function(obj){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_DELETE_USERS_ACCESS_BY_DEVICE,
+            data: JSON.stringify(obj),
             headers: {'Content-Type':'application/json;charset=UTF-8'}
         }).success(function(response){
             defered.resolve(response);
@@ -255,7 +307,6 @@ angular.module("App")
         });
 
         return promise
-
     }
 
 
@@ -361,7 +412,11 @@ angular.module("App")
     }
 
 
-    this.getUsersRelationDevice = function(id_device){
-        return DeviceLookup.getUsersByDevices(id_device);
+    this.getUsersRelationDevice = function(obj){
+        return DeviceLookup.getUsersByDevices(obj);
+    }
+
+    this.deleteUsersAccessDevice = function(obj){
+        return DeviceLookup.deleteUserAccessDevice(obj);
     }
 })

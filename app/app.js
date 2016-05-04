@@ -43,7 +43,7 @@ angular.module('App', ['ui.router',
                         'url': "allUser"
                     },
                     {
-                        'name': 'User Access',
+                        'name': 'Add Access User',
                         'url': "userSecurity"
                     }
                 ]
@@ -56,11 +56,11 @@ angular.module('App', ['ui.router',
                         'url': "device"
                     },
                     {
-                        'name': 'View routes relation device',
+                        'name': 'View Routes at Device',
                         'url': 'deviceViewRoute'
                     },
                     {
-                        'name': 'View users relation device',
+                        'name': 'View Users at Device',
                         'url': 'deviceViewUsers'
                     }
                 ]

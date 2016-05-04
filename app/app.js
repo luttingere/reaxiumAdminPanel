@@ -26,6 +26,8 @@ angular.module('App', ['ui.router',
 
         $rootScope.appMenus = [
             {
+                'id':1,
+                'class_active_menu':false,
                 'name': 'Business Administration',
                 'icon_class': 'fa fa-bank',
                 'subMenus': [
@@ -35,6 +37,8 @@ angular.module('App', ['ui.router',
                     }
                 ]
             }, {
+                'id':2,
+                'class_active_menu':false,
                 'name': 'User Administration',
                 'icon_class': 'fa fa-user',
                 'subMenus': [
@@ -52,6 +56,8 @@ angular.module('App', ['ui.router',
                     }
                 ]
             }, {
+                'id':3,
+                'class_active_menu':false,
                 'name': 'Device Administration',
                 'icon_class': 'fa fa-hdd-o',
                 'subMenus': [
@@ -69,6 +75,8 @@ angular.module('App', ['ui.router',
                     }
                 ]
             }, {
+                'id':4,
+                'class_active_menu':false,
                 'name': 'Routes Administration',
                 'icon_class': 'fa fa-map-signs',
                 'subMenus': [{

@@ -16,7 +16,7 @@ angular.module("App")
                                  GLOBAL_CONSTANT){
 
     //menu sidebar
-    $scope.menus = $rootScope.appMenus;
+    $scope.menus = addActiveClassMenu($rootScope.appMenus,GLOBAL_CONSTANT.ID_ROUTES_MENU);
     //Search on the menu
     $scope.menuOptions = {searchWord: ''};
 

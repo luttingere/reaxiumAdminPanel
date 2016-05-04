@@ -72,7 +72,13 @@ angular.module("App")
         ACCESS_LOGIN_AND_PASS: 1,
         ACCESS_BIOMETRIC: 2,
         ACCESS_RFID: 3,
-        SUCCESS_RESPONSE_SERVICE:0
+        SUCCESS_RESPONSE_SERVICE:0,
+        ID_HOME_MENU:0,
+        ID_BUSINESS_MENU:1,
+        ID_USER_MENU:2,
+        ID_DEVICE_MENU:3,
+        ID_ROUTES_MENU:4
+
     })
 
     .constant("GLOBAL_MESSAGE",{

@@ -5,11 +5,12 @@ angular.module('App')
                                        $state,
                                        $rootScope,
                                        UserService,
-                                       $sessionStorage) {
+                                       $sessionStorage,
+                                       GLOBAL_CONSTANT) {
 
     $scope.panelTimeline = false;
     //Menu
-    $scope.menus = $rootScope.appMenus;
+    $scope.menus = addActiveClassMenu($rootScope.appMenus,GLOBAL_CONSTANT.ID_HOME_MENU);
     //Search on the menu
     $scope.menuOptions = {searchWord: ''};
 

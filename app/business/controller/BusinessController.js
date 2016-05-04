@@ -30,7 +30,7 @@ angular.module('App')
         $scope.nameUser = $sessionStorage.nameUser;
 
         //menu sidebar
-        $scope.menus = $rootScope.appMenus;
+        $scope.menus = addActiveClassMenu($rootScope.appMenus,GLOBAL_CONSTANT.ID_BUSINESS_MENU);
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 

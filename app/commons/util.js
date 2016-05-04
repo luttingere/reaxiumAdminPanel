@@ -323,3 +323,20 @@ function isUndefined(obj) {
     }
     return false;
 }
+
+
+function addActiveClassMenu(arrayMenuOriginal,id_menu){
+
+    var arrayMenu = arrayMenuOriginal;
+
+    //active options menu
+    for(var i=0; i < arrayMenu.length;i++){
+        if(arrayMenu[i].id == id_menu){
+            arrayMenu[i].class_active_menu = true;
+        }else{
+            arrayMenu[i].class_active_menu = false;
+        }
+    }
+
+    return arrayMenu;
+}

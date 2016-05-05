@@ -54,7 +54,7 @@ angular.module('App')
         $scope.filterCriteria = {
             ReaxiumParameters: {
                 page: 1,
-                limit: 10,
+                limit: 5,
                 sortDir: 'desc',
                 sortedBy: 'business_name',
                 filter: ''

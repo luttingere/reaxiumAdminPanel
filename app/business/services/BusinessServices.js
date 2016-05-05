@@ -241,4 +241,8 @@ angular.module('App')
         this.deleteBusiness = function(businessId){
             return BusinessLookup.deleteABusiness(businessId)
         }
+
+        this.getBusinessFilter = function(filter){
+            return BusinessLookup.allBusinessWithFilter(filter);
+        }
     });

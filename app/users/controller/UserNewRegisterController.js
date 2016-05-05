@@ -14,7 +14,9 @@ angular.module('App')
                                          FILE_SYSTEM_ROUTE,
                                          $state,
                                          $sessionStorage,
-                                         growl) {
+                                         growl,
+                                         BusinessService,
+                                        GLOBAL_CONSTANT) {
 
         $scope.selectTypeUser = null;
         $scope.showTableStakeHolder = false;
@@ -24,8 +26,9 @@ angular.module('App')
         $scope.showgrowlMessage = false;
         $scope.showMessage = "";
         $scope.headerName="";
-        var nameImageUpload="";
 
+
+        var nameImageUpload="";
 
 
         $scope.users = {
@@ -40,7 +43,8 @@ angular.module('App')
             status_id: 1,
             access_type:1,
             user_photo: FILE_SYSTEM_ROUTE.IMAGE_DEFAULT_USER,
-            stakeholder_id: null
+            stakeholder_id: null,
+            business_id: 0
         };
 
         $scope.phoneNumbers = {
@@ -66,6 +70,65 @@ angular.module('App')
         $scope.photeUser = $sessionStorage.user_photo;
         $scope.nameUser = $sessionStorage.nameUser;
 
+        $scope.businessFilter = [];
+        $scope.selectBusiness = null;
+        $scope.selectEditBusiness = null;
+        /**
+         * Method compare input with list server users filter
+         * @param str
+         * @returns {Array}
+         */
+        $scope.localSearchBusiness = function (str) {
+            var matches = [];
+
+            invokeServiceBusinessFilter(str);
+
+            $scope.businessFilter.forEach(function (business) {
+
+                if (!business.business_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0 ||
+                    !business.business_id_number.indexOf(str.toString()) >= 0 ||
+                    !business.business_id.indexOf(str.toString()) >= 0 ){
+
+                    matches.push(business);
+                }
+            });
+
+            return matches;
+        };
+
+
+        /**
+         * call services search user with filter
+         * @param str
+         */
+        var invokeServiceBusinessFilter = function (str) {
+
+            BusinessService.getBusinessFilter(str)
+                .then(function(resp){
+                   if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+                       $scope.businessFilter = [];
+                       var array = resp.ReaxiumResponse.object;
+                       array.forEach(function(entry){
+                           var aux ={
+                               business_id: entry.business_id,
+                               business_name: entry.business_name,
+                               business_id_number: entry.business_id_number
+                           }
+
+                           $scope.businessFilter.push(aux);
+                       });
+                   }
+                   else{
+                       console.info(resp.ReaxiumResponse.message);
+                   }
+                })
+                .catch(function(err){
+                    console.error("Error: "+err);
+                });
+
+        };
+
+
         /**
          * watched variable selectTypeUser
          */
@@ -75,6 +138,16 @@ angular.module('App')
 
             if (parseInt($scope.selectTypeUser) == 3) {
                 $scope.showTableStakeHolder = true;
+            }
+        });
+
+        /**
+         * watched variable selectBusiness
+         */
+        $scope.$watch('selectBusiness',function(){
+            if($scope.selectBusiness != undefined && $scope.selectBusiness != null){
+                console.log($scope.selectBusiness);
+                $scope.users.business_id = $scope.selectBusiness.originalObject.business_id;
             }
         });
 
@@ -107,7 +180,6 @@ angular.module('App')
                         longitude:longitude
                     }
                 };
-               // spinnerService.hide("spinnerNew");
             })
         }
 
@@ -204,6 +276,12 @@ angular.module('App')
                         $scope.users.second_name = result[0].second_name;
                         $scope.users.first_last_name = result[0].first_last_name;
                         $scope.users.second_last_name = result[0].second_last_name;
+
+                        $scope.selectEditBusiness = {
+                            business_id: result[0].busines.business_id,
+                            business_name: result[0].busines.business_name,
+                            business_id_number: result[0].busines.business_id_number
+                        };
 
                         $scope.users.birthdate = new Date(result[0].birthdate);
                         $scope.users.email = result[0].email;
@@ -316,13 +394,16 @@ angular.module('App')
             invokeServiceUserFilter(str);
 
             $scope.userFilter.forEach(function (person) {
-                matches.push(person);
-                var fullName = person.first_name + ' ' + person.second_name;
-                //if ((person.first_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
-                //    (person.second_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
-                //    (fullName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0)) {
-                //
-                //}
+
+                if (!person.first_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0 ||
+                    !person.second_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0 ||
+                    !person.document_id.indexOf(str.toString()) >= 0 ||
+                    !person.first_last_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0 ||
+                    !person.second_last_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0 ||
+                    !person.email.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0){
+
+                    matches.push(person);
+                }
             });
 
             return matches;
@@ -346,6 +427,8 @@ angular.module('App')
                         var aux = {
                             first_name: entry.first_name,
                             second_name: entry.second_name,
+                            first_last_name:entry.first_last_name,
+                            second_last_name:entry.second_last_name,
                             user_id: entry.user_id,
                             document_id: entry.document_id,
                             email:entry.email,
@@ -451,7 +534,8 @@ angular.module('App')
                             stakeholder_id: null,
                             user_photo: pathImage,
                             birthdate: formatDate($scope.users.birthdate),
-                            email: $scope.users.email
+                            email: $scope.users.email,
+                            business_id : $scope.users.business_id
 
                         },
                         PhoneNumbers:[
@@ -547,7 +631,8 @@ angular.module('App')
                             stakeholder_id: null,
                             user_photo: pathImage,
                             birthdate: formatDate($scope.users.birthdate),
-                            email: $scope.users.email
+                            email: $scope.users.email,
+                            business_id : $scope.users.business_id
 
                         },
                         PhoneNumbers:[

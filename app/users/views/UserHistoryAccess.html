@@ -1,4 +1,4 @@
-<spinner name="spinnerNew" ng-cloak="">
+<spinner name="spinnerUserList" ng-cloak="">
     <div class="overlay"></div>
     <div class="spinner">
         <div class="test"><i class="fa fa-refresh fa-spin fa-5x"></i></div>
@@ -94,9 +94,57 @@
                                 </div>
                             </div>
 
+
+                            <div class="col-lg-12 {{showUserBox}}">
+                                <div class="content" style="min-height: 0px;">
+                                    <div class="box box-primary box-solid">
+                                        <div class="box-header bg-light-blue-active with-border">
+                                            <h3 class="box-title">User History</h3>
+
+                                        </div><!-- /.box-header -->
+                                        <div class="box-body">
+
+                                            <!--Table Data-->
+                                            <div>
+                                                <input class="form-control reduceSize" placeholder="Search here..." on-enter-blur on-blur-change="filterResult()" ng-model="filterCriteria.ReaxiumParameters.filter" type="text" />
+                                            </div>
+
+                                            <table id="userTable" class="table table-bordered table-striped">
+                                                <thead>
+                                                <tr>
+                                                    <th ng-repeat="header in userTableHeaders">
+                                                        <sort-by onsort="onSort" sortdir="filterCriteria.ReaxiumParameters.sortDir" sortedby="filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="traffic in trafficHistory">
+                                                    <td>{{traffic.datetime}}</td>
+                                                    <td>{{traffic.traffic_type.traffic_type_name}}</td>
+                                                    <td>{{traffic.reaxium_device.device_id}}</td>
+                                                    <td>{{traffic.reaxium_device.device_name}}</td>
+                                                </tr>
+                                                </tbody>
+                                                </tfoot>
+                                            </table>
+                                            <div ng-show="totalRecords == 0">
+                                                <h3>No Customers Found</h3>
+                                            </div>
+                                            <div ng-show="totalPages > 1" class="align-center">
+                                                <uib-pagination total-items="totalRecords" ng-model="filterCriteria.ReaxiumParameters.page" items-per-page="filterCriteria.ReaxiumParameters.limit" previous-text="previous" next-text="next" last-text="last"
+                                                                direction-links="true" rotate="false" ng-change="selectPage()"></uib-pagination>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
+
+
                 </div>
             </section>
 

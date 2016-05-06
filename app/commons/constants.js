@@ -15,6 +15,7 @@ angular.module("App")
         PROXY_URL_CREATE_NEW_USER: "http://54.200.133.84/reaxium/Users/createUser",
         PROXY_URL_DELETE_USER: "http://54.200.133.84/reaxium/Users/deleteUser",
         PROXY_URL_ALL_USER_WITH_PAGINATE: "http://54.200.133.84/reaxium/Users/allUsersInfoWithPagination",
+        PROXY_URL_SHOW_ACCESS_HISTORY_BY_USER: "http://54.200.133.84/reaxium/Traffic/trafficFilteredByUser",
         PROXY_URL_CREATE_USER_STAKEHOLDER: "http://54.200.133.84/reaxium/Users/createStakeholderUser",
 
 

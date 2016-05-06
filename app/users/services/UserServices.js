@@ -40,6 +40,34 @@ angular.module('App')
 
             return promise;
         };
+
+        /**
+         *
+         * @returns {IPromise<TResult>|*}
+         */
+        lookup.getHistoricalAccess = function (filterCriteria) {
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
+                method: 'POST',
+                data: JSON.stringify(filterCriteria),
+                url: CONST_PROXY_URL.PROXY_URL_SHOW_ACCESS_HISTORY_BY_USER,
+            }).success(function (response) {
+                userJson.traffic = response.ReaxiumResponse.object;
+                userJson.totalPages = response.ReaxiumResponse.totalPages;
+                userJson.totalRecords = response.ReaxiumResponse.totalRecords;
+                defered.resolve(userJson);
+            }).error(function (err) {
+                defered.reject(err);
+            })
+
+            return promise;
+        };
+
+
+
         /**
          * search a user by his ID
          */
@@ -311,6 +339,9 @@ angular.module('App')
 
         this.getUsers = function (filter) {
             return UserLookup.allUsers(filter);
+        };
+        this.getHistoricalAccessOfAUser = function (filter) {
+            return UserLookup.getHistoricalAccess(filter);
         };
         this.getUsersById = function (userId) {
             return UserLookup.userById(userId);

@@ -14,6 +14,7 @@ angular.module('App')
                                              FILE_SYSTEM_ROUTE,
                                              $state,
                                              $sessionStorage,
+                                             $stateParams,
                                              growl) {
 
 
@@ -126,7 +127,11 @@ angular.module('App')
          */
         $scope.init = function () {
 
-            console.log("Iniciando controlador BusinessNewCtrl...");
+            console.info("Iniciando controlador BusinessNewCtrl...");
+            console.info("Mode Edit: "+$stateParams.edit);
+            console.info("Id Business: "+$stateParams.id_business);
+
+            BusinessService.setModeEdit({isModeEdit: Boolean($stateParams.edit), businessId: parseInt($stateParams.id_business)});
             BusinessService.setShowGrowlMessage({isShow: false, message: ""});
 
             var myStatus = BusinessService.getAllStatus();

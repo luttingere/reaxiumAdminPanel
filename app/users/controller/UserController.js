@@ -236,12 +236,12 @@ angular.module('App')
          * Edit User Mode
          * @param id
          */
-        $scope.editMode = function(id){
+       /* $scope.editMode = function(id){
 
             var obj ={isModeEdit:true,idUser:parseInt(id)};
             UserService.setModeEdit(obj);
             $state.go("newUser");
-        }
+        }*/
 
 
         /**

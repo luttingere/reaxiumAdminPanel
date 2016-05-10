@@ -67,7 +67,6 @@ angular.module("App")
                 $scope.totalPages = data.totalPages;
                 $scope.totalRecords = data.totalRecords;
 
-
             }).catch(function(err){
             console.error("Error invocando servicio routes"+err);
             spinnerService.hide("spinnerNew");
@@ -103,11 +102,11 @@ angular.module("App")
     //init search page 1
     $scope.selectPage(1);
 
-    $scope.editMode = function (id_route){
+    /*$scope.editMode = function (id_route){
         console.info('ruta seleccionada: '+id_route);
         RoutesServices.setModeEdit({isModeEdit:true,id_route:id_route});
         $state.go('routesNewRegister');
-    }
+    }*/
 
     $scope.deleteRoute = function(id_route){
 

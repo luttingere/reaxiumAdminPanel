@@ -49,11 +49,17 @@ angular.module("App")
         PROXY_URL_GET_USERS_ACCESS_BY_DEVICE:"http://54.200.133.84/reaxium/Device/getUsersByDevice",
         PROXY_URL_DELETE_USERS_ACCESS_BY_DEVICE:"http://54.200.133.84/reaxium/Device/deleteUserAccessDevice",
 
+        /*Proxy Stops*/
+        PROXY_URL_ALL_STOPS: "http://54.200.133.84/reaxium/Stops/allStopsWithPagination",
+        PROXY_URL_STOPS_WITH_FILTER: "http://54.200.133.84/reaxium/Stops/allStopsWithFilter",
+        PROXY_URL_CREATE_STOPS:"http://54.200.133.84/reaxium/Stops/createStops",
+        PROXY_URL_ASSOCIATION_STOP_AND_USER:"http://54.200.133.84/reaxium/Stops/associationStopAndUser",
+        PROXY_URL_DELETE_STOP: "http://54.200.133.84/reaxium/Stops/deleteStops",
+        PROXY_URL_GET_STOP_BY_ID:"http://54.200.133.84/reaxium/Stops/getStopById",
+
 
         /*Proxy Routes*/
         PROXY_URL_ALL_ROUTES: "http://54.200.133.84/reaxium/Routes/allRoutesWithPagination",
-        PROXY_URL_ALL_STOPS: "http://54.200.133.84/reaxium/Routes/allStopsSystem",
-        PROXY_URL_STOPS_WITH_FILTER: "http://54.200.133.84/reaxium/Routes/allStopsWithFilter",
         PROXY_URL_CREATE_ROUTE: "http://54.200.133.84/reaxium/Routes/createRoutes",
         PROXY_URL_GET_ROUTE_BY_ID_WITH_STOPS: "http://54.200.133.84/reaxium/Routes/getRouteByIdRelationStop",
         PROXY_URL_ALL_ROUTE_WITH_FILTER: "http://54.200.133.84/reaxium/Routes/allRouteWithFilter",
@@ -78,7 +84,8 @@ angular.module("App")
         ID_BUSINESS_MENU:1,
         ID_USER_MENU:2,
         ID_DEVICE_MENU:3,
-        ID_ROUTES_MENU:4
+        ID_ROUTES_MENU:4,
+        ID_STOPS_MENU:5
 
     })
 

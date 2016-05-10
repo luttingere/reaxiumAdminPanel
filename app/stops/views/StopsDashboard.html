@@ -1,0 +1,140 @@
+<spinner name="spinnerNew" ng-cloak="">
+    <div class="overlay"></div>
+    <div class="spinner">
+        <div class="test"><i class="fa fa-refresh fa-spin fa-5x"></i></div>
+    </div>
+    <div class="please-wait">Please Wait...</div>
+</spinner>
+
+<div class="skin-blue sidebar-mini">
+
+    <div class="wrapper" ng-controller="StopsCtrl">
+
+        <!--header-->
+        <div ui-view="header"></div>
+
+        <!--menu-->
+        <div ui-view="menu"></div>
+
+        <div class="content-wrapper">
+
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Stops Dashboard
+                    <small>Control panel</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li class="active">Stops Dashboard</li>
+                </ol>
+            </section>
+
+            <section class="content" style="min-height:525px;">
+                <div growl></div>
+
+                <!-- Main row -->
+                <div class="row">
+                    <section class="content">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="box  box-info">
+                                    <div class="box-header">
+                                        <div class="small-box">
+                                            <div class="customIcon">
+                                                <a ui-sref="stopNew" data-toggle="tooltip" title="Add Stop">
+                                                    <i class="ion ion-plus-circled"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <h3 class="box-title">Stops</h3>
+
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+
+                                        <div>
+                                            <input class="form-control reduceSize" placeholder="Search here..." on-enter-blur on-blur-change="filterResult()" ng-model="filterCriteria.ReaxiumParameters.ReaxiumStops.filter" type="text" />
+                                        </div>
+
+                                        <table id="userTable" class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th ng-repeat="header in stopsTableHeaders">
+                                                    <sort-by onsort="onSort" sortdir="filterCriteria.ReaxiumParameters.ReaxiumStops.sortDir" sortedby="filterCriteria.ReaxiumParameters.ReaxiumStops.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
+                                                </th>
+                                                <th>Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="obj in stops">
+                                                <td>{{obj.stop_number}}</td>
+                                                <td>{{obj.stop_name}}</td>
+                                                <td><a href="" ng-click="showAddressInformation(obj.id_stop)">{{obj.stop_address}}</a></td>
+                                                <td>
+                                                    <a data-toggle="tooltip" title="Delete Stop" ng-click="deleteStop(obj.id_stop)"><small><i class="fa fa-fw fa-trash"></i></small></i></a>-
+                                                    <a data-toggle="tooltip" title="Associate user and stops" ui-sref="stopAsoUser({id_stop:obj.id_stop})"><small><i class="fa fa-fw fa-users"></i></small></i></a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                            </tfoot>
+                                        </table>
+                                        <div ng-show="totalRecords == 0">
+                                            <h3>No Customers Found</h3>
+                                        </div>
+                                        <div ng-show="totalPages > 1" class="align-center">
+                                            <uib-pagination total-items="totalRecords" ng-model="filterCriteria.ReaxiumParameters.ReaxiumStops.page" items-per-page="filterCriteria.ReaxiumParameters.ReaxiumStops.limit" previous-text="previous" next-text="next" last-text="last"
+                                                            direction-links="true" rotate="false" ng-change="selectPage()"></uib-pagination>
+                                        </div>
+                                    </div><!-- /.box-body -->
+
+                                </div><!-- /.box -->
+
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                    </section><!-- /.content -->
+
+                </div>
+
+            </section>
+
+            <modal title="Stop Address" visible="showAddressModal">
+
+                <div class="box box-widget widget-user">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="widget-user-header bg-aqua-active">
+                        <h3 class="widget-user-username">{{stopData.stop_number+"   "+stopData.stop_name}}</h3>
+                    </div>
+                    <div class="widget-user-image">
+                        <!--<img class="img-circle" src="{{userCtrl.userFound.user_photo}}" alt="User Avatar">-->
+                        <img class="img-circle" src="dist/img/profile-default.png" alt="User Avatar">
+                    </div>
+                    <div class="box-footer">
+                        <div class="box">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Stop Address Information</h3>
+                            </div><!-- /.box-header -->
+                            <div class="box-body no-padding">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-map-marker"></i>
+                                        </div>
+                                        <label class="form-control">{{stopData.stop_address}}</label>
+                                    </div><!-- /.input group -->
+                                </div>
+                                <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options">
+                                    <ui-gmap-marker idKey='1' coords='marker.coords'></ui-gmap-marker>
+                                </ui-gmap-google-map>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div>
+                </div>
+            </modal>
+            <div class="control-sidebar-bg"></div>
+        </div>
+
+        <!--footer-->
+        <div ui-view="footer"></div>
+    </div>
+
+</div>

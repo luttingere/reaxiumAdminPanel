@@ -32,12 +32,12 @@
             </section>
 
             <!-- Main content -->
-            <section class="content" style="min-height:575px;">
+            <section class="content">
 
                 <div growl></div>
                 <!-- Main row -->
                 <div class="row">
-                    <section class="content">
+                    <section class="content" style="min-height:450px;">
                         <div class="row">
                             <div class="col-xs-12">
 
@@ -79,8 +79,10 @@
                                                 <td>{{obj.status.status_name | lowerCase | capitalize}}</td>
                                                 <td>
                                                     <a data-toggle="tooltip" title="Delete Device" ng-click="deleteDevice(obj.device_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -
-                                                    <a ng-click="accessUserDevice(obj.device_id)" data-toggle="tooltip" title="Device Access Control"><small><i class="fa fa-fw fa-unlock-alt"></i> </small></a>-
-                                                    <a data-toggle="tooltip" title="Device Relation Route" ng-click="deviceRelRoute(obj.device_id)"><small><i class="fa fa-fw fa-exchange"></i></small></i></a>
+                                                    <a data-toggle="tooltip" title="Device Access Control" ui-sref="deviceRelUser({id_device:obj.device_id})"><small><i class="fa fa-fw fa-unlock-alt"></i> </small></a>-
+                                                    <a data-toggle="tooltip" title="Device Relation Route" ui-sref="deviceRelRoute({id_device:obj.device_id})"><small><i class="fa fa-fw fa-exchange"></i></small></i></a>
+                                                    <!--ng-click="accessUserDevice(obj.device_id)"-->
+                                                    <!--ng-click="deviceRelRoute(obj.device_id)"-->
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -108,7 +110,7 @@
         </div>
 
         <!--footer-->
-        <div ui-view="footer" style="position: fixed; bottom: 0px; width: 100%"></div>
+        <div ui-view="footer"></div>
 
     </div>
 

@@ -14,9 +14,10 @@ angular.module('App')
                                          FILE_SYSTEM_ROUTE,
                                          $state,
                                          $sessionStorage,
+                                         $stateParams,
                                          growl,
                                          BusinessService,
-                                        GLOBAL_CONSTANT) {
+                                         GLOBAL_CONSTANT) {
 
         $scope.selectTypeUser = null;
         $scope.showTableStakeHolder = false;
@@ -228,16 +229,13 @@ angular.module('App')
 
            // spinnerService.show("spinnerNew");
 
-            console.log("Iniciando controlador UserNewCtrl...");
+            console.info("Iniciando controlador UserNewCtrl...");
+            console.info("Mode edit: "+$stateParams.edit);
+            console.info("Id del usuario: "+$stateParams.id_user);
+
+            UserService.setModeEdit({isModeEdit:Boolean($stateParams.edit),idUser:parseInt($stateParams.id_user)});
             UserService.setShowGrowlMessage({isShow:false,message:""});
 
-            /**
-             * call services AccessType
-             */
-            /*var myUserPromise = UserService.getAccessType();
-            myUserPromise.then(function (result) {
-                $scope.allAccessType = result;
-            });*/
 
             /***
              * call services AllUsersType

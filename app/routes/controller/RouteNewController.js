@@ -9,9 +9,11 @@ angular.module("App")
                                           $log,
                                           $state,
                                           RoutesServices,
+                                          StopsService,
                                           UserService,
                                           spinnerService,
                                           uiGmapGoogleMapApi,
+                                          $stateParams,
                                           growl,
                                           FILE_SYSTEM_ROUTE,
                                           GLOBAL_CONSTANT) {
@@ -53,7 +55,6 @@ angular.module("App")
         ];
 
 
-
         /**
          * add a google map with the location of the user address
          */
@@ -91,9 +92,11 @@ angular.module("App")
          */
         function init() {
             console.log("Iniciando RouteNewCtrl...");
-
+            console.log("Id Route: "+$stateParams.id_route);
+            console.log("Mode edition: "+$stateParams.edit);
 
             RoutesServices.setShowGrowlMessage({isShow:false,message:""});
+            RoutesServices.setModeEdit({isModeEdit:Boolean($stateParams.edit),id_route:$stateParams.id_route});
 
             if(RoutesServices.getModeEdit().isModeEdit){
                 console.log("En modo editar...");
@@ -102,7 +105,7 @@ angular.module("App")
                 var objSend = {
                     ReaxiumParameters:{
                         ReaxiumRoutes:{
-                            id_route:RoutesServices.getModeEdit().id_route
+                            id_route: RoutesServices.getModeEdit().id_route
                         }
                     }
                 };
@@ -193,7 +196,7 @@ angular.module("App")
          */
         var invokeServiceUserFilter = function (str) {
 
-            RoutesServices.allStopsWithFilter(str)
+            StopsService.stopsWithFilter(str)
                 .then(function (result) {
 
                     if (result.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {

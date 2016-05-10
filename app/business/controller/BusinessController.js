@@ -212,11 +212,11 @@ angular.module('App')
          * Edit Business Mode
          * @param id
          */
-        $scope.editMode = function (id) {
+       /*$scope.editMode = function (id) {
             var obj = {isModeEdit: true, businessId: parseInt(id)};
             BusinessService.setModeEdit(obj);
             $state.go("newBusiness");
-        }
+        }*/
 
 
         /**

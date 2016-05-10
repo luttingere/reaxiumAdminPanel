@@ -124,7 +124,7 @@ angular.module("App")
 
     $scope.selectPage(1);
 
-    $scope.accessUserDevice = function(id_device){
+   /* $scope.accessUserDevice = function(id_device){
         DeviceService.setRelUserDevice({isModeRel:true, id_device: id_device});
         $state.go("deviceRelUser");
     }
@@ -133,7 +133,7 @@ angular.module("App")
     $scope.deviceRelRoute = function(id_device){
         DeviceService.setRelRouteDevice({isDeviceRelRoute:true,id_device:id_device});
         $state.go("deviceRelRoute");
-    }
+    }*/
 
     $scope.deleteDevice = function(id_device){
 

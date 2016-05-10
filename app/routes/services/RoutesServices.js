@@ -36,43 +36,6 @@ angular.module("App")
         }
 
 
-        lookUpRoute.getAllStops = function () {
-
-            var defered = $q.defer();
-            var promise = defered.promise;
-
-            $http({
-                method: 'GET',
-                url: CONST_PROXY_URL.PROXY_URL_ALL_STOPS
-            }).success(function (response) {
-                defered.resolve(response.ReaxiumResponse.object);
-            }).error(function (err) {
-                defered.reject(err);
-            })
-
-            return promise;
-        }
-
-
-        lookUpRoute.getStopsWithFilter = function (filterCriteria) {
-
-            var defered = $q.defer();
-            var promise = defered.promise;
-
-            $http({
-                method: 'POST',
-                data: JSON.stringify({ReaxiumParameters: {Stops: {filter: filterCriteria}}}),
-                url: CONST_PROXY_URL.PROXY_URL_ALL_STOPS
-            }).success(function (response) {
-                defered.resolve(response);
-            }).error(function (err) {
-                defered.reject(err);
-            });
-
-            return promise;
-        }
-
-
         lookUpRoute.createRouteWithStops = function (obj) {
 
             var defered = $q.defer();
@@ -180,14 +143,6 @@ angular.module("App")
 
         this.allRoutesWithPagination = function (obj) {
             return RouteLookup.getAllRoutesWithPaginate(obj);
-        };
-
-        this.allStops = function () {
-            return RouteLookup.getAllStops();
-        };
-
-        this.allStopsWithFilter = function (filter) {
-            return RouteLookup.getStopsWithFilter(filter);
         };
 
         this.newCreateRoute = function (obj) {

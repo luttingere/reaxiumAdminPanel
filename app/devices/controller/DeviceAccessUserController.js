@@ -4,14 +4,16 @@
 
 angular.module("App")
     .controller("DeviceAccessUserCtrl", function ($scope,
-                                               $state,
-                                               $sessionStorage,
-                                               $rootScope,
-                                               DeviceService,
-                                               $log,
-                                               growl,
-                                               spinnerService,
-                                               GLOBAL_CONSTANT) {
+                                                  $state,
+                                                  $sessionStorage,
+                                                  $rootScope,
+                                                  DeviceService,
+                                                  $log,
+                                                  growl,
+                                                  spinnerService,
+                                                  $stateParams,
+                                                  GLOBAL_CONSTANT,
+                                                  GLOBAL_MESSAGE) {
 
         //menu sidebar
         $scope.menus = $rootScope.appMenus;
@@ -25,6 +27,19 @@ angular.module("App")
         $scope.userFilter = [];
         $scope.allUserSelcStakeHolder = [];
         $scope.showTable = false;
+
+
+        function init() {
+            console.info("Iniciando controlador DeviceRelRouteCtrl");
+            console.log("Id device: " + $stateParams.id_device);
+            console.log("Mode Device Relation User: " + $stateParams.modeDeviceRelUser)
+            DeviceService.setRelUserDevice({
+                isModeRel: $stateParams.modeDeviceRelUser,
+                id_device: $stateParams.id_device
+            });
+        }
+
+        init();
 
 
         /**
@@ -44,7 +59,7 @@ angular.module("App")
                     !person.document_id.indexOf(str.toString()) >= 0 ||
                     !person.first_last_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0 ||
                     !person.second_last_name.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0 ||
-                    !person.email.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0){
+                    !person.email.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) {
 
                     matches.push(person);
                 }
@@ -72,11 +87,11 @@ angular.module("App")
                         var aux = {
                             first_name: entry.first_name,
                             second_name: entry.second_name,
-                            first_last_name:entry.first_last_name,
-                            second_last_name:entry.second_last_name,
+                            first_last_name: entry.first_last_name,
+                            second_last_name: entry.second_last_name,
                             user_id: entry.user_id,
                             document_id: entry.document_id,
-                            email:entry.email,
+                            email: entry.email,
                             pic: entry.user_photo
                         };
 
@@ -91,14 +106,21 @@ angular.module("App")
 
         $scope.addUser = function (str) {
 
-            if(!seachObjList(str.originalObject.user_id)){
+            if (!seachObjList(str.originalObject.user_id)) {
 
                 spinnerService.show("spinnerNew");
                 $log.debug(str.originalObject);
 
                 var device_id = DeviceService.getRelUserDevice().id_device;
 
-                DeviceService.getTypeAccessByUser({ReaxiumParameters: {ReaxiumDevice: {user_id: str.originalObject.user_id,device_id:device_id}}})
+                DeviceService.getTypeAccessByUser({
+                        ReaxiumParameters: {
+                            ReaxiumDevice: {
+                                user_id: str.originalObject.user_id,
+                                device_id: device_id
+                            }
+                        }
+                    })
                     .then(function (response) {
 
                         spinnerService.hide("spinnerNew");
@@ -158,7 +180,7 @@ angular.module("App")
                     spinnerService.hide("spinnerNew");
                 });
 
-            }else{
+            } else {
                 growl.warning("User is already added");
             }
 
@@ -235,7 +257,7 @@ angular.module("App")
         }
 
 
-        $scope.deleteUserTable = function(user_id) {
+        $scope.deleteUserTable = function (user_id) {
 
             console.log("Delete Element: " + user_id);
             var index = -1;
@@ -249,7 +271,7 @@ angular.module("App")
             console.log("Delete Element Pos: " + index);
             $scope.allUserSelcStakeHolder.splice(index, 1);
 
-            if($scope.allUserSelcStakeHolder.length == 0){
+            if ($scope.allUserSelcStakeHolder.length == 0) {
                 $scope.showTable = false;
             }
 
@@ -308,16 +330,20 @@ angular.module("App")
                 DeviceService.newCreateAccessUserByDevice(jsonSendService)
                     .then(function (response) {
                         spinnerService.hide("spinnerNew");
-                        if(response.ReaxiumResponse.code == 0){
-                            DeviceService.setShowGrowlMessage({isShow:true,message:response.ReaxiumResponse.message});
+                        if (response.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
+                            DeviceService.setShowGrowlMessage({
+                                isShow: true,
+                                message: response.ReaxiumResponse.message
+                            });
                             $state.go('device');
-                        }else{
+                        } else {
                             growl.error(response.ReaxiumResponse.message);
                         }
 
                     }).catch(function (err) {
                     spinnerService.hide("spinnerNew");
-                    console.log("Error: "+err);
+                    console.log("Error: " + err);
+                    growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                 });
 
             } else {
@@ -327,15 +353,15 @@ angular.module("App")
         }
 
 
-        function seachObjList(id_user){
+        function seachObjList(id_user) {
 
             var validate = false;
 
-            if($scope.allUserSelcStakeHolder.length > 0){
+            if ($scope.allUserSelcStakeHolder.length > 0) {
 
-                $scope.allUserSelcStakeHolder.forEach(function(entry){
+                $scope.allUserSelcStakeHolder.forEach(function (entry) {
 
-                    if(entry.user_id == id_user){
+                    if (entry.user_id == id_user) {
                         validate = true;
                     }
                 });

@@ -35,48 +35,9 @@
 
                 <!-- Main content -->
                 <section class="content">
-                    <!-- Small boxes (Stat box) -->
-                    <!--<div class="row">
-                        <div class="col-lg-3 col-xs-4">
-
-                            <div class="small-box bg-blue">
-                                <div class="inner">
-                                    <h3>100</h3>
-                                    <p>Active Users</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-stats-bars"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-xs-4">
-
-                            <div class="small-box bg-blue">
-                                <div class="inner">
-                                    <h3>30<sup style="font-size: 20px">%</sup></h3>
-                                    <p>Users IN</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-stats-bars"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-xs-4">
-
-                            <div class="small-box bg-blue">
-                                <div class="inner">
-                                    <h3>70</h3>
-                                    <p>Users OUT</p>
-                                </div>
-                                <div class="icon">
-                                    <i class="ion ion-stats-bars"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
                     <!-- Main row -->
                     <div class="row">
-                        <section class="content">
+                        <section class="content" style="min-height:450px;">
                             <div class="row">
                                 <div class="col-xs-12">
 
@@ -84,7 +45,7 @@
                                         <div class="box-header ">
                                             <div class="small-box">
                                                 <div class="customIcon">
-                                                    <a ui-sref="newUser" data-toggle="tooltip" title="Add User">
+                                                    <a ui-sref="newUser({edit:false})" data-toggle="tooltip" title="Add User">
                                                         <i class="ion ion-plus-circled"></i>
                                                     </a>
                                                 </div>
@@ -125,7 +86,8 @@
                                                     </td>
                                                     <td>{{user.status.status_name | lowerCase | capitalize}}</td>
                                                     <td><a data-toggle="tooltip" title="Delete User" ng-click="deleteUser(user.user_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -
-                                                        <a ng-click="editMode(user.user_id)" data-toggle="tooltip" title="Edit User"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
+                                                        <a ui-sref="newUser({id_user:user.user_id})" data-toggle="tooltip" title="Edit User"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
+                                                        <!--ng-click="editMode(user.user_id)"-->
                                                 </tr>
                                                 </tbody>
                                                 </tfoot>
@@ -243,9 +205,8 @@
                 <div class="control-sidebar-bg"></div>
 
             </div>
+            <div ui-view="footer"></div>
         </div>
-
-        <div ui-view="footer" style="position: fixed; bottom: 0px; width: 100%"></div>
     </div>
 </div>
 

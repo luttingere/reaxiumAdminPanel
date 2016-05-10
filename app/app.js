@@ -83,7 +83,18 @@ angular.module('App', ['ui.router',
                     'name': 'All routes',
                     'url': "routes"
                 }]
-            }];
+            },
+            {
+                'id':5,
+                'class_active_menu':false,
+                'name': 'Stops Administration',
+                'icon_class': 'fa fa-street-view',
+                'subMenus': [{
+                    'name': 'All stops',
+                    'url': "stops"
+                }]
+            }
+        ];
 
     }])
 

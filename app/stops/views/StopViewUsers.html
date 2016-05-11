@@ -1,0 +1,145 @@
+<spinner name="spinnerNew" ng-cloak="">
+    <div class="overlay"></div>
+    <div class="spinner">
+        <div class="test"><i class="fa fa-refresh fa-spin fa-5x"></i></div>
+    </div>
+    <div class="please-wait">Please Wait...</div>
+</spinner>
+
+<div class="skin-blue sidebar-mini">
+
+    <div class="wrapper" ng-controller="StopViewUsersCtrl">
+
+        <!--header-->
+        <div ui-view="header"></div>
+
+        <!--menu-->
+        <div ui-view="menu"></div>
+
+        <div class="content-wrapper">
+
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    View Users at Stop
+                    <small>Control panel</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li class="active">Stops Dashboard</li>
+                </ol>
+            </section>
+
+            <section class="content" style="min-height:525px;">
+                <div growl></div>
+                <!-- Main row -->
+                <div class="row">
+                    <!-- Main content -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="content" style="min-height: 0px; ">
+                                <div class="box box-primary box-solid">
+                                    <div class="box-header bg-light-blue-active with-border">
+                                        <h3 class="box-title">View Users at Stop</h3>
+                                    </div><!-- /.box-header -->
+
+                                    <div class="box-body">
+                                        <!--Search StakeHolder-->
+                                        <div class="col-md-8">
+                                            <div class="box box-info">
+                                                <div class="box-body">
+                                                    <table>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td style="width: 400px;">
+                                                                <div class="stops" angucomplete-alt id="ex2"
+                                                                     placeholder="Search Stops"
+                                                                     pause="300"
+                                                                     selected-object="selectedStops"
+                                                                     local-data="stopsFilter"
+                                                                     local-search="localSearch"
+                                                                     title-field="stop_name"
+                                                                     minlength="2"
+                                                                     description-field="stop_address"
+                                                                     image-field="pic"
+                                                                     input-class="form-control form-control-small"
+                                                                     match-class="highlight">
+                                                                </div>
+                                                            </td>
+                                                            <td ng-show="selectedStops">
+                                                                <button class="btn btn-info btn-flat"
+                                                                        type="button"
+                                                                        ng-click="addStopsSelect(selectedStops)">
+                                                                    Go!
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--Table User-->
+                                        <div class="col-md-12" ng-show="showTableRoute">
+                                            <div class="box box-info">
+                                                <div class="box-header">
+                                                    <h3 class="box-title"><b>Stop: {{name_stop}}</b></h3>
+                                                </div><!-- /.box-header -->
+                                                <div class="box-body">
+
+                                                    <div>
+                                                        <input class="form-control reduceSize" placeholder="Search here..." on-enter-blur on-blur-change="filterResult()" ng-model="filterCriteria.ReaxiumParameters.ReaxiumStops.filter" type="text" />
+                                                    </div>
+
+                                                    <table id="userTable"
+                                                           class="table table-bordered table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th ng-repeat="header in userTableHeaders">
+                                                                <sort-by onsort="onSort" sortdir="filterCriteria.ReaxiumParameters.ReaxiumStops.sortDir" sortedby="filterCriteria.ReaxiumParameters.ReaxiumStops.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
+                                                            </th>
+                                                            <th>Start Date</th>
+                                                            <th>End Date</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr ng-repeat="obj in listUsersByStop">
+                                                            <td>{{obj.user.first_name}}</td>
+                                                            <td>{{obj.user.first_last_name}}</td>
+                                                            <td>{{obj.user.document_id}}</td>
+                                                            <td>{{obj.start_time | transforDate | date:'mediumTime'}}</td>
+                                                            <td>{{obj.end_time | transforDate | date:'mediumTime'}}</td>
+                                                            <td><a data-toggle="tooltip" title="Delete Device" ng-click="deleteUser(obj.id_stops_user)"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
+                                                        </tr>
+                                                        </tbody>
+                                                        </tfoot>
+                                                    </table>
+
+                                                    <div ng-show="totalRecords == 0">
+                                                        <h3>No Customers Found</h3>
+                                                    </div>
+                                                    <div ng-show="totalPages > 1" class="align-center">
+                                                        <uib-pagination total-items="totalRecords" ng-model="filterCriteria.ReaxiumParameters.ReaxiumStops.page" items-per-page="filterCriteria.ReaxiumParameters.ReaxiumStops.limit" previous-text="previous" next-text="next" last-text="last"
+                                                                        direction-links="true" rotate="false" ng-change="selectPage()"></uib-pagination>
+                                                    </div>
+                                                </div><!-- /.box-body -->
+                                            </div><!-- /.box -->
+
+                                        </div><!-- /.col -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+        </div>
+
+        <!--footer-->
+        <div ui-view="footer"></div>
+    </div>
+
+</div>

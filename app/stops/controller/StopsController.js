@@ -233,9 +233,4 @@ angular.module('App')
         };
 
 
-        $scope.asociateUserWithStop = function(stop_id){
-
-
-        }
-
     })

@@ -13,6 +13,12 @@ angular.module('App')
             totalPages: 0,
             totalRecords: 0
         };
+        var stopUsersJson = {
+            users: {},
+            totalPages: 0,
+            totalRecords: 0
+        };
+
 
         lookUpStops.getAllStopsWithPaginate = function (obj) {
 
@@ -131,6 +137,52 @@ angular.module('App')
             return promise;
         }
 
+
+        lookUpStops.getUserByStop = function(obj){
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
+                method: 'POST',
+                data: JSON.stringify(obj),
+                url: CONST_PROXY_URL.PROXY_URL_GET_USERS_BY_STOP
+            }).success(function (response) {
+                stopUsersJson.code = response.ReaxiumResponse.code;
+                stopUsersJson.message = response.ReaxiumResponse.message;
+                stopUsersJson.users = response.ReaxiumResponse.object;
+                stopUsersJson.totalPages = response.ReaxiumResponse.totalPages;
+                stopUsersJson.totalRecords = response.ReaxiumResponse.totalRecords;
+                defered.resolve(stopUsersJson);
+
+            }).error(function (err) {
+                defered.reject(err);
+            });
+
+            return promise;
+
+        }
+
+
+        lookUpStops.delUserByStop = function(id_stop_usr){
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
+                method: 'POST',
+                data: JSON.stringify({ReaxiumParameters:{ReaxiumStops:{id_stops_user:id_stop_usr}}}),
+                url: CONST_PROXY_URL.PROXY_URL_DELETE_USERS_BY_STOP
+            }).success(function (response) {
+                defered.resolve(response);
+
+            }).error(function (err) {
+                defered.reject(err);
+            });
+
+            return promise;
+        }
+
         return lookUpStops;
     })
     .service("StopsService", function (StopsLookup) {
@@ -200,4 +252,11 @@ angular.module('App')
             return StopsLookup.getStopById(id_stop);
         }
 
+        this.allUsersByStop = function(obj){
+            return StopsLookup.getUserByStop(obj);
+        }
+
+        this.deleteUserByStop = function(id_stop_user){
+            return StopsLookup.delUserByStop(id_stop_user);
+        }
     })

@@ -18,7 +18,6 @@ angular.module("App")
         PROXY_URL_SHOW_ACCESS_HISTORY_BY_USER: "http://54.200.133.84/reaxium/Traffic/trafficFilteredByUser",
         PROXY_URL_CREATE_USER_STAKEHOLDER: "http://54.200.133.84/reaxium/Users/createStakeholderUser",
 
-
         /*Proxy Business*/
         PROXY_URL_CREATE_NEW_BUSINESS: "http://54.200.133.84/reaxium/Business/createBusiness",
         PROXY_URL_ALL_BUSINESS_WITH_PAGINATE: "http://54.200.133.84/reaxium/Business/allBusiness",
@@ -56,7 +55,8 @@ angular.module("App")
         PROXY_URL_ASSOCIATION_STOP_AND_USER:"http://54.200.133.84/reaxium/Stops/associationStopAndUser",
         PROXY_URL_DELETE_STOP: "http://54.200.133.84/reaxium/Stops/deleteStops",
         PROXY_URL_GET_STOP_BY_ID:"http://54.200.133.84/reaxium/Stops/getStopById",
-
+        PROXY_URL_GET_USERS_BY_STOP:"http://54.200.133.84/reaxium/Stops/getUserByStops",
+        PROXY_URL_DELETE_USERS_BY_STOP:"http://54.200.133.84/reaxium/Stops/deleteUserRelationShipStop",
 
         /*Proxy Routes*/
         PROXY_URL_ALL_ROUTES: "http://54.200.133.84/reaxium/Routes/allRoutesWithPagination",

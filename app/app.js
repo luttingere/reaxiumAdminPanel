@@ -26,8 +26,8 @@ angular.module('App', ['ui.router',
 
         $rootScope.appMenus = [
             {
-                'id':1,
-                'class_active_menu':false,
+                'id': 1,
+                'class_active_menu': false,
                 'name': 'Business Administration',
                 'icon_class': 'fa fa-bank',
                 'subMenus': [
@@ -37,8 +37,8 @@ angular.module('App', ['ui.router',
                     }
                 ]
             }, {
-                'id':2,
-                'class_active_menu':false,
+                'id': 2,
+                'class_active_menu': false,
                 'name': 'User Administration',
                 'icon_class': 'fa fa-user',
                 'subMenus': [
@@ -56,8 +56,8 @@ angular.module('App', ['ui.router',
                     }
                 ]
             }, {
-                'id':3,
-                'class_active_menu':false,
+                'id': 3,
+                'class_active_menu': false,
                 'name': 'Device Administration',
                 'icon_class': 'fa fa-hdd-o',
                 'subMenus': [
@@ -75,8 +75,8 @@ angular.module('App', ['ui.router',
                     }
                 ]
             }, {
-                'id':4,
-                'class_active_menu':false,
+                'id': 4,
+                'class_active_menu': false,
                 'name': 'Routes Administration',
                 'icon_class': 'fa fa-map-signs',
                 'subMenus': [{
@@ -85,14 +85,20 @@ angular.module('App', ['ui.router',
                 }]
             },
             {
-                'id':5,
-                'class_active_menu':false,
+                'id': 5,
+                'class_active_menu': false,
                 'name': 'Stops Administration',
                 'icon_class': 'fa fa-street-view',
-                'subMenus': [{
-                    'name': 'All stops',
-                    'url': "stops"
-                }]
+                'subMenus': [
+                    {
+                        'name': 'All stops',
+                        'url': "stops"
+                    },
+                    {
+                        'name': 'View Users at Stops',
+                        'url': "stopViewUser"
+                    }
+                ]
             }
         ];
 

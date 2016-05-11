@@ -246,6 +246,18 @@ angular.module("App")
                 }
             })
 
+            .state("stopViewUser",{
+                url:"/stopViewUser",
+                controller:'',
+                views:{
+                    '': {templateUrl: 'app/stops/views/StopViewUsers.html'},
+                    'header@stopViewUser': {templateUrl: 'app/home/views/header.html'},
+                    'menu@stopViewUser': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@stopViewUser':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
+
+
 
         $urlRouterProvider.otherwise("/login");
 

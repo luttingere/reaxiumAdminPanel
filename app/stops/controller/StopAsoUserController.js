@@ -117,7 +117,8 @@ angular.module("App")
         function buildJsonSend(id_user) {
 
             var arrayResponse = [];
-
+            var cont = 0;
+            console.log("UserId: "+id_user);
 
             $.each($('#userStopsTable').find('tbody tr'), function (index, elemento) {
 
@@ -128,18 +129,19 @@ angular.module("App")
 
                     var id_td_table = $(elementoTD).attr('id');
 
-                    if(id_td_table != undefined && id_td_table != null && !isEmptyString(id_td_table)){
+                    if(id_td_table != undefined && id_td_table != null && id_td_table !=""){
 
-                        if (id_td_table.indexOf('id_user_'+id_user) > -1) {
-                            objResponse.id_stop = StopsService.getModeAsociateUserStop().id_stop;
+                        if (id_td_table === 'id_user_' + id_user) {
                             objResponse.user_id = $(elementoTD).text();
+                            cont++;
                         }
-                        else if (id_td_table.indexOf('timepicker_start_' + id_user) > -1) {
+                        else if (id_td_table === 'timepicker_start_' + id_user) {
 
                             var start_date = $('#id_input_start_' + id_user).val();
 
-                            if(!isEmptyString(start_date)){
+                            if(start_date != ""){
                                 objResponse.start_time = start_date;
+                                cont++;
                             }
                             else{
                                 objResponse.code = 1;
@@ -148,27 +150,27 @@ angular.module("App")
                                 return false;
                             }
                         }
-                        else if (id_td_table.indexOf('timepicker_end_' + id_user) > -1) {
+                        else if (id_td_table === 'timepicker_end_' + id_user) {
 
                             var end_date = $('#id_input_end_' + id_user).val();
 
-                            if(!isEmptyString(end_date)){
+                            if(end_date != ""){
                                 objResponse.end_time = end_date;
+                                cont++;
                             }else{
                                 objResponse.code = 1;
                                 objResponse.message = "end date empty";
                                 arrayResponse.push(objResponse);
                                 return false;
                             }
-
                         }
 
-                        if(!isEmptyString(objResponse.id_stop) && !isEmptyString(objResponse.user_id)
-                            && !isEmptyString(objResponse.start_time) && !isEmptyString(objResponse.end_time)){
-                            objResponse.code=0;
-                            objResponse.message="";
+                        if(cont == 3){
+                            objResponse.code = 0;
+                            objResponse.message = "";
+                            objResponse.id_stop = StopsService.getModeAsociateUserStop().id_stop;
                             arrayResponse.push(objResponse);
-                            return false;
+                            cont = 0;
                         }
                     }
                 });
@@ -218,6 +220,7 @@ angular.module("App")
                 arrayAux.push(buildJsonSend(entry.user_id));
             });
 
+            $log.debug("arrayAux: ",arrayAux);
 
             arrayAux.forEach(function(entry){
 
@@ -259,7 +262,7 @@ angular.module("App")
                         spinnerService.hide("spinnerNew");
                         console.error("Error invocando servicio: "+err);
                         growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
-                    })
+                    });
 
             }else{
                 console.error("Error data invalida: "+objError.message);
@@ -267,7 +270,6 @@ angular.module("App")
             }
 
         }
-
 
 
         var clearInput = function (id) {
@@ -279,5 +281,26 @@ angular.module("App")
             }
         };
 
+
+        $scope.deleteUserTable = function (user_id) {
+
+            console.log("Delete Element: " + user_id);
+            var index = -1;
+            for (var i = 0, len = $scope.listUserSelect.length; i < len; i++) {
+                if ($scope.listUserSelect[i].user_id == user_id) {
+                    index = i;
+                    break;
+                }
+            }
+
+            console.log("Delete Element Pos: " + index);
+            $scope.listUserSelect.splice(index, 1);
+
+            if ($scope.listUserSelect.length == 0) {
+                $scope.showUserTable = false;
+            }
+
+
+        }
     })
 

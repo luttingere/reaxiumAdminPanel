@@ -91,15 +91,15 @@ angular.module("App")
          * Method Initial
          */
         function init() {
-            console.log("Iniciando RouteNewCtrl...");
-            console.log("Id Route: "+$stateParams.id_route);
-            console.log("Mode edition: "+$stateParams.edit);
+            console.info("Iniciando RouteNewCtrl...");
+            console.info("Id Route: "+$stateParams.id_route);
+            console.info("Mode edition: "+$stateParams.edit);
 
             RoutesServices.setShowGrowlMessage({isShow:false,message:""});
             RoutesServices.setModeEdit({isModeEdit:Boolean($stateParams.edit),id_route:$stateParams.id_route});
 
             if(RoutesServices.getModeEdit().isModeEdit){
-                console.log("En modo editar...");
+
                 spinnerService.show("spinnerNew");
 
                 var objSend = {
@@ -242,7 +242,10 @@ angular.module("App")
             }
         };
 
-        //TODO colocar la funcinalidad en los modulos que faltan
+        /**
+         * Delete stops select
+         * @param id_stop
+         */
         $scope.deleteStopsSelect = function (id_stop) {
 
             console.log("Delete Element: " + id_stop);

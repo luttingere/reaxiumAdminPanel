@@ -97,7 +97,7 @@ function cleanMaskPhone(phone) {
  * @returns {*}
  */
 function formatDate(date) {
-    return moment(date).format("YYYY-MM-DD");
+    return moment(date).format("DD/MM/YYYY");
 }
 
 /**
@@ -287,6 +287,9 @@ function validateAccess(obj) {
     } else if (isEmptyString(obj.pass)) {
         response.validate = false;
         response.message = "Password empty";
+    }else if(isEmptyString(obj.confirmPass)){
+        response.validate = false;
+        response.message = "Confirm Password empty";
     }
 
     return response;

@@ -49,15 +49,10 @@ angular.module('App')
                         latitude: latitude,
                         longitude: longitude
                     },
-                    zoom: 16,
-                    options: {"MapTypeId": maps.MapTypeId.HYBRID}
+                    zoom: 18,
+                    options: {"MapTypeId": maps.MapTypeId.ROADMAP}
                 };
-                $scope.marker = {
-                    coords: {
-                        latitude: latitude,
-                        longitude: longitude
-                    }
-                };
+
             })
         }
 

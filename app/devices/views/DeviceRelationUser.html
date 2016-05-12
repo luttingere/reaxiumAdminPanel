@@ -34,14 +34,13 @@
             </section>
 
             <!-- Main content -->
-            <section class="content">
+            <section class="content" style="min-height:530px;">
                 <div class="row">
                     <div class="col-lg-12">
 
                         <div class="row">
-
                             <div class="col-lg-12">
-                                <div class="content" style="min-height: 0px;">
+                                <div class="content">
                                     <div class="box box-primary box-solid">
                                         <div class="box-header bg-light-blue-active with-border">
                                             <h3 class="box-title">Device Access Control</h3>
@@ -146,7 +145,7 @@
 
                         </div>
 
-                        <div class="row">
+                        <div class="row" ng-show="showTable">
                             <div class="content" style="min-height: 0px;">
                                 <div class="col-md-4"></div>
                                 <div class="col-md-4">
@@ -163,20 +162,11 @@
                     </div>
                 </div>
             </section>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
-            <br/>
         </div>
+
         <!--footer-->
         <div ui-view="footer"></div>
+
         </div>
 
     </div>

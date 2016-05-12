@@ -347,12 +347,12 @@
                                                                         <td style="width: 400px;">
                                                                             <div angucomplete-alt id="ex2"
                                                                                  placeholder="Search people"
-                                                                                 pause="300"
+                                                                                 pause="5"
                                                                                  selected-object="selectedPerson"
                                                                                  local-data="userFilter"
                                                                                  local-search="localSearch"
                                                                                  title-field="first_name,second_name"
-                                                                                 minlength="2"
+                                                                                 minlength="3"
                                                                                  description-field="email"
                                                                                  image-field="pic"
                                                                                  input-class="form-control form-control-small"
@@ -375,7 +375,7 @@
                                                         </div>
                                                     </div>
                                                     <!--Table StakeHolder-->
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-12" ng-show="showTable">
                                                         <div class="box box-info">
                                                             <div class="box-header">
                                                                 <h3 class="box-title">System Users</h3>
@@ -388,25 +388,15 @@
                                                                         <th>Name</th>
                                                                         <th>Last Name</th>
                                                                         <th>ID</th>
-                                                                        <th>Phones</th>
-                                                                        <th>Address</th>
-                                                                        <th>Information</a></th>
                                                                         <th>Actions</th>
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                     <tr ng-repeat="user in allUserSelcStakeHolder">
-                                                                        <td>{{user.first_name + " " +
-                                                                            user.first_name}}
-                                                                        </td>
-                                                                        <td>{{user.second_name + " " +
-                                                                            user.second_name}}
-                                                                        </td>
+                                                                        <td>{{user.first_name + " " + user.second_name}}</td>
+                                                                        <td>{{user.first_last_name + " " + user.second_last_name}}</td>
                                                                         <td>{{user.document_id}}</td>
-                                                                        <td>Phones</td>
-                                                                        <td><a href="">Addresss</a></td>
-                                                                        <td><a href="">Information</a></td>
-                                                                        <td>Eliminar - Editar</td>
+                                                                        <td><a ng-click="deleteUserTable(user.user_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
                                                                     </tr>
                                                                     </tbody>
                                                                     </tfoot>

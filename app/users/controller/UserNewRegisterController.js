@@ -21,6 +21,7 @@ angular.module('App')
 
         $scope.selectTypeUser = null;
         $scope.showTableStakeHolder = false;
+        $scope.showTable = false;
         $scope.modeEdit = false;
         $scope.userFilter = [];
         $scope.allUserSelcStakeHolder = [];
@@ -227,8 +228,6 @@ angular.module('App')
          */
         $scope.init = function () {
 
-           // spinnerService.show("spinnerNew");
-
             console.info("Iniciando controlador UserNewCtrl...");
             console.info("Mode edit: "+$stateParams.edit);
             console.info("Id del usuario: "+$stateParams.id_user);
@@ -259,6 +258,7 @@ angular.module('App')
             if(UserService.getModeEdit().isModeEdit){
 
                 console.log("Esta en modo editar...");
+                spinnerService.show("spinnerNew");
 
                 var promiseUserById = UserService.getUsersById(UserService.getModeEdit().idUser);
                 promiseUserById.then(function(result){
@@ -281,9 +281,24 @@ angular.module('App')
                             business_id_number: result[0].busines.business_id_number
                         };
 
-                        $scope.users.birthdate = new Date(result[0].birthdate);
-                        $scope.users.email = result[0].email;
 
+                        if(!isEmptyString(result[0].birthdate)){
+
+                            var birthdate = result[0].birthdate.split('/');
+
+                            var day = (birthdate[0].length == 1) ? "0" + birthdate[0] : birthdate[0];
+                            var month = (birthdate[1].length == 1) ? "0" + birthdate[1] : birthdate[1];
+                            var year = birthdate[2];
+
+                            var dateFinal = month+"/"+day+"/"+year;
+                            $scope.users.birthdate = new Date(dateFinal);
+                        }
+                        else{
+                            $scope.users.birthdate = new Date();
+                        }
+
+
+                        $scope.users.email = result[0].email;
 
                         addressObj.latitude = (result[0].address.length > 0) ? result[0].address[0].latitude :  UserService.getAddressDefault().latitude;
                         addressObj.longitude = (result[0].address.length > 0) ? result[0].address[0].longitude :  UserService.getAddressDefault().longitude;
@@ -312,17 +327,19 @@ angular.module('App')
                         if($scope.selectTypeUser == 3){
 
                             result[0].UserRelationship.forEach(function(entry){
+                                $scope.showTable=true;
                                 $scope.allUserSelcStakeHolder.push(entry);
                             })
                         }
 
                         $scope.addTheMap();
+
                     }
                     catch (err){
                         console.log("error cargando los datos para editar: "+err);
                     }
                     finally {
-                        //spinnerService.hide("spinnerNew");
+                        spinnerService.hide("spinnerNew");
                     }
 
                 }).catch(function(err){
@@ -354,8 +371,8 @@ angular.module('App')
          * @type {string[]}
          */
 
-        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-        $scope.format = $scope.formats[1];
+        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd/MM/yyyy', 'shortDate'];
+        $scope.format = $scope.formats[2];
         $scope.altInputFormats = ['M!/d!/yyyy'];
 
         /**
@@ -365,8 +382,8 @@ angular.module('App')
 
         $scope.dateOptions = {
             formatYear: 'yyyy',
-            maxDate: new Date(2020, 5, 22),
-            minDate: new Date(1920, 1, 1),
+            maxDate: new Date(2020,5,22),
+            minDate: new Date(1920,1,1),
             startingDay: 1
         };
 
@@ -387,6 +404,7 @@ angular.module('App')
          * @returns {Array}
          */
         $scope.localSearch = function (str) {
+
             var matches = [];
 
             invokeServiceUserFilter(str);
@@ -451,6 +469,7 @@ angular.module('App')
         };
 
         $scope.addUser = function (str) {
+            $scope.showTable=true;
             $scope.allUserSelcStakeHolder.push(str.originalObject);
             clearInput('ex2');
         };
@@ -580,9 +599,9 @@ angular.module('App')
                         dataNewUserStakeHolder.ReaxiumParameters.PhoneNumbers[2].phone_number_id = obj[0].phone_numbers[2].phone_number_id;
                     }
 
-
-                    dataNewUserStakeHolder.ReaxiumParameters.address[0].address_id = obj[0].address[0].address_id;
-
+                    if(!isUndefined(obj[0].address[0])){
+                        dataNewUserStakeHolder.ReaxiumParameters.address[0].address_id = obj[0].address[0].address_id;
+                    }
                 }
 
                 $log.debug("Objeto para enviar stakeHolder", dataNewUserStakeHolder);
@@ -673,7 +692,9 @@ angular.module('App')
                         dataNewUser.ReaxiumParameters.PhoneNumbers[2].phone_number_id = obj[0].phone_numbers[2].phone_number_id;
                     }
 
-                    dataNewUser.ReaxiumParameters.address[0].address_id = obj[0].address[0].address_id;
+                    if(!isUndefined(obj[0].address[0])){
+                        dataNewUser.ReaxiumParameters.address[0].address_id = obj[0].address[0].address_id;
+                    }
 
                 }
 
@@ -706,5 +727,27 @@ angular.module('App')
             }
 
         }
+
+
+        $scope.deleteUserTable = function (user_id) {
+
+            console.log("Delete Element: " + user_id);
+            var index = -1;
+            for (var i = 0, len = $scope.allUserSelcStakeHolder.length; i < len; i++) {
+                if ($scope.allUserSelcStakeHolder[i].user_id == user_id) {
+                    index = i;
+                    break;
+                }
+            }
+
+            console.log("Delete Element Pos: " + index);
+            $scope.allUserSelcStakeHolder.splice(index, 1);
+
+            if ($scope.allUserSelcStakeHolder.length == 0) {
+                $scope.showTable = false;
+            }
+
+        }
+
 
     });

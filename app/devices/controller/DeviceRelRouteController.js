@@ -108,8 +108,7 @@ angular.module("App")
 
             if ($scope.allUserSelcStakeHolder.length == 0) {
                 $scope.allUserSelcStakeHolder.push(str.originalObject);
-                //$scope.showTable = true;
-
+                $scope.showTable = true;
             }
 
             clearInput('ex2');

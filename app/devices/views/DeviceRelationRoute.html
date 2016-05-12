@@ -27,14 +27,14 @@
                     <li><a ui-sref="device"></i>All Device</a></li>
                     <li><a class="active">Routes related to device</a></li>
                 </ol>
-
             </section>
 
-            <section class="content">
+            <section class="content" style="min-height:530px;">
+
                 <div growl></div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="content" style="min-height: 0px;">
+                        <div class="content">
                             <div class="box box-primary">
                                 <div class="box-header bg-light-blue-active with-border ">
                                     <h3 class="box-title">Device Info</h3>
@@ -51,12 +51,12 @@
                                                             <td style="width: 400px;">
                                                                 <div angucomplete-alt id="ex2"
                                                                      placeholder="Search route"
-                                                                     pause="300"
+                                                                     pause="5"
                                                                      selected-object="selectedRoute"
                                                                      local-data="routesFilter"
                                                                      local-search="localSearch"
                                                                      title-field="route_number,route_name"
-                                                                     minlength="2"
+                                                                     minlength="3"
                                                                      description-field="route_address"
                                                                      image-field="pic"
                                                                      input-class="form-control form-control-small"
@@ -79,7 +79,7 @@
                                             </div>
                                         </div>
                                         <!--Table StakeHolder-->
-                                        <div class="col-md-12" >
+                                        <div class="col-md-12"  ng-show="showTable">
                                             <div class="box box-info">
                                                 <div class="box-header">
                                                     <h3 class="box-title">Routes</h3>
@@ -118,7 +118,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" ng-show="showTable">
                     <div class="col-lg-12">
                         <div class="content" style="min-height: 0px;">
                             <div class="box box-primary">
@@ -153,7 +153,7 @@
                 </div>
                 <!-- Main content -->
 
-                <div class="row">
+                <div class="row" ng-show="showTable">
                     <div class="content" style="min-height: 0px;">
                         <div class="col-md-4"></div>
                         <div class="col-md-4">

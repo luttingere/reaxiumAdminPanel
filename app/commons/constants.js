@@ -80,6 +80,7 @@ angular.module("App")
         ACCESS_BIOMETRIC: 2,
         ACCESS_RFID: 3,
         SUCCESS_RESPONSE_SERVICE:0,
+        ACCESS_ADMIN:1,
         ID_HOME_MENU:0,
         ID_BUSINESS_MENU:1,
         ID_USER_MENU:2,

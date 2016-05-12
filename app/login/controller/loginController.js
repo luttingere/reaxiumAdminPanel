@@ -11,7 +11,8 @@ angular.module('App')
                                              spinnerService,
                                              $localStorage,
                                              $sessionStorage,
-                                             growl) {
+                                             growl,
+                                             GLOBAL_CONSTANT) {
 
         $scope.showspinner = false;
         $scope.data = {
@@ -48,17 +49,26 @@ angular.module('App')
                     $log.debug(data);
 
                     if (data.ReaxiumResponse.code === 0) {
-                        $sessionStorage.user_photo = data.ReaxiumResponse.object[0].user.user_photo;
-                        $sessionStorage.nameUser = data.ReaxiumResponse.object[0].user.first_name + ' ' +data.ReaxiumResponse.object[0].user.first_last_name;
-                        $state.go('home');
+
+                        if(data.ReaxiumResponse.object[0].user.user_type.user_type_id == GLOBAL_CONSTANT.ACCESS_ADMIN){
+
+                            $sessionStorage.user_photo = data.ReaxiumResponse.object[0].user.user_photo;
+                            $sessionStorage.nameUser = data.ReaxiumResponse.object[0].user.first_name + ' ' +data.ReaxiumResponse.object[0].user.first_last_name;
+                            $state.go('home');
+                        }
+                        else{
+                            growl.error("User with restricted access");
+                            console.info("Error a ingresar al aplicativo: " + data.ReaxiumResponse.message);
+                        }
+
                     } else {
-                        growl.error(data.ReaxiumResponse.message)
-                        console.log("Error a ingresar al aplicativo: " + data.ReaxiumResponse.message)
+                        growl.error(data.ReaxiumResponse.message);
+                        console.error("Error a ingresar al aplicativo: " + data.ReaxiumResponse.message);
                     }
 
                 })
                 .catch(function (error) {
-                    console.log("Error invocacion del servicio" + error);
+                    console.error("Error invocacion del servicio" + error);
 
                 }).finally(function () {
 
@@ -133,38 +143,3 @@ angular.module('App')
             }
         }
     });
-
-
-
-//Alert
-/*var open = function (mode) {
-
- $scope.data_alert.mode = mode;
-
- var modalInstance = $uibModal.open({
- templateUrl: 'app/login/views/myModalContent.html',
- controller: ModalInstanceCtrl,
- backdrop: true,
- keyboard: true,
- backdropClick: true,
- size: 'sm',
- resolve: {
- data: function () {
- return $scope.data_alert;
- }
- }
- });
-
- modalInstance.result.then(function (selectedItem) {
- $scope.selected = selectedItem;
- }, function () {
- $log.info('Modal dismissed at: ' + new Date());
- });
-
- }*/
-/*var ModalInstanceCtrl = function ($scope, $uibModalInstance, data) {
- $scope.data_alert = data;
- $scope.close = function(result){
- $uibModalInstance.close($scope.data_alert);
- };
- };*/

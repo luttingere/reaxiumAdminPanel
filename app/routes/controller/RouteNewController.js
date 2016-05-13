@@ -23,9 +23,6 @@ angular.module("App")
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
-        //data user by session
-        $scope.photeUser = $sessionStorage.user_photo;
-        $scope.nameUser = $sessionStorage.nameUser;
 
         $scope.stopsFilter = [];
         $scope.listStops = [];
@@ -54,6 +51,8 @@ angular.module("App")
             }
         ];
 
+
+        var loadServices = true;
 
         /**
          * add a google map with the location of the user address
@@ -86,6 +85,23 @@ angular.module("App")
             })
         };
 
+
+        function validateSession(){
+
+            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+                console.error("Usuario no a iniciado session");
+                loadServices = false;
+                $state.go("login");
+            }
+            else{
+                //data user by session
+                $scope.photeUser = $sessionStorage.user_photo;
+                $scope.nameUser = $sessionStorage.nameUser;
+            }
+
+        }
+
+        validateSession();
 
         /**
          * Method Initial
@@ -165,7 +181,10 @@ angular.module("App")
 
         }
 
-        init();
+        if(loadServices){
+            init();
+        }
+
 
         /**
          * Method compare input with list server users filter

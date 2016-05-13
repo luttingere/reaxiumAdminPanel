@@ -25,10 +25,6 @@ angular.module('App')
         $scope.showNewUserModal = false;
         $scope.showMessage = "";
 
-        //data user by session
-        $scope.photeUser = $sessionStorage.user_photo;
-        $scope.nameUser = $sessionStorage.nameUser;
-
         //menu sidebar
         $scope.menus = addActiveClassMenu($rootScope.appMenus,GLOBAL_CONSTANT.ID_BUSINESS_MENU);
         //Search on the menu
@@ -36,6 +32,8 @@ angular.module('App')
 
         $scope.totalPages = 0;
         $scope.businessCount = 0;
+
+        var loadServices = true;
 
         /**
          * cabecera de la tabla de negocios
@@ -60,6 +58,25 @@ angular.module('App')
                 filter: ''
             }
         };
+
+        function init() {
+            console.info("Inicio controlador BusinessController...");
+
+            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+                console.error("Usuario no a iniciado session");
+                loadServices = false;
+                $state.go("login");
+            }
+            else{
+                //data user by session
+                $scope.photeUser = $sessionStorage.user_photo;
+                $scope.nameUser = $sessionStorage.nameUser;
+            }
+
+        }
+
+        init();
+
 
         $scope.getAllBusiness = function () {
 
@@ -92,7 +109,9 @@ angular.module('App')
 
         //called when navigate to another page in the pagination
         $scope.selectPage = function () {
-            $scope.getAllBusiness();
+            if(loadServices){
+                $scope.getAllBusiness();
+            }
         };
 
         //Will be called when filtering the grid, will reset the page number to one

@@ -20,10 +20,6 @@ angular.module("App")
     //Search on the menu
     $scope.menuOptions = {searchWord: ''};
 
-    //data user by session
-    $scope.photeUser = $sessionStorage.user_photo;
-    $scope.nameUser = $sessionStorage.nameUser;
-
     $scope.totalPages = 0;
 
     //default criteria that will be sent to the server
@@ -49,6 +45,24 @@ angular.module("App")
         value: 'route_address'
     }
     ];
+
+    var loadServices = true;
+
+    function init(){
+
+        if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+            console.error("Usuario no a iniciado session");
+            loadServices = false;
+            $state.go("login");
+        }
+        else{
+            //data user by session
+            $scope.photeUser = $sessionStorage.user_photo;
+            $scope.nameUser = $sessionStorage.nameUser;
+        }
+    }
+
+    init();
 
     $scope.getAllRoutes = function(){
         console.info("Iniciando Controlador RouteCtrl");
@@ -81,7 +95,9 @@ angular.module("App")
 
     //called when navigate to another page in the pagination
     $scope.selectPage = function () {
-        $scope.getAllRoutes();
+        if(loadServices){
+            $scope.getAllRoutes();
+        }
     };
 
     //Will be called when filtering the grid, will reset the page number to one

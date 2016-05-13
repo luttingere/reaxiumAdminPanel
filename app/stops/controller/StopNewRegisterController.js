@@ -17,11 +17,6 @@ angular.module('App')
         $scope.menus = addActiveClassMenu($rootScope.appMenus, GLOBAL_CONSTANT.ID_STOPS_MENU);
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
-
-        //data user by session
-        $scope.photeUser = $sessionStorage.user_photo;
-        $scope.nameUser = $sessionStorage.nameUser;
-
         $scope.showTable = false;
 
         $scope.addressStop = {
@@ -108,7 +103,18 @@ angular.module('App')
 
         function init() {
             console.info("Inicio controlador StopNewCtrl...");
-            $scope.addTheMap();
+
+            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+                console.error("Usuario no a iniciado session");
+                $state.go("login");
+            }
+            else{
+                //data user by session
+                $scope.photeUser = $sessionStorage.user_photo;
+                $scope.nameUser = $sessionStorage.nameUser;
+                $scope.addTheMap();
+            }
+
         }
 
 

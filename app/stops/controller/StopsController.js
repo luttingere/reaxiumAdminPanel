@@ -21,12 +21,8 @@ angular.module('App')
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
-        //data user by session
-        $scope.photeUser = $sessionStorage.user_photo;
-        $scope.nameUser = $sessionStorage.nameUser;
-
-
         $scope.totalPages = 0;
+        var loadServices = true;
 
         //default criteria that will be sent to the server
         $scope.filterCriteria = {
@@ -53,6 +49,24 @@ angular.module('App')
         }];
 
 
+        function init() {
+            console.info("Inicio controlador StopsCtrl...");
+
+            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+                console.error("Usuario no a iniciado session");
+                loadServices = false;
+                $state.go("login");
+            }
+            else{
+                //data user by session
+                $scope.photeUser = $sessionStorage.user_photo;
+                $scope.nameUser = $sessionStorage.nameUser;
+            }
+
+        }
+
+        init();
+
         $scope.getAllStops = function(){
             console.info("Iniciando Controlador StopsCtrl");
 
@@ -78,13 +92,14 @@ angular.module('App')
                     $scope.totalRecords = 0;
                     growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                 });
-
         }
 
 
         //called when navigate to another page in the pagination
         $scope.selectPage = function () {
-            $scope.getAllStops();
+            if(loadServices){
+                $scope.getAllStops();
+            }
         };
 
         //Will be called when filtering the grid, will reset the page number to one

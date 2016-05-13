@@ -24,10 +24,6 @@ angular.module('App')
         $scope.showMessage = "";
         $scope.headerName = "";
 
-        //data user by session
-        $scope.photeUser = $sessionStorage.user_photo;
-        $scope.nameUser = $sessionStorage.nameUser;
-
         $scope.business = {
             business_id: null,
             business_name: "",
@@ -57,6 +53,8 @@ angular.module('App')
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
+
+        var loadServices = true;
 
         /**
          * add a google map with the location of the user address
@@ -122,12 +120,29 @@ angular.module('App')
         }
 
 
+        function validateSession(){
+
+            console.info("Iniciando controlador BusinessNewCtrl...");
+
+            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+                console.error("Usuario no a iniciado session");
+                loadServices = false;
+                $state.go("login");
+            }
+            else{
+                //data user by session
+                $scope.photeUser = $sessionStorage.user_photo;
+                $scope.nameUser = $sessionStorage.nameUser;
+            }
+        }
+
+        validateSession();
+
         /**
          * Method initial controller
          */
         $scope.init = function () {
 
-            console.info("Iniciando controlador BusinessNewCtrl...");
             console.info("Mode Edit: "+$stateParams.edit);
             console.info("Id Business: "+$stateParams.id_business);
 
@@ -173,8 +188,6 @@ angular.module('App')
 
 
 
-
-
                         $scope.addTheMap();
                     }
                     catch (err) {
@@ -194,7 +207,9 @@ angular.module('App')
         /**
          * Method initial controller
          */
-        $scope.init();
+        if(loadServices){
+            $scope.init();
+        }
 
         $scope.searchbox = {
             'template': 'searchbox.tpl.html',

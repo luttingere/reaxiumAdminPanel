@@ -25,10 +25,23 @@ angular.module("App")
         $scope.deviceName = "";
         $scope.deviceDescription = "";
 
+        var loadServices = true;
 
         var init = function () {
             console.info("Iniciando controlador DeviceNewCtrl");
-            DeviceService.setShowGrowlMessage({isShow:false,message:""});
+
+            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+                console.error("Usuario no a iniciado session");
+                loadServices = false;
+                $state.go("login");
+            }
+            else{
+                //data user by session
+                $scope.photeUser = $sessionStorage.user_photo;
+                $scope.nameUser = $sessionStorage.nameUser;
+                DeviceService.setShowGrowlMessage({isShow:false,message:""});
+            }
+
         }
 
         init();

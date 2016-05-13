@@ -19,9 +19,6 @@ angular.module('App')
         $scope.menus = addActiveClassMenu($rootScope.appMenus,GLOBAL_CONSTANT.ID_USER_MENU);
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
-        //data user by session
-        $scope.photeUser = $sessionStorage.user_photo;
-        $scope.nameUser = $sessionStorage.nameUser;
 
         //array of users in the autocomplete field
         $scope.userFilter = [];
@@ -69,6 +66,27 @@ angular.module('App')
                 user_id:''
             }
         };
+
+
+        /**
+         * Method Init
+         */
+        function init(){
+            console.info("Iniciando controlador UserHistoryAccessController");
+
+            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+                console.error("Usuario no a iniciado session");
+                $state.go("login");
+            }
+            else{
+                //data user by session
+                $scope.photeUser = $sessionStorage.user_photo;
+                $scope.nameUser = $sessionStorage.nameUser;
+            }
+        }
+
+        init();
+
 
         /**
          * Method compare input with list server users filter

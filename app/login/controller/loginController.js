@@ -50,15 +50,16 @@ angular.module('App')
 
                     if (data.ReaxiumResponse.code === 0) {
 
-                        if(data.ReaxiumResponse.object[0].user.user_type.user_type_id == GLOBAL_CONSTANT.ACCESS_ADMIN){
+                        if(data.ReaxiumResponse.object[0].user.user_type.user_type_id == GLOBAL_CONSTANT.ROL_ACCESS_ADMIN){
 
                             $sessionStorage.user_photo = data.ReaxiumResponse.object[0].user.user_photo;
                             $sessionStorage.nameUser = data.ReaxiumResponse.object[0].user.first_name + ' ' +data.ReaxiumResponse.object[0].user.first_last_name;
+                            $sessionStorage.rol_user = GLOBAL_CONSTANT.ROL_ACCESS_ADMIN;
                             $state.go('home');
                         }
                         else{
                             growl.error("User with restricted access");
-                            console.info("Error a ingresar al aplicativo: " + data.ReaxiumResponse.message);
+                            console.info("EUser with restricted access: " + data.ReaxiumResponse.message);
                         }
 
                     } else {

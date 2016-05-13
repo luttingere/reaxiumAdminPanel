@@ -21,9 +21,6 @@ angular.module("App")
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
-        //data user by session
-        $scope.photeUser = $sessionStorage.user_photo;
-        $scope.nameUser = $sessionStorage.nameUser;
         $scope.userFilter = [];
         $scope.listUserSelect = [];
         $scope.showUserTable = false;
@@ -31,10 +28,22 @@ angular.module("App")
 
         function init() {
             console.info("Iniciando Controlador StopAsoCtrl");
-            console.log("Id stops: " + $stateParams.id_stop);
-            console.log("Mode asocciate User Stop: " + $stateParams.modeAsocStopUser);
-            StopsService.setModeAsociateUserStop({modeAsociateUserStop:$stateParams.modeAsocStopUser,id_stop:$stateParams.id_stop});
-            //$log.debug(StopsService.getModeAsociateUserStop());
+
+            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+                console.error("Usuario no a iniciado session");
+                $state.go("login");
+            }
+            else{
+                //data user by session
+                $scope.photeUser = $sessionStorage.user_photo;
+                $scope.nameUser = $sessionStorage.nameUser;
+
+                console.log("Id stops: " + $stateParams.id_stop);
+                console.log("Mode asocciate User Stop: " + $stateParams.modeAsocStopUser);
+                StopsService.setModeAsociateUserStop({modeAsociateUserStop:$stateParams.modeAsocStopUser,id_stop:$stateParams.id_stop});
+
+            }
+
         }
 
         init();

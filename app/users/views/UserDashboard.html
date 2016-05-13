@@ -45,7 +45,7 @@
                                         <div class="box-header ">
                                             <div class="small-box">
                                                 <div class="customIcon">
-                                                    <a ui-sref="newUser({edit:false})" data-toggle="tooltip" title="Add User">
+                                                    <a ui-sref="newUser" data-toggle="tooltip" title="Add User">
                                                         <i class="ion ion-plus-circled"></i>
                                                     </a>
                                                 </div>
@@ -86,7 +86,7 @@
                                                     </td>
                                                     <td>{{user.status.status_name | lowerCase | capitalize}}</td>
                                                     <td><a data-toggle="tooltip" title="Delete User" ng-click="deleteUser(user.user_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -
-                                                        <a ui-sref="newUser({id_user:user.user_id})" data-toggle="tooltip" title="Edit User"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
+                                                        <a ui-sref="newUser({id_user:user.user_id,edit:true})" data-toggle="tooltip" title="Edit User"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
                                                         <!--ng-click="editMode(user.user_id)"-->
                                                 </tr>
                                                 </tbody>

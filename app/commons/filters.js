@@ -40,3 +40,22 @@ angular.module('App')
         }
     })
 
+    /*.filter('selectFromSelected', function (GLOBAL_CONSTANT,TYPES_USERS) {
+        return function (incItems, value,rolUser) {
+            var out = [{}];
+
+            if(value){
+                for(var x=0; x<incItems.length; x++){
+                    if(rolUser == GLOBAL_CONSTANT.ROL_SCHOOL){
+                        if(incItems[x].user_type_id == TYPES_USERS.TYPE_SCHOOL){
+                            out.push(incItems[x]);
+                        }
+                    }
+                }
+                return out;
+            }
+            else if(!value){
+                return incItems
+            }
+        };
+    });*/

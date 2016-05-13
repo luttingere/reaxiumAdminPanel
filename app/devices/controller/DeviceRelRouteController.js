@@ -22,10 +22,6 @@ angular.module("App")
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
-        //data user by session
-        $scope.photeUser = $sessionStorage.user_photo;
-        $scope.nameUser = $sessionStorage.nameUser;
-
 
         $scope.routesFilter = [];
         $scope.allUserSelcStakeHolder = [];
@@ -39,9 +35,21 @@ angular.module("App")
 
         function init() {
             console.info("Iniciando controlador DeviceRelRouteCtrl");
-            console.log("Id device: " + $stateParams.id_device);
-            console.log("Mode Device Relation Route: "+$stateParams.modeDeviceRelRoute);
-            DeviceService.setRelUserDevice({isModeRel:Boolean($stateParams.modeDeviceRelRoute), id_device: $stateParams.id_device});
+
+            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+                console.error("Usuario no a iniciado session");
+                $state.go("login");
+            }
+            else{
+                //data user by session
+                $scope.photeUser = $sessionStorage.user_photo;
+                $scope.nameUser = $sessionStorage.nameUser;
+
+                console.info("Id device: " + $stateParams.id_device);
+                console.info("Mode Device Relation Route: "+$stateParams.modeDeviceRelRoute);
+                DeviceService.setRelUserDevice({isModeRel:Boolean($stateParams.modeDeviceRelRoute), id_device: $stateParams.id_device});
+            }
+
         }
 
         init();

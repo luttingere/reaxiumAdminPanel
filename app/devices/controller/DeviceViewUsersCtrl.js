@@ -19,10 +19,6 @@ angular.module("App")
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
-        //data user by session
-        $scope.photeUser = $sessionStorage.user_photo;
-        $scope.nameUser = $sessionStorage.nameUser;
-
         $scope.listUsersByDevice = [];
         $scope.showTableRoute = false;
         $scope.deviceId = "";
@@ -59,6 +55,22 @@ angular.module("App")
             value: 'document_id'
         }
         ];
+
+
+        function init(){
+
+            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+                console.error("Usuario no a iniciado session");
+                $state.go("login");
+            }
+            else{
+                //data user by session
+                $scope.photeUser = $sessionStorage.user_photo;
+                $scope.nameUser = $sessionStorage.nameUser;
+            }
+        }
+
+        init();
 
 
         $scope.searchDevice = function () {

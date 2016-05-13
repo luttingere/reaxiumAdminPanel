@@ -14,6 +14,10 @@ angular.module("App")
                 templateUrl: 'app/login/views/login.html',
                 controller: 'loginController'
             })
+            .state("logout",{
+                url: '/logout',
+                controller: 'logoutCtrl'
+            })
             .state("forgetPass",{
                 url: '/forgetPass',
                 templateUrl:'app/login/views/forgetPassword.html',
@@ -47,7 +51,7 @@ angular.module("App")
                 url: '/newUser',
                 controller:'UserNewCtrl',
                 params:{
-                    edit:true,
+                    edit:false,
                     id_user: null,
                 },
                 views: {
@@ -95,7 +99,7 @@ angular.module("App")
                 url: '/newBusiness',
                 controller:'BusinessNewCtrl',
                 params:{
-                    edit:true,
+                    edit:false,
                     id_business: null,
                 },
                 views: {

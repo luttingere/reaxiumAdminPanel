@@ -80,13 +80,19 @@ angular.module("App")
         ACCESS_BIOMETRIC: 2,
         ACCESS_RFID: 3,
         SUCCESS_RESPONSE_SERVICE:0,
-        ACCESS_ADMIN:1,
+        ROL_ACCESS_ADMIN:1,
+        ROL_SCHOOL:2,
         ID_HOME_MENU:0,
         ID_BUSINESS_MENU:1,
         ID_USER_MENU:2,
         ID_DEVICE_MENU:3,
         ID_ROUTES_MENU:4,
         ID_STOPS_MENU:5
+
+    })
+
+    .constant('TYPES_USERS',{
+        TYPE_SCHOOL: 5,
 
     })
 

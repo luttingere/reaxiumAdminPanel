@@ -31,7 +31,7 @@ angular.module('App')
 
 
         var nameImageUpload="";
-
+        var loadServices = true;
 
         $scope.users = {
             document_id: "",
@@ -68,9 +68,6 @@ angular.module('App')
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
-        //data user by session
-        $scope.photeUser = $sessionStorage.user_photo;
-        $scope.nameUser = $sessionStorage.nameUser;
 
         $scope.businessFilter = [];
         $scope.selectBusiness = null;
@@ -223,6 +220,27 @@ angular.module('App')
             }
         }
 
+
+        /**
+         * Validate session
+         */
+        function validateSession(){
+
+            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+                console.error("Usuario no a iniciado session");
+                loadServices = false;
+                $state.go("login");
+            }
+            else{
+                //data user by session
+                $scope.photeUser = $sessionStorage.user_photo;
+                $scope.nameUser = $sessionStorage.nameUser;
+            }
+
+        }
+
+        validateSession();
+
         /**
          * Method initial controller
          */
@@ -354,7 +372,9 @@ angular.module('App')
         /**
          * Method initial controller
          */
-        $scope.init();
+        if(loadServices){
+            $scope.init();
+        }
 
 
         $scope.searchbox = {

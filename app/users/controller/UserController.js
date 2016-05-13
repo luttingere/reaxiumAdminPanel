@@ -29,13 +29,10 @@ angular.module('App')
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
-        //data user by session
-        $scope.photeUser = $sessionStorage.user_photo;
-        $scope.nameUser = $sessionStorage.nameUser;
-
         $scope.totalPages = 0;
         $scope.usersCount = 0;
 
+        var loadServices = true;
         /**
          * cabecera de la tabla de usuarios
          * @type {*[]}
@@ -63,6 +60,29 @@ angular.module('App')
             }
         };
 
+        /**
+         * Method Init
+         */
+        function init(){
+            console.info("Iniciando controlador UserController");
+
+            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+                console.error("Usuario no a iniciado session");
+                loadServices = false;
+                $state.go("login");
+            }
+            else{
+                //data user by session
+                $scope.photeUser = $sessionStorage.user_photo;
+                $scope.nameUser = $sessionStorage.nameUser;
+            }
+        }
+
+        init();
+
+        /**
+         * Call service all user
+         */
         $scope.getAllUsers = function () {
 
             spinnerService.show("spinnerUserList");
@@ -94,7 +114,9 @@ angular.module('App')
 
         //called when navigate to another page in the pagination
         $scope.selectPage = function () {
-            $scope.getAllUsers();
+            if(loadServices){
+                $scope.getAllUsers();
+            }
         };
 
         //Will be called when filtering the grid, will reset the page number to one

@@ -13,8 +13,6 @@ angular.module('App')
                                          spinnerService,
                                          GLOBAL_CONSTANT) {
 
-        //menu sidebar
-        $scope.menus = addActiveClassMenu($rootScope.appMenus, GLOBAL_CONSTANT.ID_STOPS_MENU);
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
         $scope.showTable = false;
@@ -112,6 +110,8 @@ angular.module('App')
                 //data user by session
                 $scope.photeUser = $sessionStorage.user_photo;
                 $scope.nameUser = $sessionStorage.nameUser;
+                //menu sidebar
+                $scope.menus = addActiveClassMenu(JSON.parse($sessionStorage.appMenus), GLOBAL_CONSTANT.ID_STOPS_MENU);
                 $scope.addTheMap();
             }
 

@@ -16,7 +16,7 @@ angular.module("App")
             })
             .state("logout",{
                 url: '/logout',
-                controller: 'logoutCtrl'
+                controller: 'logoutCtrl',
             })
             .state("forgetPass",{
                 url: '/forgetPass',

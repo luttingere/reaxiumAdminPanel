@@ -15,8 +15,7 @@ angular.module("App")
                                                GLOBAL_MESSAGE,
                                                FILE_SYSTEM_ROUTE) {
 
-        //menu sidebar
-        $scope.menus = addActiveClassMenu($rootScope.appMenus, GLOBAL_CONSTANT.ID_STOPS_MENU);
+
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
@@ -69,6 +68,8 @@ angular.module("App")
                 //data user by session
                 $scope.photeUser = $sessionStorage.user_photo;
                 $scope.nameUser = $sessionStorage.nameUser;
+                //menu sidebar
+                $scope.menus = addActiveClassMenu(JSON.parse($sessionStorage.appMenus), GLOBAL_CONSTANT.ID_STOPS_MENU);
             }
         }
 

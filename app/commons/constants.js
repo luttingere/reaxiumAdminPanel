@@ -36,6 +36,7 @@ angular.module("App")
         /*Proxy System*/
         PROXY_URL_ACCESS_TYPE_LIST: "http://54.200.133.84/reaxium/SystemList/accessTypeList",
         PROXY_URL_ALL_STATUS_USER: "http://54.200.133.84/reaxium/SystemList/statusList",
+        PROXY_URL_MENU_SHOW: "http://54.200.133.84/reaxium/SystemList/getMenu",
 
         /*Proxy Device*/
         PROXY_URL_ALL_DEVICES: "http://54.200.133.84/reaxium/Device/allDevicesInfo",
@@ -80,8 +81,9 @@ angular.module("App")
         ACCESS_BIOMETRIC: 2,
         ACCESS_RFID: 3,
         SUCCESS_RESPONSE_SERVICE:0,
-        ROL_ACCESS_ADMIN:1,
-        ROL_SCHOOL:2,
+        USER_ROL_ADMIN:1,
+        USER_ROL_SCHOOL:5,
+        USER_ROL_CALL_CENTER:6,
         ID_HOME_MENU:0,
         ID_BUSINESS_MENU:1,
         ID_USER_MENU:2,

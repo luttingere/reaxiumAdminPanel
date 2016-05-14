@@ -17,8 +17,6 @@ angular.module("App")
                                                 $stateParams) {
 
 
-        //menu sidebar
-        $scope.menus = $rootScope.appMenus;
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
@@ -44,6 +42,8 @@ angular.module("App")
                 //data user by session
                 $scope.photeUser = $sessionStorage.user_photo;
                 $scope.nameUser = $sessionStorage.nameUser;
+                //menu sidebar
+                $scope.menus = addActiveClassMenu(JSON.parse($sessionStorage.appMenus),GLOBAL_CONSTANT.ID_DEVICE_MENU);
 
                 console.info("Id device: " + $stateParams.id_device);
                 console.info("Mode Device Relation Route: "+$stateParams.modeDeviceRelRoute);

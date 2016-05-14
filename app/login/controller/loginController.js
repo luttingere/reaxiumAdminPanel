@@ -6,13 +6,14 @@ angular.module('App')
     .controller('loginController', function ($scope,
                                              $state,
                                              $log,
-                                             $timeout,
                                              loginServices,
                                              spinnerService,
                                              $localStorage,
                                              $sessionStorage,
+                                             $rootScope,
                                              growl,
-                                             GLOBAL_CONSTANT) {
+                                             GLOBAL_CONSTANT,
+                                             GLOBAL_MESSAGE) {
 
         $scope.showspinner = false;
         $scope.data = {
@@ -39,6 +40,9 @@ angular.module('App')
 
         init();
 
+        /**
+         * Authenticate Method
+         */
         $scope.authenticateUser = function () {
 
             spinnerService.show('html5spinner');
@@ -46,23 +50,39 @@ angular.module('App')
             loginServices.proxyLogin($scope.data.settings.username, $scope.data.settings.password)
                 .then(function (data) {
                     console.log("Invocacion del servicio exitosa");
-                    $log.debug(data);
+                    spinnerService.hide('html5spinner');
 
-                    if (data.ReaxiumResponse.code === 0) {
+                    if (data.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
 
-                        if(data.ReaxiumResponse.object[0].user.user_type.user_type_id == GLOBAL_CONSTANT.ROL_ACCESS_ADMIN){
+                        if(data.ReaxiumResponse.object[0].user.user_type.user_type_id == GLOBAL_CONSTANT.USER_ROL_ADMIN){
 
                             $sessionStorage.user_photo = data.ReaxiumResponse.object[0].user.user_photo;
                             $sessionStorage.nameUser = data.ReaxiumResponse.object[0].user.first_name + ' ' +data.ReaxiumResponse.object[0].user.first_last_name;
-                            $sessionStorage.rol_user = GLOBAL_CONSTANT.ROL_ACCESS_ADMIN;
-                            $state.go('home');
+                            $sessionStorage.rol_user = GLOBAL_CONSTANT.USER_ROL_ADMIN;
+                            getMenuByTypeUser(GLOBAL_CONSTANT.USER_ROL_ADMIN);
+                        }
+                        else if(data.ReaxiumResponse.object[0].user.user_type.user_type_id == GLOBAL_CONSTANT.USER_ROL_SCHOOL){
+
+                            $sessionStorage.user_photo = data.ReaxiumResponse.object[0].user.user_photo;
+                            $sessionStorage.nameUser = data.ReaxiumResponse.object[0].user.first_name + ' ' +data.ReaxiumResponse.object[0].user.first_last_name;
+                            $sessionStorage.rol_user = GLOBAL_CONSTANT.USER_ROL_SCHOOL;
+                            getMenuByTypeUser(GLOBAL_CONSTANT.USER_ROL_SCHOOL);
+
+                        }else if(data.ReaxiumResponse.object[0].user.user_type.user_type_id == GLOBAL_CONSTANT.USER_ROL_CALL_CENTER){
+
+                            $sessionStorage.user_photo = data.ReaxiumResponse.object[0].user.user_photo;
+                            $sessionStorage.nameUser = data.ReaxiumResponse.object[0].user.first_name + ' ' +data.ReaxiumResponse.object[0].user.first_last_name;
+                            $sessionStorage.rol_user = GLOBAL_CONSTANT.USER_ROL_CALL_CENTER;
+                            getMenuByTypeUser(GLOBAL_CONSTANT.USER_ROL_CALL_CENTER);
                         }
                         else{
+                            spinnerService.hide('html5spinner');
                             growl.error("User with restricted access");
                             console.info("EUser with restricted access: " + data.ReaxiumResponse.message);
                         }
 
                     } else {
+                        spinnerService.hide('html5spinner');
                         growl.error(data.ReaxiumResponse.message);
                         console.error("Error a ingresar al aplicativo: " + data.ReaxiumResponse.message);
                     }
@@ -70,15 +90,67 @@ angular.module('App')
                 })
                 .catch(function (error) {
                     console.error("Error invocacion del servicio" + error);
-
+                    growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                 }).finally(function () {
 
-                spinnerService.hide('html5spinner');
-
-            })
-
+                //spinnerService.hide('html5spinner');
+            });
 
         }
+
+        /**
+         * Get Options Menu
+         * @param id_user_type
+         */
+        function getMenuByTypeUser(id_user_type){
+
+            var arrayMenu=[];
+            spinnerService.show('html5spinner');
+
+            loginServices.menuApplication(id_user_type)
+                .then(function(resp){
+                    spinnerService.hide('html5spinner');
+                    if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+
+                        $log.debug("Response Service: ",resp);
+
+                        resp.ReaxiumResponse.object.forEach(function(menu){
+
+                            var objMenu = {subMenus:[]};
+
+                            objMenu.id = menu.menu_id;
+                            objMenu.class_active_menu = menu.class_menu == 1 ? false : true;
+                            objMenu.name = menu.name_menu;
+                            objMenu.icon_class = menu.icon_class;
+
+                            menu.sub_menu_application.forEach(function(subMenu){
+
+                                if(subMenu.menu_id === menu.menu_id){
+                                    objMenu.subMenus.push(subMenu);
+                                }
+
+                            });
+
+                            arrayMenu.push(objMenu);
+                        });
+
+                        $log.debug("Menu: ",arrayMenu);
+                        $sessionStorage.appMenus = JSON.stringify(arrayMenu);
+                        $state.go('home');
+
+                    }else{
+                        console.error("Error no se obtuvo el menu");
+                    }
+
+                })
+                .catch(function(err){
+                    console.error("Error invocacion del servicio para obtener menu" + err);
+                    growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                })
+
+        }
+
+
 
         /*Limpiar el scope vinculados a los campos*/
 

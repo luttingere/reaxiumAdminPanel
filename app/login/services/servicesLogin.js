@@ -4,16 +4,11 @@
 
 angular.module('App')
 
-.service('loginServices',function($http,$log,$q,CONST_PROXY_URL){
+.factory('LoginLookup',function($http,$log,$q,CONST_PROXY_URL){
 
-    var config = {
-        headers:{
-            'Content-Type':'application/json;charset=UTF-8'
-        }
-    };
+    var lookup = {};
 
-
-    this.proxyLogin = function(username,password){
+    lookup.sendLogin = function(username,password){
 
         var defered = $q.defer();
         var promise = defered.promise;
@@ -29,16 +24,51 @@ angular.module('App')
             }
         };
 
-        var jsonObj = JSON.stringify(data);
-
-        $http.post(CONST_PROXY_URL.PROXY_URL_LOGIN,jsonObj,config)
-            .success(function(response){
-                defered.resolve(response);
-            }).error(function (err){
-                defered.reject(err);
+        $http({
+            method: 'POST',
+            data: JSON.stringify(data),
+            url: CONST_PROXY_URL.PROXY_URL_LOGIN,
+        }).success(function (response) {
+            defered.resolve(response);
+        }).error(function (err) {
+            defered.reject(err);
         });
+
 
         return promise;
     }
+
+
+    lookup.getMenu = function(user_type_id){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            data: JSON.stringify({ReaxiumParameters:{ReaxiumSystem:{type_user_id:user_type_id}}}),
+            url: CONST_PROXY_URL.PROXY_URL_MENU_SHOW,
+        }).success(function (response) {
+            defered.resolve(response);
+        }).error(function (err) {
+            defered.reject(err);
+        });
+
+        return promise;
+
+    }
+
+    return lookup;
+})
+
+.service('loginServices',function(LoginLookup){
+
+  this.proxyLogin = function(username,password){
+      return LoginLookup.sendLogin(username,password);
+  }
+
+  this.menuApplication = function(user_type_id){
+      return LoginLookup.getMenu(user_type_id);
+  }
 
 })

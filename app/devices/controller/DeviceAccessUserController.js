@@ -15,14 +15,10 @@ angular.module("App")
                                                   GLOBAL_CONSTANT,
                                                   GLOBAL_MESSAGE) {
 
-        //menu sidebar
-        $scope.menus = $rootScope.appMenus;
+
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
-        //data user by session
-        $scope.photeUser = $sessionStorage.user_photo;
-        $scope.nameUser = $sessionStorage.nameUser;
 
         $scope.userFilter = [];
         $scope.allUserSelcStakeHolder = [];
@@ -31,12 +27,26 @@ angular.module("App")
 
         function init() {
             console.info("Iniciando controlador DeviceRelRouteCtrl");
-            console.log("Id device: " + $stateParams.id_device);
-            console.log("Mode Device Relation User: " + $stateParams.modeDeviceRelUser)
-            DeviceService.setRelUserDevice({
-                isModeRel: $stateParams.modeDeviceRelUser,
-                id_device: $stateParams.id_device
-            });
+
+            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+                console.error("Usuario no a iniciado session");
+                $state.go("login");
+            }
+            else{
+                //data user by session
+                $scope.photeUser = $sessionStorage.user_photo;
+                $scope.nameUser = $sessionStorage.nameUser;
+                //menu sidebar
+                $scope.menus = addActiveClassMenu(JSON.parse($sessionStorage.appMenus),GLOBAL_CONSTANT.ID_DEVICE_MENU);
+
+                console.log("Id device: " + $stateParams.id_device);
+                console.log("Mode Device Relation User: " + $stateParams.modeDeviceRelUser);
+
+                DeviceService.setRelUserDevice({
+                    isModeRel: $stateParams.modeDeviceRelUser,
+                    id_device: $stateParams.id_device
+                });
+            }
         }
 
         init();

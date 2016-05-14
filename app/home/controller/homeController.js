@@ -9,8 +9,6 @@ angular.module('App')
                                        GLOBAL_CONSTANT) {
 
     $scope.panelTimeline = false;
-    //Menu
-    $scope.menus = addActiveClassMenu($rootScope.appMenus,GLOBAL_CONSTANT.ID_HOME_MENU);
     //Search on the menu
     $scope.menuOptions = {searchWord: ''};
 
@@ -30,6 +28,8 @@ angular.module('App')
             //data user by session
             $scope.photeUser = $sessionStorage.user_photo;
             $scope.nameUser = $sessionStorage.nameUser;
+            //Menu
+            $scope.menus = addActiveClassMenu(JSON.parse($sessionStorage.appMenus),GLOBAL_CONSTANT.ID_HOME_MENU);
         }
     }
 

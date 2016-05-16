@@ -8,6 +8,7 @@ angular.module('App')
                                      spinnerService,
                                      growl,
                                      $log,
+                                     $state,
                                      GLOBAL_CONSTANT,
                                      GLOBAL_MESSAGE){
 

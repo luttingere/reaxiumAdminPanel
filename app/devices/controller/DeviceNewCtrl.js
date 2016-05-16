@@ -11,7 +11,8 @@ angular.module("App")
                                            DeviceService,
                                            growl,
                                            spinnerService,
-                                           GLOBAL_CONSTANT ) {
+                                           GLOBAL_CONSTANT,
+                                           GLOBAL_MESSAGE) {
 
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
@@ -78,7 +79,7 @@ angular.module("App")
                     .catch(function (err) {
                         spinnerService.hide("spinnerNew");
                         console.error(err);
-                        growl.error("Service not available");
+                        growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                 });
 
             }

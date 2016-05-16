@@ -86,9 +86,8 @@ angular.module("App")
 
         DeviceService.allDeviceWithPagination($scope.filterCriteria)
             .then(function(data){
-                $log.debug(data);
 
-                if(data.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+                $log.debug(data);
                     $scope.devices = data.devices;
                     $scope.totalPages = data.totalPages;
                     $scope.totalRecords = data.totalRecords;
@@ -99,10 +98,6 @@ angular.module("App")
                         growl.info(messageGrowl.message);
                         DeviceService.cleanGrowlDevice();
                     }
-                }else{
-                    console.info(data.message);
-                    growl.error(data.message);
-                }
 
                 spinnerService.hide("spinnerNew");
 
@@ -160,9 +155,9 @@ angular.module("App")
                     .then(function(resp){
                         if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
                             $scope.selectPage(1);
-                            growl.success(resp.ReaxiumResponse.message);
+                            growl.success(GLOBAL_MESSAGE.MESSAGE_DELETE_DEVICE  );
                         }else{
-                            growl.error(resp.ReaxiumResponse.message);
+                            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                         }
                     }).catch(function(err){
                         console.error("Error invocando servicio delete: "+err);

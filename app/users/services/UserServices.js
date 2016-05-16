@@ -282,10 +282,45 @@ angular.module('App')
             });
 
             return promise;
-
-
         }
 
+
+        lookup.getAccessMenu = function(){
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
+               method:'GET',
+                url:CONST_PROXY_URL.PROXY_URL_GET_ACCESS_MENU,
+                headers:{'Content-Type': 'application/json;charset=UTF-8'}
+            }).success(function(response){
+                defered.resolve(response);
+            }).error(function(err){
+                defered.reject(err);
+            });
+
+            return promise;
+        }
+
+        lookup.updateRolAccessMenu = function(obj){
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
+                method: 'POST',
+                url: CONST_PROXY_URL.PROXY_URL_UPDATE_ACCESS_ROL_MENU,
+                data: JSON.stringify(obj),
+                headers: {'Content-Type': 'application/json;charset=UTF-8'}
+            }).success(function (response) {
+                defered.resolve(response);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+
+            return promise;
+        }
 
         return lookup;
 
@@ -299,8 +334,9 @@ angular.module('App')
         };
 
         var addressDefault = {
-            latitude: 37.0902,
-            longitude: -95.7129
+            latitude: 25.7742700,
+            longitude: -80.1936600,
+            address:"Miami, Florida, EE.UU"
         };
 
         var showGrowl = {
@@ -389,4 +425,13 @@ angular.module('App')
         this.deleteUser = function(id_user){
             return UserLookup.deleteUser(id_user);
         }
+
+        this.getAccessMenuByRol = function(){
+            return UserLookup.getAccessMenu();
+        }
+
+        this.updateAllAccessMenu = function(obj){
+            return UserLookup.updateRolAccessMenu(obj);
+        }
+
     });

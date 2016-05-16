@@ -130,7 +130,7 @@
                                                             <select class="form-control" style="width: 100%;"
                                                                     ng-model="business.status_id">
                                                                 <option value="">Please select</option>
-                                                                <option ng-selected="status_id == obj.status_id"
+                                                                <option ng-selected="business.status_id == obj.status_id"
                                                                         ng-repeat="obj in allStatus"
                                                                         value="{{obj.status_id}}">{{obj.status_name |
                                                                     lowerCase | capitalize}}

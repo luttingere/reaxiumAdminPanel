@@ -178,7 +178,7 @@ angular.module('App')
                         longitude:longitude
                     },
                     zoom: 16,
-                    options: {"MapTypeId": maps.MapTypeId.HYBRID}
+                    options: {"MapTypeId": maps.MapTypeId.ROADMAP}
                 };
                 $scope.marker = {
                     coords: {

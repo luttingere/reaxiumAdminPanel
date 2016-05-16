@@ -59,6 +59,7 @@ angular.module('App')
                             $sessionStorage.user_photo = data.ReaxiumResponse.object[0].user.user_photo;
                             $sessionStorage.nameUser = data.ReaxiumResponse.object[0].user.first_name + ' ' +data.ReaxiumResponse.object[0].user.first_last_name;
                             $sessionStorage.rol_user = GLOBAL_CONSTANT.USER_ROL_ADMIN;
+                            $sessionStorage.id_business = data.ReaxiumResponse.object[0].user.business_id;
                             getMenuByTypeUser(GLOBAL_CONSTANT.USER_ROL_ADMIN);
                         }
                         else if(data.ReaxiumResponse.object[0].user.user_type.user_type_id == GLOBAL_CONSTANT.USER_ROL_SCHOOL){
@@ -66,6 +67,7 @@ angular.module('App')
                             $sessionStorage.user_photo = data.ReaxiumResponse.object[0].user.user_photo;
                             $sessionStorage.nameUser = data.ReaxiumResponse.object[0].user.first_name + ' ' +data.ReaxiumResponse.object[0].user.first_last_name;
                             $sessionStorage.rol_user = GLOBAL_CONSTANT.USER_ROL_SCHOOL;
+                            $sessionStorage.id_business = data.ReaxiumResponse.object[0].user.business_id;
                             getMenuByTypeUser(GLOBAL_CONSTANT.USER_ROL_SCHOOL);
 
                         }else if(data.ReaxiumResponse.object[0].user.user_type.user_type_id == GLOBAL_CONSTANT.USER_ROL_CALL_CENTER){
@@ -73,6 +75,7 @@ angular.module('App')
                             $sessionStorage.user_photo = data.ReaxiumResponse.object[0].user.user_photo;
                             $sessionStorage.nameUser = data.ReaxiumResponse.object[0].user.first_name + ' ' +data.ReaxiumResponse.object[0].user.first_last_name;
                             $sessionStorage.rol_user = GLOBAL_CONSTANT.USER_ROL_CALL_CENTER;
+                            $sessionStorage.id_business = data.ReaxiumResponse.object[0].user.business_id;
                             getMenuByTypeUser(GLOBAL_CONSTANT.USER_ROL_CALL_CENTER);
                         }
                         else{
@@ -91,10 +94,7 @@ angular.module('App')
                 .catch(function (error) {
                     console.error("Error invocacion del servicio" + error);
                     growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
-                }).finally(function () {
-
-                //spinnerService.hide('html5spinner');
-            });
+                });
 
         }
 
@@ -128,13 +128,12 @@ angular.module('App')
                                 if(subMenu.menu_id === menu.menu_id){
                                     objMenu.subMenus.push(subMenu);
                                 }
-
                             });
 
                             arrayMenu.push(objMenu);
                         });
 
-                        $log.debug("Menu: ",arrayMenu);
+
                         $sessionStorage.appMenus = JSON.stringify(arrayMenu);
                         $state.go('home');
 
@@ -144,13 +143,12 @@ angular.module('App')
 
                 })
                 .catch(function(err){
+                    spinnerService.hide('html5spinner');
                     console.error("Error invocacion del servicio para obtener menu" + err);
                     growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
-                })
+                });
 
         }
-
-
 
         /*Limpiar el scope vinculados a los campos*/
 

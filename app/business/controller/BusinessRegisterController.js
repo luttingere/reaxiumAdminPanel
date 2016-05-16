@@ -187,8 +187,6 @@ angular.module('App')
                         $scope.phoneNumbers.phone_name = result[0].phone_number == null ? null : result[0].phone_number.phone_name;
                         $scope.phoneNumbers.phone_number = result[0].phone_number == null ? null : result[0].phone_number.phone_number;
 
-
-
                         $scope.addTheMap();
                     }
                     catch (err) {

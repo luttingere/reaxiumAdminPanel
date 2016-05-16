@@ -11,7 +11,8 @@ angular.module('App')
                                          StopsService,
                                          growl,
                                          spinnerService,
-                                         GLOBAL_CONSTANT) {
+                                         GLOBAL_CONSTANT,
+                                        GLOBAL_MESSAGE) {
 
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
@@ -203,18 +204,18 @@ angular.module('App')
                     .then(function (resp) {
                         spinnerService.hide("spinnerNew");
                         if (resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
-                            StopsService.setShowGrowlMessage({isShow:true,message:resp.ReaxiumResponse.message});
+                            StopsService.setShowGrowlMessage({isShow:true,message:GLOBAL_MESSAGE.MESSAGE_CREATE_NEW_STOPS});
                             $state.go("stops");
                         }
                         else {
                             console.error("Error creado nueva ruta "+resp.ReaxiumResponse.message);
-                            growl.error("Error create new route ");
+                            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                         }
                     })
                     .catch(function (err) {
                         spinnerService.hide("spinnerNew");
                         console.error("Error creado nueva ruta " + err);
-                        growl.error("Error create new route ");
+                        growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                     })
 
             } else {

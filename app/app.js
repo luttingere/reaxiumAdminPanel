@@ -49,7 +49,7 @@ angular.module('App', ['ui.router',
                 china: true
             });
 
-            growlProvider.globalTimeToLive(3000);
+            growlProvider.globalTimeToLive(5000);
 
         }])
 

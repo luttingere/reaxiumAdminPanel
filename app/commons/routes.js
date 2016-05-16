@@ -16,7 +16,7 @@ angular.module("App")
             })
             .state("logout",{
                 url: '/logout',
-                controller: 'logoutCtrl',
+                controller: 'logoutCtrl'
             })
             .state("forgetPass",{
                 url: '/forgetPass',
@@ -237,7 +237,7 @@ angular.module("App")
 
             .state("stopAsoUser",{
                 url:"/stopAsoUser",
-                controller:'',
+                controller:'StopAsoCtrl',
                 params:{
                     modeAsocStopUser:true,
                     id_stop: null,
@@ -252,7 +252,7 @@ angular.module("App")
 
             .state("stopViewUser",{
                 url:"/stopViewUser",
-                controller:'',
+                controller:'StopViewUsersCtrl',
                 views:{
                     '': {templateUrl: 'app/stops/views/StopViewUsers.html'},
                     'header@stopViewUser': {templateUrl: 'app/home/views/header.html'},
@@ -261,6 +261,16 @@ angular.module("App")
                 }
             })
 
+            .state("superUserOptions",{
+                url:"/superUserOptions",
+                controller:'SuperUserCtrl',
+                views:{
+                    '': {templateUrl: 'app/users/views/SuperUserAccess.html'},
+                    'header@superUserOptions': {templateUrl: 'app/home/views/header.html'},
+                    'menu@superUserOptions': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@superUserOptions':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
 
 
         $urlRouterProvider.otherwise("/login");

@@ -37,6 +37,8 @@ angular.module("App")
         PROXY_URL_ACCESS_TYPE_LIST: "http://54.200.133.84/reaxium/SystemList/accessTypeList",
         PROXY_URL_ALL_STATUS_USER: "http://54.200.133.84/reaxium/SystemList/statusList",
         PROXY_URL_MENU_SHOW: "http://54.200.133.84/reaxium/SystemList/getMenu",
+        PROXY_URL_GET_ACCESS_MENU:"http://54.200.133.84/reaxium/SystemList/getAccessActiveMenu",
+        PROXY_URL_UPDATE_ACCESS_ROL_MENU:"http://54.200.133.84/reaxium/SystemList/updateAccessMenuByUserRol",
 
         /*Proxy Device*/
         PROXY_URL_ALL_DEVICES: "http://54.200.133.84/reaxium/Device/allDevicesInfo",
@@ -69,10 +71,10 @@ angular.module("App")
     })
     // configuracion file system imagenes
     .constant('FILE_SYSTEM_ROUTE',{
-        FILE_SYSTEM_IMAGES:'http://localhost:8080/ProyectosGandG/images/',
-        IMAGE_DEFAULT_USER:'http://localhost:8080/ProyectosGandG/images/profile-default.png',
-        FILE_SYSTEM_IMAGES_PROD:'http://54.200.133.84/reaxium_user_images/',
-        IMAGE_DEFAULT_USER_PROD:'http://54.200.133.84/reaxium_user_images/profile-default.png',
+        FILE_SYSTEM_IMAGES_DESA:'http://localhost:8080/ProyectosGandG/images/',
+        IMAGE_DEFAULT_DESA:'http://localhost:8080/ProyectosGandG/images/profile-default.png',
+        FILE_SYSTEM_IMAGES:'http://54.200.133.84/reaxium_user_images/',
+        IMAGE_DEFAULT_USER:'http://54.200.133.84/reaxium_user_images/profile-default.png',
         IMAGE_MARKER_MAP:"http://54.200.133.84/reaxium_user_images/Map-Marker.png"
 
     })
@@ -84,12 +86,14 @@ angular.module("App")
         USER_ROL_ADMIN:1,
         USER_ROL_SCHOOL:5,
         USER_ROL_CALL_CENTER:6,
+        REAXIUM_ADMIN_SCHOOL:5,
         ID_HOME_MENU:0,
         ID_BUSINESS_MENU:1,
         ID_USER_MENU:2,
         ID_DEVICE_MENU:3,
         ID_ROUTES_MENU:4,
-        ID_STOPS_MENU:5
+        ID_STOPS_MENU:5,
+        ID_SUPER_USER:6
 
     })
 
@@ -101,5 +105,21 @@ angular.module("App")
     .constant("GLOBAL_MESSAGE",{
         MESSAGE_CONFIRM_ACTION:"Are you sure you want to delete ?",
         MESSAGE_ERROR_FATAL:"Error Internal Plataform",
-        MESSAGE_SERVICE_ERROR:"Service Unavailable try again later"
+        MESSAGE_SERVICE_ERROR:"Service Unavailable try again later",
+        MESSAGE_CREATE_DEVICE:"Device created successfully",
+        MESSAGE_ASSOCIATE_DEVICE_WITH_ROUTES:"Route associated with the device successfully",
+        MESSAGE_USER_VALIDATE_RELATION_DEVICE:"Valid user to relate with device",
+        MESSAGE_USER_HAS_ALL_ACCESS_DEVICE:"User already registered with all access to the system",
+        MESSAGE_USER_NO_HAS_DATE_ACCESS_DEVICE:"The user does not have any type of access created, please register an access type for this user",
+        MESSAGE_ADD_USERS_TO_CONTINUE:"Add users to continue with the process",
+        MESSAGE_DELETE_DEVICE:"Device successfully deleted",
+        MESSAGE_DELETE_ROUTE_OF_DEVICE:"Route associated with the device successfully removed",
+        MESSAGE_DELETE_USERS_OF_DEVICE:"User associated with the device successfully removed",
+        MESSAGE_ROUTE_CREATE_SUCCESS:"Route created successfully",
+        MESSAGE_DELETE_ROUTE:"Route successfully removed",
+        MESSAGE_ASSOCIATE_USER_WITH_STOP:"Associating user successfully stop",
+        MESSAGE_CREATE_NEW_STOPS:"Stops successfully created",
+        MESSAGE_DELETE_STOP:"Stop successfully removed",
+        MESSAGE_DELETE_USER_OF_STOP:"User removed successfully stop",
+        MESSAGE_ASSOCIATE_ACCESS_DEVICE_SUCCESS:"Access related to the device successfully"
     })

@@ -41,10 +41,13 @@ angular.module("App")
 
                 console.log("Id stops: " + $stateParams.id_stop);
                 console.log("Mode asocciate User Stop: " + $stateParams.modeAsocStopUser);
-                StopsService.setModeAsociateUserStop({modeAsociateUserStop:$stateParams.modeAsocStopUser,id_stop:$stateParams.id_stop});
 
+                if(!isEmptyString($stateParams.id_stop) && $stateParams.id_stop != null){
+                    StopsService.setModeAsociateUserStop({modeAsociateUserStop:$stateParams.modeAsocStopUser,id_stop:$stateParams.id_stop});
+                }else{
+                    $state.go("stops");
+                }
             }
-
         }
 
         init();
@@ -262,10 +265,10 @@ angular.module("App")
                         spinnerService.hide("spinnerNew");
 
                         if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
-                            StopsService.setShowGrowlMessage({isShow:true,message:resp.ReaxiumResponse.message});
+                            StopsService.setShowGrowlMessage({isShow:true,message:GLOBAL_MESSAGE.MESSAGE_ASSOCIATE_USER_WITH_STOP});
                             $state.go('stops');
                         }else{
-                            growl.error(resp.ReaxiumResponse.message);
+                            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                         }
                     })
                     .catch(function(err){

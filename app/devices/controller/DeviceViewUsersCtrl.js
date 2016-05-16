@@ -105,7 +105,7 @@ angular.module("App")
                     });
 
             } else {
-                growl.error("Plese enter the device Id");
+                growl.warning("Please enter the device id to continue");
             }
         }
 
@@ -154,7 +154,7 @@ angular.module("App")
                                 if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
                                     $scope.filterCriteria.ReaxiumParameters.ReaxiumDevice.page = 1;
                                     $scope.searchDevice();
-                                    growl.success(resp.ReaxiumResponse.message);
+                                    growl.success(GLOBAL_MESSAGE.MESSAGE_DELETE_USERS_OF_DEVICE);
                                 }else{
                                     console.error("Error: "+resp.ReaxiumResponse.message);
                                     growl.error(resp.ReaxiumResponse.message);

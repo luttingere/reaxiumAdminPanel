@@ -96,7 +96,7 @@ angular.module("App")
                         }
                         else {
                             console.info("Error: " + resp.message);
-                            growl.error(resp.message);
+                            growl.warning("The device has no registered routes, please create routes and associate the device");
                         }
                         spinnerService.hide("spinnerNew");
                     })
@@ -147,10 +147,10 @@ angular.module("App")
                             if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
                                 $scope.filterCriteria.ReaxiumParameters.ReaxiumDevice.page = 1;
                                 $scope.searchDevice();
-                                growl.success(resp.ReaxiumResponse.message);
+                                growl.success(GLOBAL_MESSAGE.MESSAGE_DELETE_ROUTE_OF_DEVICE);
                             }else{
                                 console.error("Error: "+resp.ReaxiumResponse.message);
-                                growl.error(resp.ReaxiumResponse.message);
+                                growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                             }
 
                             spinnerService.hide("spinnerNew");

@@ -42,10 +42,11 @@ angular.module("App")
                 console.log("Id device: " + $stateParams.id_device);
                 console.log("Mode Device Relation User: " + $stateParams.modeDeviceRelUser);
 
-                DeviceService.setRelUserDevice({
-                    isModeRel: $stateParams.modeDeviceRelUser,
-                    id_device: $stateParams.id_device
-                });
+                if(!isEmptyString($stateParams.id_device) && $stateParams.id_device != null){
+                    DeviceService.setRelUserDevice({isModeRel: $stateParams.modeDeviceRelUser,id_device: $stateParams.id_device});
+                }else{
+                    $state.go("device");
+                }
             }
         }
 
@@ -138,8 +139,10 @@ angular.module("App")
                         var dataUser = response.ReaxiumResponse;
 
                         if (dataUser.code == 0) {
-                            growl.success("Valid user to relate with device");
+
+                            growl.success(GLOBAL_MESSAGE.MESSAGE_USER_VALIDATE_RELATION_DEVICE);
                             $log.debug(response);
+
                             var obj = {
                                 device_id: device_id,
                                 user_id: str.originalObject.user_id,
@@ -181,17 +184,24 @@ angular.module("App")
                             $scope.allUserSelcStakeHolder.push(obj);
                             $scope.showTable = true;
 
-                        } else {
-                            console.log("Error no se encuentra data pata el usuario");
-                            growl.error(response.ReaxiumResponse.message);
+                        }
+                        else {
+
+                            console.info(dataUser.message);
+                            if(dataUser.code == 1){
+                                growl.warning(GLOBAL_MESSAGE.MESSAGE_USER_NO_HAS_DATE_ACCESS_DEVICE);
+                            }else if(dataUser.code == 2){
+                                growl.warning(GLOBAL_MESSAGE.MESSAGE_USER_HAS_ALL_ACCESS_DEVICE);
+                            }
                         }
                     }).catch(function (err) {
-                    console.error("Error invocando serviico " + err);
+                    console.error("Error invocando servicio " + err);
                     spinnerService.hide("spinnerNew");
+                    growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                 });
 
             } else {
-                growl.warning("User is already added");
+               console.error("Usuario no se encuentra en la lista interna");
             }
 
             clearInput('ex2');
@@ -343,7 +353,7 @@ angular.module("App")
                         if (response.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
                             DeviceService.setShowGrowlMessage({
                                 isShow: true,
-                                message: response.ReaxiumResponse.message
+                                message: GLOBAL_MESSAGE.MESSAGE_ASSOCIATE_ACCESS_DEVICE_SUCCESS
                             });
                             $state.go('device');
                         } else {
@@ -355,9 +365,9 @@ angular.module("App")
                     console.log("Error: " + err);
                     growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                 });
-
-            } else {
-                growl.warning("Add users access");
+            }
+            else {
+                growl.warning(GLOBAL_MESSAGE.MESSAGE_ADD_USERS_TO_CONTINUE);
             }
 
         }

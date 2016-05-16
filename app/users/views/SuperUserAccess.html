@@ -1,0 +1,127 @@
+<spinner name="spinnerNew" ng-cloak="">
+    <div class="overlay"></div>
+    <div class="spinner">
+        <div class="test"><i class="fa fa-refresh fa-spin fa-5x"></i></div>
+    </div>
+    <div class="please-wait">Please Wait...</div>
+</spinner>
+
+<div class="skin-blue sidebar-mini">
+
+    <div class="wrapper" ng-controller="SuperUserCtrl">
+
+        <!--header-->
+        <div ui-view="header"></div>
+
+        <!--menu-->
+        <div ui-view="menu"></div>
+
+        <!--content-->
+        <div class="content-wrapper">
+            <div growl></div>
+
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    User Dashboard
+                    <small>Control panel</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li class="active">Super User Options</li>
+                </ol>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <!-- Main row -->
+                <div class="row">
+                    <section class="content" style="min-height:450px;">
+                        <div class="row">
+                            <div class="col-xs-12">
+
+                                <div class="box  box-info">
+                                    <div class="box-header ">
+                                        <h3 class="box-title">System Users</h3>
+
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+
+                                        <table id="accessSuperTable" class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Type User</th>
+                                                <th>Module Business Admin</th>
+                                                <th>Module User Admin</th>
+                                                <th>Module Device Admin</th>
+                                                <th>Module Route Admin</th>
+                                                <th>Module Stops Admin</th>
+                                                <th>Module Super Options</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>Administrator</td>
+                                                <td id="admin_1" style="text-align: center"><input type="checkbox" name="n_admin_1" ng-model="checkBoxAdmin.object[0].checkBoxActive"/></td>
+                                                <td id="admin_2" style="text-align: center"><input type="checkbox" name="n_admin_2" ng-model="checkBoxAdmin.object[1].checkBoxActive"/></td>
+                                                <td id="admin_3" style="text-align: center"><input type="checkbox" name="n_admin_3" ng-model="checkBoxAdmin.object[2].checkBoxActive"/></td>
+                                                <td id="admin_4" style="text-align: center"><input type="checkbox" name="n_admin_4" ng-model="checkBoxAdmin.object[3].checkBoxActive"/></td>
+                                                <td id="admin_5" style="text-align: center"><input type="checkbox" name="n_admin_5" ng-model="checkBoxAdmin.object[4].checkBoxActive"/></td>
+                                                <td id="admin_6" style="text-align: center"><input type="checkbox" name="n_admin_6" ng-model="checkBoxAdmin.object[5].checkBoxActive"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Call center</td>
+                                                <td id="call_1" style="text-align: center"><input type="checkbox" name="n_call_1" ng-model="checkBoxCallCenter.object[0].checkBoxActive"/></td>
+                                                <td id="call_2" style="text-align: center"><input type="checkbox" name="n_call_2" ng-model="checkBoxCallCenter.object[1].checkBoxActive"/></td>
+                                                <td id="call_3" style="text-align: center"><input type="checkbox" name="n_call_3" ng-model="checkBoxCallCenter.object[2].checkBoxActive"/></td>
+                                                <td id="call_4" style="text-align: center"><input type="checkbox" name="n_call_4" ng-model="checkBoxCallCenter.object[3].checkBoxActive"/></td>
+                                                <td id="call_5" style="text-align: center"><input type="checkbox" name="n_call_5" ng-model="checkBoxCallCenter.object[4].checkBoxActive"/></td>
+                                                <td id="call_6" style="text-align: center"><input type="checkbox" name="n_call_6" ng-model="checkBoxCallCenter.object[5].checkBoxActive"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>School</td>
+                                                <td id="school_1" style="text-align: center"><input type="checkbox" name="n_school_1" ng-model="checkBoxSchool.object[0].checkBoxActive"/></td>
+                                                <td id="school_2" style="text-align: center"><input type="checkbox" name="n_school_2" ng-model="checkBoxSchool.object[1].checkBoxActive"/></td>
+                                                <td id="school_3" style="text-align: center"><input type="checkbox" name="n_school_3" ng-model="checkBoxSchool.object[2].checkBoxActive"/></td>
+                                                <td id="school_4" style="text-align: center"><input type="checkbox" name="n_school_4" ng-model="checkBoxSchool.object[3].checkBoxActive"/></td>
+                                                <td id="school_5" style="text-align: center"><input type="checkbox" name="n_school_5" ng-model="checkBoxSchool.object[4].checkBoxActive"/></td>
+                                                <td id="school_6" style="text-align: center"><input type="checkbox" name="n_school_6" ng-model="checkBoxSchool.object[5].checkBoxActive"/></td>
+                                            </tr>
+                                            </tbody>
+                                            </tfoot>
+                                        </table>
+                                    </div><!-- /.box-body -->
+                                </div><!-- /.box -->
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+
+                        <div class="row">
+                            <div class="content" style="min-height: 0px;">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-block btn-primary btn-lg"
+                                            ng-click="saveAccess()">Save
+                                    </button>
+                                    <br/>
+                                </div>
+                                <div class="col-md-4"></div>
+                            </div>
+                            <br/>
+                        </div>
+
+                    </section><!-- /.content -->
+
+                </div>
+                <br/>
+                <br/>
+            </section>
+
+
+        </div>
+
+        <!--footer-->
+        <div ui-view="footer"></div>
+
+    </div>
+
+</div>

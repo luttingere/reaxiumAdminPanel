@@ -122,40 +122,33 @@ function validateParamNewUser(obj, mode) {
     //validar datos del usuario
     if (objUsers.document_id == undefined || isEmptyString(objUsers.document_id)) {
         response.validate = false;
-        response.message = "Document Id Invalid";
+        response.message = "DNI field must not be empty";
 
     } else if (objUsers.first_name == undefined || isEmptyString(objUsers.first_name)) {
         response.validate = false;
-        response.message = "FirstName empty";
-
-    } else if (objUsers.second_name == undefined || isEmptyString(objUsers.second_name)) {
-        response.validate = false;
-        response.message = "SecondName empty";
+        response.message = "First Name field must not be empty";
 
     } else if (objUsers.first_last_name == undefined || isEmptyString(objUsers.first_last_name)) {
         response.validate = false;
-        response.message = "FirstLastName empty";
+        response.message = "LastName field must not be empty";
 
-    } else if (objUsers.second_last_name == undefined || isEmptyString(objUsers.second_last_name)) {
+    }  else if (objUsers.user_type_id == undefined || isEmptyString(objUsers.user_type_id)) {
         response.validate = false;
-        response.message = "SecondLastName empty";
+        response.message = "User Type field must not be empty";
 
-    } else if (objUsers.user_type_id == undefined || isEmptyString(objUsers.user_type_id)) {
+    }
+    else if(objUsers.business_id == undefined || isEmptyString(objUsers.business_id)){
         response.validate = false;
-        response.message = "User Type Invalid";
-
-    } else if (objUsers.user_photo == undefined || isEmptyString(objUsers.user_photo)) {
-        response.validate = false;
-        response.message = "Photo empty";
-
-    } else if (objUsers.birthdate == undefined || isEmptyString(objUsers.birthdate) ||
+        response.message = "Business field must not be empty";
+    }
+      else if (objUsers.birthdate == undefined || isEmptyString(objUsers.birthdate) ||
         objUsers.birthdate.trim().toLowerCase() === "Invalid date".trim().toLowerCase()) {
         response.validate = false;
-        response.message = "Birthdate Invalid";
+        response.message = "Birthdate field must not be empty";
 
     } else if (objUsers.email == undefined || isEmptyString(objUsers.email) || !objUsers.email.match(expRegEmail)) {
         response.validate = false;
-        response.message = "Email Invalid";
+        response.message = "Email field invalid";
     }
 
     //validar que el usuario tenga por lo menos un phone
@@ -170,18 +163,18 @@ function validateParamNewUser(obj, mode) {
 
             if (cont == 3) {
                 response.validate = false;
-                response.message = "Phone empty";
+                response.message = "Phone fields must not be empty";
             }
         } else {
             response.validate = false;
-            response.message = "Phone empty";
+            response.message = "Phone fields must not be empty";
         }
     }
 
 
     //validar direccion
 
-    if (response.validate) {
+   /* if (response.validate) {
 
         if (objAddress[0].address == undefined || isEmptyString(objAddress[0].address)) {
             response.validate = false;
@@ -196,7 +189,7 @@ function validateParamNewUser(obj, mode) {
             response.validate = false;
             response.message = "Address longitude Invalid";
         }
-    }
+    }*/
 
     //en caso de ser stakeholder
     if (response.validate) {

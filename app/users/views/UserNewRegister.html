@@ -102,9 +102,9 @@
                                                         </div>
 
                                                         <div class="form-group">
-                                                            <label>Second name</label>
+                                                            <label>Middle name</label>
                                                             <input type="text" class="form-control"
-                                                                   placeholder="Enter first name"
+                                                                   placeholder="Enter middle name"
                                                                    ng-model="users.second_name">
                                                         </div>
 
@@ -114,14 +114,6 @@
                                                                    placeholder="Enter last name"
                                                                    ng-model="users.first_last_name">
                                                         </div>
-
-                                                        <div class="form-group">
-                                                            <label>Second Last name</label>
-                                                            <input type="text" class="form-control"
-                                                                   placeholder="Enter first name"
-                                                                   ng-model="users.second_last_name">
-                                                        </div>
-
 
                                                         <div class="form-group">
                                                             <label>Birthdate</label>
@@ -256,7 +248,7 @@
                                                         </div><!-- /.form-group -->
 
 
-                                                        <div class="form-group">
+                                                        <div class="form-group" ng-show="rol_user == 1 || rol_user == 6">
                                                             <label>Business</label>
                                                             <div angucomplete-alt id="ex21"
                                                                  placeholder="Search business"

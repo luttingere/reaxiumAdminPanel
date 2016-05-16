@@ -16,7 +16,8 @@ angular.module("App")
                                           $stateParams,
                                           growl,
                                           FILE_SYSTEM_ROUTE,
-                                          GLOBAL_CONSTANT) {
+                                          GLOBAL_CONSTANT,
+                                          GLOBAL_MESSAGE) {
 
 
         //Search on the menu
@@ -98,6 +99,13 @@ angular.module("App")
                 $scope.nameUser = $sessionStorage.nameUser;
                 //menu sidebar
                 $scope.menus =  addActiveClassMenu(JSON.parse($sessionStorage.appMenus),GLOBAL_CONSTANT.ID_ROUTES_MENU);
+
+                if(!isEmptyString($stateParams.id_route) && $stateParams.id_route != null){
+                    RoutesServices.setModeEdit({isModeEdit:Boolean($stateParams.edit),id_route:$stateParams.id_route});
+                }else{
+                    loadServices = false;
+                    $state.go("routes");
+                }
             }
 
         }
@@ -113,7 +121,6 @@ angular.module("App")
             console.info("Mode edition: "+$stateParams.edit);
 
             RoutesServices.setShowGrowlMessage({isShow:false,message:""});
-            RoutesServices.setModeEdit({isModeEdit:Boolean($stateParams.edit),id_route:$stateParams.id_route});
 
             if(RoutesServices.getModeEdit().isModeEdit){
 
@@ -312,7 +319,7 @@ angular.module("App")
                 });
 
             } else {
-                growl.error("You must enter stop");
+                growl.warning("You must add stops to continue the process");
             }
 
         }
@@ -352,12 +359,12 @@ angular.module("App")
                     .then(function (res) {
                         spinnerService.hide("spinnerNew");
                         if (res.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
-                            RoutesServices.setShowGrowlMessage({isShow:true,message:res.ReaxiumResponse.message});
+                            RoutesServices.setShowGrowlMessage({isShow:true,message: GLOBAL_MESSAGE.MESSAGE_ROUTE_CREATE_SUCCESS});
                             $state.go("routes");
                         }
                         else {
                             console.error("Error creado nueva ruta "+res.ReaxiumResponse.message);
-                            growl.error("Error create new route ");
+                            growl.error("Error create new route");
                         }
                     }).catch(function (err) {
                     spinnerService.hide("spinnerNew");

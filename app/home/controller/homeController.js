@@ -36,4 +36,15 @@ angular.module('App')
     init();
 
 
+    $scope.logout = function(){
+
+        console.info("Limpiado datos de session");
+        delete $sessionStorage.nameUser;
+        delete $sessionStorage.rol_user;
+        delete $sessionStorage.user_photo;
+        delete $sessionStorage.appMenus;
+        $state.go('login');
+
+    };
+
 });

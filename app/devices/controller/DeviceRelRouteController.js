@@ -14,7 +14,8 @@ angular.module("App")
                                                 growl,
                                                 spinnerService,
                                                 $state,
-                                                $stateParams) {
+                                                $stateParams,
+                                                GLOBAL_MESSAGE) {
 
 
         //Search on the menu
@@ -47,7 +48,13 @@ angular.module("App")
 
                 console.info("Id device: " + $stateParams.id_device);
                 console.info("Mode Device Relation Route: "+$stateParams.modeDeviceRelRoute);
-                DeviceService.setRelUserDevice({isModeRel:Boolean($stateParams.modeDeviceRelRoute), id_device: $stateParams.id_device});
+
+                if(!isEmptyString($stateParams.id_device) && $stateParams.id_device != null){
+                    DeviceService.setRelUserDevice({isModeRel:Boolean($stateParams.modeDeviceRelRoute),id_device: $stateParams.id_device});
+                }else{
+                    $state.go("device");
+                }
+
             }
 
         }
@@ -124,8 +131,8 @@ angular.module("App")
 
 
         $scope.deleteUserTable = function () {
-
             $scope.allUserSelcStakeHolder = [];
+            $scope.showTable = false;
         }
 
         var clearInput = function (id) {
@@ -166,7 +173,7 @@ angular.module("App")
                 var objSend = {
                     ReaxiumParameters: {
                         ReaxiumDevice: {
-                            device_id: DeviceService.getRelRouteDevice().id_device,
+                            device_id: DeviceService.getRelUserDevice().id_device,
                             id_route: $scope.allUserSelcStakeHolder[0].id_route,
                             start_date: start_date.trim() + ':00',
                             end_date: end_date.trim() + ':00'
@@ -182,21 +189,21 @@ angular.module("App")
                         spinnerService.hide("spinnerNew");
 
                         if (resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
-                            DeviceService.setShowGrowlMessage({isShow: true, message: resp.ReaxiumResponse.message})
+                            DeviceService.setShowGrowlMessage({isShow: true, message: GLOBAL_MESSAGE.MESSAGE_ASSOCIATE_DEVICE_WITH_ROUTES})
                             $state.go('device');
                         } else {
-                            growl.error("Service not available Please try again later");
+                            console.error("Error servicio: "+resp.ReaxiumResponse.message);
+                            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                         }
 
                     }).catch(function (err) {
                     spinnerService.hide("spinnerNew");
+                    console.error("Error servicio: "+err);
                 });
 
             } else {
-                growl.warning("Add a route to save");
+                growl.warning(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
             }
-
         }
-
 
     })

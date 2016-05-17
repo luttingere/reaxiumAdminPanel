@@ -114,10 +114,18 @@ angular.module("App")
 
 
         $scope.addUser = function (str) {
-            $scope.showUserTable = true;
             $log.debug(objUser);
-            objUser = str.originalObject;
-            $scope.listUserSelect.push(objUser);
+
+            if(!searchObjList(str.originalObject.user_id)){
+                $scope.showUserTable = true;
+                objUser = str.originalObject;
+                $scope.listUserSelect.push(objUser);
+            }
+            else{
+                console.log("Usuario ya esta preseleccionado");
+                growl.warning("User is already included in your shortlist");
+            }
+
             clearInput('ex2');
         };
 
@@ -315,5 +323,27 @@ angular.module("App")
 
 
         }
+
+        /**
+         * Valida si el usuario ya esta en la lista
+         * @param id_user
+         * @returns {boolean}
+         */
+        function searchObjList(user_id) {
+
+            var validate = false;
+
+            if ($scope.listUserSelect.length > 0) {
+
+                $scope.listUserSelect.forEach(function (entry) {
+
+                    if (entry.user_id == user_id) {
+                        validate = true;
+                    }
+                });
+            }
+            return validate;
+        }
+
     })
 

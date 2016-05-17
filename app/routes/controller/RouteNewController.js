@@ -23,7 +23,7 @@ angular.module("App")
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
-
+        $scope.disabledFields = false;
         $scope.stopsFilter = [];
         $scope.listStops = [];
         $scope.showTable = false;
@@ -100,12 +100,6 @@ angular.module("App")
                 //menu sidebar
                 $scope.menus =  addActiveClassMenu(JSON.parse($sessionStorage.appMenus),GLOBAL_CONSTANT.ID_ROUTES_MENU);
 
-                if(!isEmptyString($stateParams.id_route) && $stateParams.id_route != null){
-                    RoutesServices.setModeEdit({isModeEdit:Boolean($stateParams.edit),id_route:$stateParams.id_route});
-                }else{
-                    loadServices = false;
-                    $state.go("routes");
-                }
             }
 
         }
@@ -121,6 +115,7 @@ angular.module("App")
             console.info("Mode edition: "+$stateParams.edit);
 
             RoutesServices.setShowGrowlMessage({isShow:false,message:""});
+            RoutesServices.setModeEdit({isModeEdit:Boolean($stateParams.edit),id_route:$stateParams.id_route});
 
             if(RoutesServices.getModeEdit().isModeEdit){
 
@@ -166,6 +161,7 @@ angular.module("App")
                                 $scope.listMarker.push({id: entry.id_stop, latitude: entry.stop_latitude, longitude: entry.stop_longitude})
                             });
 
+                            $scope.disabledFields = true;
                             $scope.showTable = true;
                             $scope.addTheMap();
 
@@ -181,6 +177,7 @@ angular.module("App")
                         RoutesServices.setShowGrowlMessage({isShow:true,message:"Error Internal Plataform "});
                         $state.go('routes');
                     });
+
 
             }else{
                 //modo normal
@@ -253,8 +250,15 @@ angular.module("App")
 
         $scope.addStopsSelect = function (objStops) {
             $log.debug(objStops);
-            $scope.showTable = true;
-            $scope.allListStopSelect.push(objStops.originalObject);
+
+            if(!searchObjList(objStops.originalObject.id_stop)){
+                $scope.showTable = true;
+                $scope.allListStopSelect.push(objStops.originalObject);
+            }else{
+                console.log("Parada ya fue preseleccionado");
+                growl.warning("Stop is already included in your shortlist");
+            }
+
             clearInput('ex2');
 
         }
@@ -299,9 +303,16 @@ angular.module("App")
 
             $scope.polylines[0].path.splice(indexMarket, 1);
             $scope.listMarker.splice(indexMarket, 1);
+
+            if ($scope.allListStopSelect.length == 0) {
+                $scope.showTable = false;
+            }
         }
 
 
+        /**
+         * Process Stops
+         */
         $scope.processStops = function () {
 
             if (isEmptyArray($scope.allListStopSelect)) {
@@ -324,13 +335,18 @@ angular.module("App")
 
         }
 
-
+        /**
+         * Clean stops the table
+         */
         $scope.cleanStops = function () {
             $scope.allListStopSelect = [];
             $scope.polylines[0].path = [];
             $scope.listMarker = [];
         };
 
+        /**
+         * Save Method
+         */
         $scope.saveRoute = function () {
 
             if($scope.allListStopSelect.length > 0 && $scope.nameRoute != "" && $scope.numberRoute != ""){
@@ -348,6 +364,9 @@ angular.module("App")
                 objSend.ReaxiumParameters.ReaxiumRoutes.route_name = $scope.nameRoute;
                 objSend.ReaxiumParameters.ReaxiumRoutes.route_number = $scope.numberRoute;
                 objSend.ReaxiumParameters.ReaxiumRoutes.route_address = "Miami, Florida, EE. UU.";
+                if(RoutesServices.getModeEdit().isModeEdit){
+                    objSend.ReaxiumParameters.ReaxiumRoutes.id_route = RoutesServices.getModeEdit().id_route;
+                }
 
                 $scope.allListStopSelect.forEach(function (entry) {
                     objSend.ReaxiumParameters.ReaxiumRoutes.stops.push({id_stop: entry.id_stop});
@@ -378,5 +397,29 @@ angular.module("App")
             }
 
         }
+
+
+        /**
+         * Valida si el usuario ya esta en la lista
+         * @param id_user
+         * @returns {boolean}
+         */
+        function searchObjList(id_stop) {
+
+            var validate = false;
+
+            if ($scope.allListStopSelect.length > 0) {
+
+                $scope.allListStopSelect.forEach(function (entry) {
+
+                    if (entry.id_stop == id_stop) {
+                        validate = true;
+                    }
+                });
+            }
+
+            return validate;
+        }
+
     });
 

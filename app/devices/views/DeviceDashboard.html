@@ -80,9 +80,9 @@
                                                 <td>
                                                     <a data-toggle="tooltip" title="Delete Device" ng-click="deleteDevice(obj.device_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -
                                                     <a data-toggle="tooltip" title="Device Access Control" ui-sref="deviceRelUser({id_device:obj.device_id})"><small><i class="fa fa-fw fa-unlock-alt"></i> </small></a>-
-                                                    <a data-toggle="tooltip" title="Device Relation Route" ui-sref="deviceRelRoute({id_device:obj.device_id})"><small><i class="fa fa-fw fa-exchange"></i></small></i></a>
-                                                    <!--ng-click="accessUserDevice(obj.device_id)"-->
-                                                    <!--ng-click="deviceRelRoute(obj.device_id)"-->
+                                                    <a data-toggle="tooltip" title="Device Relation Route" ui-sref="deviceRelRoute({id_device:obj.device_id})"><small><i class="fa fa-fw fa-exchange"></i></small></i></a>-
+                                                    <a ui-sref="deviceNew({id_device:obj.device_id,edit:true})" data-toggle="tooltip" title="Edit Device"><small><i class="fa fa-fw fa-pencil"></i> </small></a>
+
                                                 </td>
                                             </tr>
                                             </tbody>

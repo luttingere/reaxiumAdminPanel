@@ -495,8 +495,15 @@ angular.module('App')
         };
 
         $scope.addUser = function (str) {
-            $scope.showTable = true;
-            $scope.allUserSelcStakeHolder.push(str.originalObject);
+
+            if(!searchObjList(str.originalObject.user_id)){
+                $scope.showTable = true;
+                $scope.allUserSelcStakeHolder.push(str.originalObject);
+            }else{
+                console.log("Usuario ya esta agregado en la preselleccion");
+                growl.warning("User is already included in your shortlist");
+            }
+
             clearInput('ex2');
         };
 
@@ -782,6 +789,28 @@ angular.module('App')
                 $scope.showTable = false;
             }
 
+        }
+
+        /**
+         * Valida si el usuario ya esta en la lista
+         * @param id_user
+         * @returns {boolean}
+         */
+        function searchObjList(user_id) {
+
+            var validate = false;
+
+            if ($scope.allUserSelcStakeHolder.length > 0) {
+
+                $scope.allUserSelcStakeHolder.forEach(function (entry) {
+
+                    if (entry.user_id == user_id) {
+                        validate = true;
+                    }
+                });
+            }
+
+            return validate;
         }
 
 

@@ -27,14 +27,13 @@
                     <li><a ui-sref="device">All Device</a></li>
                     <li><a class="active">Register Device</a></li>
                 </ol>
-
             </section>
 
-            <section class="content">
+            <section class="content" style="min-height:525px;">
                 <div growl></div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="content" style="min-height: 0px;">
+                        <div class="content" style="min-height:125px;">
                             <div class="box box-primary">
                                 <div class="box-header bg-light-blue-active with-border ">
                                     <h3 class="box-title">Create Device</h3>
@@ -45,10 +44,10 @@
                                     <div class="box-body">
                                         <div class="form-group">
                                             <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="id_number_route" placeholder="Name Device" ng-model="deviceName">
+                                                <input type="text" class="form-control" id="id_number_route" placeholder="Name Device" ng-model="deviceName" ng-disabled="disabledFields">
                                             </div>
                                             <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="id_name_route" placeholder="Description Device" ng-model="deviceDescription">
+                                                <input type="text" class="form-control" id="id_name_route" placeholder="Description Device" ng-model="deviceDescription" ng-disabled="disabledFields">
                                             </div>
                                         </div>
                                     </div><!-- /.box-body -->
@@ -57,10 +56,93 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Main content -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="content">
+                            <div class="box box-primary box-solid">
+                                <div class="box-header bg-light-blue-active with-border">
+                                    <h3 class="box-title">Add Business</h3>
+
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                    <!--Search Business-->
+                                    <div class="col-md-8">
+                                        <div class="box box-info">
+                                            <div class="box-body">
+                                                <table>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td style="width: 400px;">
+                                                            <div angucomplete-alt id="ex21"
+                                                                 placeholder="Search business"
+                                                                 pause="5"
+                                                                 selected-object="selectBusiness"
+                                                                 local-data="businessFilter"
+                                                                 local-search="localSearchBusiness"
+                                                                 title-field="business_name"
+                                                                 minlength="3"
+                                                                 description-field=""
+                                                                 input-class="form-control form-control-small"
+                                                                 match-class="highlight"
+                                                                 initial-value="selectEditBusiness">
+                                                            </div>
+                                                        </td>
+                                                        <td ng-show="selectBusiness">
+                                                            <button class="btn btn-info btn-flat"
+                                                                    type="button"
+                                                                    ng-click="addBusinessSelect(selectBusiness)">
+                                                                Go!
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Table StakeHolder-->
+                                    <div class="col-md-12" ng-show="showTableBusiness">
+                                        <div class="box box-info">
+                                            <div class="box-header">
+                                                <h3 class="box-title">System Business</h3>
+                                            </div><!-- /.box-header -->
+                                            <div class="box-body">
+                                                <table id="userTable"
+                                                       class="table table-bordered table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Business Name</th>
+                                                        <th>Business Id Number</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="business in listBusinessAsoc">
+                                                        <td>{{business.business_name}}</td>
+                                                        <td>{{business.business_id_number}}</td>
+                                                        <td><a ng-click="deleteBusinessTable(business.business_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
+                                                    </tr>
+                                                    </tbody>
+                                                    </tfoot>
+                                                </table>
+                                            </div><!-- /.box-body -->
+                                        </div><!-- /.box -->
+                                    </div><!-- /.col -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
                 <!-- Main content -->
 
-                <div class="row">
-                    <div class="content" style="min-height: 0px;">
+                <div class="row" ng-show="showTableBusiness">
+                    <div class="content">
                         <div class="col-md-4"></div>
                         <div class="col-md-4">
                             <button class="btn btn-block btn-primary btn-lg"

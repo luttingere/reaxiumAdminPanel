@@ -164,22 +164,5 @@ angular.module("App")
         }
 
 
-       /* function deleteRouteListScope(id_device_routes){
-
-            if($scope.listRoutesByDevice.length > 0){
-
-                var index = -1;
-                for (var i = 0, len = $scope.listRoutesByDevice.length; i < len; i++) {
-                    if ($scope.listRoutesByDevice[i].id_device_routes === id_device_routes) {
-                        index = i;
-                        break;
-                    }
-                }
-
-                $scope.listRoutesByDevice.splice(index, 1);
-            }
-
-        }*/
-
 
     })

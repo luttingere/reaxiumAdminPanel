@@ -201,7 +201,8 @@ angular.module("App")
                 });
 
             } else {
-               console.error("Usuario no se encuentra en la lista interna");
+               console.log("Usuario ya se encuentra en la lista interna");
+                growl.warning("User is already included in your shortlist");
             }
 
             clearInput('ex2');

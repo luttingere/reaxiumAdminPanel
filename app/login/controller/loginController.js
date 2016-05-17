@@ -93,6 +93,7 @@ angular.module('App')
                 })
                 .catch(function (error) {
                     console.error("Error invocacion del servicio" + error);
+                    spinnerService.hide('html5spinner');
                     growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                 });
 

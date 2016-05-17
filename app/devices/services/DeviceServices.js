@@ -32,6 +32,15 @@ angular.module("App")
         totalRecords: 0
     };
 
+    var businessDeviceJson = {
+        code:"",
+        message:"",
+        business:{},
+        totalPages: 0,
+        totalRecords: 0
+    };
+
+
     lookup.getAllDevice = function(){
 
         var defered = $q.defer();
@@ -309,6 +318,68 @@ angular.module("App")
         return promise
     }
 
+    lookup.getBusinessByDevice = function(obj){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_GET_BUSINESS_BY_DEVICE,
+            data: JSON.stringify(obj),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+            businessDeviceJson.code = response.ReaxiumResponse.code;
+            businessDeviceJson.message = response.ReaxiumResponse.message;
+            businessDeviceJson.business = response.ReaxiumResponse.object;
+            businessDeviceJson.totalPages = response.ReaxiumResponse.totalPages;
+            businessDeviceJson.totalRecords = response.ReaxiumResponse.totalRecords;
+            defered.resolve(businessDeviceJson);
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise
+    }
+
+    lookup.deleteBusinessByDevice = function(obj){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_DELETE_BUSINESS_BY_DEVICE,
+            data: JSON.stringify(obj),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+            defered.resolve(response);
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise
+    }
+
+    lookup.devideId = function(id_device){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_GET_DEVICE_ID,
+            data: JSON.stringify({ReaxiumParameters:{ReaxiumDevice:{device_id:id_device}}}),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+            defered.resolve(response);
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise
+    }
+
 
     return lookup;
 })
@@ -325,11 +396,25 @@ angular.module("App")
         id_device:""
     }
 
+    var modeEdit={
+        isModeEdit:false,
+        id_device:""
+    }
+
+
     var showGrowl = {
         isShow: false,
         message: ""
     };
 
+
+    this.getModeEdit = function(){
+        return modeEdit;
+    }
+
+    this.setModeEdit = function(obj){
+        modeEdit = obj;
+    }
 
     this.cleanGrowlDevice = function(){
         this.setShowGrowlMessage({ isShow: false, message: ""});
@@ -418,5 +503,17 @@ angular.module("App")
 
     this.deleteUsersAccessDevice = function(obj){
         return DeviceLookup.deleteUserAccessDevice(obj);
+    }
+
+    this.allBusinessByDeviceId = function(obj){
+        return DeviceLookup.getBusinessByDevice(obj);
+    }
+
+    this.deleteBusinessByDevices = function(obj){
+        return DeviceLookup.deleteBusinessByDevice(obj);
+    }
+
+    this.getDeviceById = function(device_id){
+        return DeviceLookup.devideId(device_id);
     }
 })

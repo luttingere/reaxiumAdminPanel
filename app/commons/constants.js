@@ -50,6 +50,10 @@ angular.module("App")
         PROXY_URL_DELETE_ROUTE_BY_DEVICE: "http://54.200.133.84/reaxium/Device/deleteRouteByDevice",
         PROXY_URL_GET_USERS_ACCESS_BY_DEVICE:"http://54.200.133.84/reaxium/Device/getUsersByDevice",
         PROXY_URL_DELETE_USERS_ACCESS_BY_DEVICE:"http://54.200.133.84/reaxium/Device/deleteUserAccessDevice",
+        PROXY_URL_GET_BUSINESS_BY_DEVICE:"http://54.200.133.84/reaxium/Device/getBusinessByDevice",
+        PROXY_URL_DELETE_BUSINESS_BY_DEVICE:"http://54.200.133.84/reaxium/Device/deleteBusinessDevice",
+        PROXY_URL_GET_DEVICE_ID:"http://54.200.133.84/reaxium/Device/deviceInfo",
+
 
         /*Proxy Stops*/
         PROXY_URL_ALL_STOPS: "http://54.200.133.84/reaxium/Stops/allStopsWithPagination",
@@ -121,5 +125,6 @@ angular.module("App")
         MESSAGE_CREATE_NEW_STOPS:"Stops successfully created",
         MESSAGE_DELETE_STOP:"Stop successfully removed",
         MESSAGE_DELETE_USER_OF_STOP:"User removed successfully stop",
-        MESSAGE_ASSOCIATE_ACCESS_DEVICE_SUCCESS:"Access related to the device successfully"
+        MESSAGE_ASSOCIATE_ACCESS_DEVICE_SUCCESS:"Access related to the device successfully",
+        MESSAGE_DELETE_BUSINESS_OF_DEVICE:"The business has successfully removed the device"
     })

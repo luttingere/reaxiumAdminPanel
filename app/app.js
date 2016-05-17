@@ -43,7 +43,7 @@ angular.module('App', ['ui.router',
             // flowFactoryProvider.factory = fustyFlowFactory;
 
             uiGmapGoogleMapApiProvider.configure({
-                key: 'AIzaSyBzOVQq2CAsKnOTplH5Xfesys9_vnZg9Gs',
+                key: 'AIzaSyCCVxC265VN4yxzwfs0v_qREQN9lvDIqn4',
                 v: '3.20', //defaults to latest 3.X anyhow
                 libraries: 'weather,geometry,visualization,places',
                 china: true

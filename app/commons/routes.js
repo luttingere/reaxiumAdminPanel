@@ -153,6 +153,10 @@ angular.module("App")
             .state("deviceNew",{
                 url:"/deviceNew",
                 controller:'DeviceNewCtrl',
+                params:{
+                    id_device: null,
+                    edit:false,
+                },
                 views: {
                     '': {templateUrl: 'app/devices/views/DeviceNewRegister.html'},
                     'header@deviceNew': {templateUrl: 'app/home/views/header.html'},
@@ -202,7 +206,7 @@ angular.module("App")
                 url:'/routesNewRegister',
                 controller:'RouteNewCtrl',
                 params:{
-                    edit:true,
+                    edit:false,
                     id_route: null,
                 },
                 views:{

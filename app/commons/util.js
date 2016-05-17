@@ -288,11 +288,10 @@ function validateAccess(obj) {
     return response;
 }
 
-function validateFieldsNewRoute() {
-}
+function validateFieldsNewRoute() {}
 
 
-function validateFieldNewDevice(name_device, desc_device) {
+function validateFieldNewDevice(name_device, desc_device,list_business) {
 
     var response = {
         validate: true,
@@ -301,11 +300,15 @@ function validateFieldNewDevice(name_device, desc_device) {
 
     if (isEmptyString(name_device)) {
         response.validate = false;
-        response.message = "Name device  empty";
+        response.message = "Field Name Device  cannot be empty";
     }
     else if (isEmptyString(desc_device)) {
         response.validate = false;
-        response.message = "Description device empty";
+        response.message = "Field Description Device cannot be empty";
+    }
+    else if(!isEmptyArray(list_business)){
+        response.validate = false;
+        response.message = "You must add a business to continue the process";
     }
 
     return response;

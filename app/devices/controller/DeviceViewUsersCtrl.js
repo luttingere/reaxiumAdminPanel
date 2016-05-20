@@ -29,7 +29,7 @@ angular.module("App")
                 ReaxiumDevice: {
                     device_id: "",
                     page: 1,
-                    limit: 5,
+                    limit: 10,
                     sortDir: 'asc',
                     sortedBy: 'first_last_name',
                     filter: ''
@@ -67,6 +67,10 @@ angular.module("App")
                 $scope.nameUser = $sessionStorage.nameUser;
                 //menu sidebar
                 $scope.menus = addActiveClassMenu(JSON.parse($sessionStorage.appMenus),GLOBAL_CONSTANT.ID_DEVICE_MENU);
+
+                if ($sessionStorage.rol_user == GLOBAL_CONSTANT.USER_ROL_SCHOOL) {
+                    $scope.filterCriteria.ReaxiumParameters.ReaxiumDevice.business_id = $sessionStorage.id_business;
+                }
             }
         }
 
@@ -94,7 +98,7 @@ angular.module("App")
                         }
                         else {
                             console.info("Error: " + resp.message);
-                            growl.error(resp.message);
+                            growl.warning("The device has no associated users");
                         }
                         spinnerService.hide("spinnerNew");
                     })

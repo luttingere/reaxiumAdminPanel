@@ -23,6 +23,15 @@ angular.module("App")
         $scope.userFilter = [];
         $scope.listUserSelect = [];
         $scope.showUserTable = false;
+
+        var filterCondition = {
+            ReaxiumParameters: {
+                Users: {
+                    filter: ""
+                }
+            }
+        };
+
         var objUser = {};
 
         function init() {
@@ -43,7 +52,17 @@ angular.module("App")
                 console.log("Mode asocciate User Stop: " + $stateParams.modeAsocStopUser);
 
                 if(!isEmptyString($stateParams.id_stop) && $stateParams.id_stop != null){
+
                     StopsService.setModeAsociateUserStop({modeAsociateUserStop:$stateParams.modeAsocStopUser,id_stop:$stateParams.id_stop});
+
+                    if ($sessionStorage.rol_user == GLOBAL_CONSTANT.USER_ROL_CALL_CENTER) {
+
+                        filterCondition.ReaxiumParameters.Users.user_type_id = $sessionStorage.rol_user;
+                    }
+                    else if ($sessionStorage.rol_user == GLOBAL_CONSTANT.USER_ROL_SCHOOL) {
+                        filterCondition.ReaxiumParameters.Users.user_type_id = $sessionStorage.rol_user;
+                        filterCondition.ReaxiumParameters.Users.business_id = $sessionStorage.id_business;
+                    }
                 }else{
                     $state.go("stops");
                 }
@@ -86,10 +105,12 @@ angular.module("App")
          */
         var invokeServiceUserFilter = function (str) {
 
-             UserService.getUsersFilter(str)
+            filterCondition.ReaxiumParameters.Users.filter = str;
+
+             UserService.getUsersFilter(filterCondition)
                 .then(function (result) {
 
-                if (result.ReaxiumResponse.code === 0) {
+                if (result.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
                     $scope.userFilter = [];
                     var array = result.ReaxiumResponse.object;
                     console.log("size:" + array.length);

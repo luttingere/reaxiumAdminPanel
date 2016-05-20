@@ -48,7 +48,7 @@ angular.module("App")
     $scope.filterCriteria = {
         ReaxiumParameters: {
             page: 1,
-            limit:5,
+            limit:10,
             sortDir: 'asc',
             sortedBy: 'device_name',
             filter: ''
@@ -69,6 +69,10 @@ angular.module("App")
             $scope.nameUser = $sessionStorage.nameUser;
             //menu sidebar
             $scope.menus = addActiveClassMenu(JSON.parse($sessionStorage.appMenus),GLOBAL_CONSTANT.ID_DEVICE_MENU);
+
+         if($sessionStorage.rol_user == GLOBAL_CONSTANT.USER_ROL_SCHOOL){
+                $scope.filterCriteria.ReaxiumParameters.business_id = $sessionStorage.id_business;
+            }
         }
 
     }

@@ -31,7 +31,7 @@ angular.module("App")
                 ReaxiumDevice:{
                     device_id: "",
                     page: 1,
-                    limit:5,
+                    limit:10,
                     sortDir: 'asc',
                     sortedBy: 'route_name',
                     filter: ''

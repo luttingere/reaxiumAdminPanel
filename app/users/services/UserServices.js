@@ -104,7 +104,7 @@ angular.module('App')
             $http({
                 method: 'POST',
                 url: CONST_PROXY_URL.PROXY_URL_ALL_USER_WITH_FILTER,
-                data: JSON.stringify({ReaxiumParameters: {Users: {filter: filters}}}),
+                data: JSON.stringify(filters),
                 headers: {'Content-Type': 'application/json;charset=UTF-8'}
             }).success(function (response) {
                 defered.resolve(response);
@@ -140,13 +140,14 @@ angular.module('App')
          * get User Types
          * @returns {*}
          */
-        lookup.allUsersType = function () {
+        lookup.allUsersType = function (userTypeId) {
 
             var defered = $q.defer();
             var promise = defered.promise;
 
             $http({
-                method: 'GET',
+                method: 'POST',
+                data:JSON.stringify({ReaxiumParameters:{Users:{user_type_id:userTypeId}}}),
                 url: CONST_PROXY_URL.PROXY_URL_ALL_USERS_TYPE
             }).success(function (response) {
                 defered.resolve(response.ReaxiumResponse.object);
@@ -394,8 +395,8 @@ angular.module('App')
             return UserLookup.getAllAccessType();
         };
 
-        this.getAllUsersType = function () {
-            return UserLookup.allUsersType();
+        this.getAllUsersType = function (userAccessTypeId) {
+            return UserLookup.allUsersType(userAccessTypeId);
         };
 
         this.getAllStatusUser = function () {

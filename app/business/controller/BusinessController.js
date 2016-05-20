@@ -38,10 +38,10 @@ angular.module('App')
          * @type {*[]}
          */
         $scope.businessTableHeaders = [{
-            title: 'Business Name',
+            title: 'School Name',
             value: 'business_name'
         }, {
-            title: 'Business DNI',
+            title: 'School DNI',
             value: 'business_id_number'
         }
         ];

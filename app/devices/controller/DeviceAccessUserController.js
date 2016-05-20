@@ -8,6 +8,7 @@ angular.module("App")
                                                   $sessionStorage,
                                                   $rootScope,
                                                   DeviceService,
+                                                  UserService,
                                                   $log,
                                                   growl,
                                                   spinnerService,
@@ -23,6 +24,14 @@ angular.module("App")
         $scope.userFilter = [];
         $scope.allUserSelcStakeHolder = [];
         $scope.showTable = false;
+
+        var filterCondition = {
+            ReaxiumParameters: {
+                Users: {
+                    filter: ""
+                }
+            }
+        };
 
 
         function init() {
@@ -43,8 +52,19 @@ angular.module("App")
                 console.log("Mode Device Relation User: " + $stateParams.modeDeviceRelUser);
 
                 if(!isEmptyString($stateParams.id_device) && $stateParams.id_device != null){
+
                     DeviceService.setRelUserDevice({isModeRel: $stateParams.modeDeviceRelUser,id_device: $stateParams.id_device});
-                }else{
+
+                    if ($sessionStorage.rol_user == GLOBAL_CONSTANT.USER_ROL_CALL_CENTER) {
+
+                        filterCondition.ReaxiumParameters.Users.user_type_id = $sessionStorage.rol_user;
+                    }
+                    else if ($sessionStorage.rol_user == GLOBAL_CONSTANT.USER_ROL_SCHOOL) {
+                        filterCondition.ReaxiumParameters.Users.user_type_id = $sessionStorage.rol_user;
+                        filterCondition.ReaxiumParameters.Users.business_id = $sessionStorage.id_business;
+                    }
+                }
+                else{
                     $state.go("device");
                 }
             }
@@ -86,11 +106,12 @@ angular.module("App")
          */
         var invokeServiceUserFilter = function (str) {
 
-            var myUserFilterPromise = DeviceService.getAllUsersFilter(str);
+            filterCondition.ReaxiumParameters.Users.filter = str;
 
-            myUserFilterPromise.then(function (result) {
+            UserService.getUsersFilter(filterCondition)
+            .then(function (result) {
 
-                if (result.ReaxiumResponse.code === 0) {
+                if (result.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
                     $scope.userFilter = [];
                     var array = result.ReaxiumResponse.object;
                     console.log("size:" + array.length);

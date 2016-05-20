@@ -26,7 +26,13 @@ angular.module('App')
 
         var objUser = {};
 
-
+        var filterCondition = {
+            ReaxiumParameters: {
+                Users: {
+                    filter: ""
+                }
+            }
+        };
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
@@ -35,16 +41,26 @@ angular.module('App')
 
             console.info("Iniciando controlador de seguridad");
 
-            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
+            if (isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)) {
                 console.error("Usuario no a iniciado session");
                 $state.go("login");
             }
-            else{
+            else {
                 //data user by session
                 $scope.photeUser = $sessionStorage.user_photo;
                 $scope.nameUser = $sessionStorage.nameUser;
                 //menu sidebar
                 $scope.menus = addActiveClassMenu(JSON.parse($sessionStorage.appMenus), GLOBAL_CONSTANT.ID_USER_MENU);
+
+                if ($sessionStorage.rol_user == GLOBAL_CONSTANT.USER_ROL_CALL_CENTER) {
+
+                    filterCondition.ReaxiumParameters.Users.user_type_id = $sessionStorage.rol_user;
+                }
+                else if ($sessionStorage.rol_user == GLOBAL_CONSTANT.USER_ROL_SCHOOL) {
+                    filterCondition.ReaxiumParameters.Users.user_type_id = $sessionStorage.rol_user;
+                    filterCondition.ReaxiumParameters.Users.business_id = $sessionStorage.id_business;
+                }
+
             }
 
             UserService.setShowGrowlMessage({isShow: false, message: ""});
@@ -83,31 +99,35 @@ angular.module('App')
          */
         var invokeServiceUserFilter = function (str) {
 
-            var myUserFilterPromise = UserService.getUsersFilter(str);
+            filterCondition.ReaxiumParameters.Users.filter = str;
 
-            myUserFilterPromise.then(function (result) {
+            UserService.getUsersFilter(filterCondition)
+                .then(function (result) {
 
-                if (result.ReaxiumResponse.code === 0) {
-                    $scope.userFilter = [];
-                    var array = result.ReaxiumResponse.object;
-                    console.log("size:" + array.length);
-                    array.forEach(function (entry) {
-                        var aux = {
-                            first_name: entry.first_name,
-                            second_name: entry.second_name,
-                            first_last_name: entry.first_last_name,
-                            second_last_name: entry.second_last_name,
-                            user_id: entry.user_id,
-                            document_id: entry.document_id,
-                            email: entry.email,
-                            pic: entry.user_photo
-                        };
+                    if (result.ReaxiumResponse.code === GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
+                        $scope.userFilter = [];
+                        var array = result.ReaxiumResponse.object;
+                        console.log("size:" + array.length);
+                        array.forEach(function (entry) {
+                            var aux = {
+                                first_name: entry.first_name,
+                                second_name: entry.second_name,
+                                first_last_name: entry.first_last_name,
+                                second_last_name: entry.second_last_name,
+                                user_id: entry.user_id,
+                                document_id: entry.document_id,
+                                email: entry.email,
+                                pic: entry.user_photo
+                            };
 
-                        $scope.userFilter.push(aux);
-                    });
+                            $scope.userFilter.push(aux);
+                        });
 
-                }
-            });
+                    }
+                })
+                .catch(function (err) {
+                    console.error("Error servicio: "+err);
+                });
         };
 
 

@@ -42,7 +42,7 @@ angular.module('App')
             title: 'Last Name',
             value: 'first_last_name'
         }, {
-            title: 'DNI',
+            title: 'ID',
             value: 'document_id'
         }
         ];
@@ -51,7 +51,7 @@ angular.module('App')
         $scope.filterCriteria = {
             ReaxiumParameters: {
                 page: 1,
-                limit:5,
+                limit:10,
                 sortDir: 'asc',
                 sortedBy: 'first_name',
                 filter: ''
@@ -75,6 +75,16 @@ angular.module('App')
                 $scope.nameUser = $sessionStorage.nameUser;
                 //menu sidebar
                 $scope.menus = addActiveClassMenu(JSON.parse($sessionStorage.appMenus),GLOBAL_CONSTANT.ID_USER_MENU);
+                // filter user by business
+
+                if($sessionStorage.rol_user == GLOBAL_CONSTANT.USER_ROL_CALL_CENTER){
+                    $scope.filterCriteria.ReaxiumParameters.user_type_id = $sessionStorage.rol_user;
+                }
+                else if($sessionStorage.rol_user == GLOBAL_CONSTANT.USER_ROL_SCHOOL){
+                    $scope.filterCriteria.ReaxiumParameters.user_type_id = $sessionStorage.rol_user;
+                    $scope.filterCriteria.ReaxiumParameters.business_id = $sessionStorage.id_business;
+                }
+
             }
         }
 

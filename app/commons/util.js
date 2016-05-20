@@ -147,8 +147,10 @@ function validateParamNewUser(obj, mode) {
         response.message = "Birthdate field must not be empty";
 
     } else if (objUsers.email == undefined || isEmptyString(objUsers.email) || !objUsers.email.match(expRegEmail)) {
-        response.validate = false;
-        response.message = "Email field invalid";
+        if(objUsers.user_type_id != 2){
+            response.validate = false;
+            response.message = "Email field invalid";
+        }
     }
 
     //validar que el usuario tenga por lo menos un phone

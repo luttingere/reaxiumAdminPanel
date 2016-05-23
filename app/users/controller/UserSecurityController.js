@@ -12,7 +12,8 @@ angular.module('App')
                                          spinnerService,
                                          $sessionStorage,
                                          growl,
-                                         GLOBAL_CONSTANT) {
+                                         GLOBAL_CONSTANT,
+                                         GLOBAL_MESSAGE) {
 
         $scope.showgrowlMessage = false;
         $scope.showMessage = "";
@@ -160,13 +161,27 @@ angular.module('App')
                             }
                         };
 
-                        var promiseAccessNew = UserService.createAccessUser(objJson);
+                         UserService.createAccessUser(objJson)
+                        .then(function (response) {
 
-                        promiseAccessNew.then(function (response) {
-                            UserService.setShowGrowlMessage({isShow: true, message: response.message});
                             spinnerService.hide("spinnerNew");
-                            $state.go("allUser");
+                            $log.debug(response);
+                            if(response.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+
+                                UserService.setShowGrowlMessage({isShow: true, message: response.message});
+                                $state.go("allUser");
+                            }else{
+                                if(response.code === "2"){
+                                    growl.warning(response.message);
+                                }else{
+                                    console.error(response.message);
+                                    growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                                }
+                            }
+
                         }).catch(function (err) {
+                            spinnerService.hide("spinnerNew");
+                            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                             console.error("Error salvando credenciales usuario" + err);
                         });
                     } else {

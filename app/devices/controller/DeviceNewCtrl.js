@@ -226,7 +226,7 @@ angular.module("App")
             console.info("Entro aqui");
             spinnerService.show("spinnerNew");
 
-            var validObj = validateFieldNewDevice($scope.deviceName, $scope.deviceDescription,$scope.listBusinessAsoc);
+            var validObj = validateFieldNewDevice($scope.deviceName, $scope.deviceDescription,$scope.listBusinessAsoc,$scope.deviceSerialNumber);
 
             if (validObj.validate) {
 
@@ -235,6 +235,7 @@ angular.module("App")
                         ReaxiumDevice:{
                             device_name: $scope.deviceName,
                             device_description: $scope.deviceDescription,
+                            device_serial:$scope.deviceSerialNumber,
                             business:[]
                         }
                     }
@@ -259,7 +260,12 @@ angular.module("App")
                             $state.go('device');
                         }
                         else{
-                            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                            if(resp.ReaxiumResponse.code == 1){
+                                growl.warning(resp.ReaxiumResponse.message);
+                            }else{
+                                growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                            }
+
                         }
                     })
                     .catch(function (err) {

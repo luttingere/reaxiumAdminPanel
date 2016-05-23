@@ -293,7 +293,7 @@ function validateAccess(obj) {
 function validateFieldsNewRoute() {}
 
 
-function validateFieldNewDevice(name_device, desc_device,list_business) {
+function validateFieldNewDevice(name_device, desc_device,list_business,device_serial) {
 
     var response = {
         validate: true,
@@ -311,6 +311,10 @@ function validateFieldNewDevice(name_device, desc_device,list_business) {
     else if(!isEmptyArray(list_business)){
         response.validate = false;
         response.message = "You must add a business to continue the process";
+    }
+    else if(isEmptyString(device_serial)){
+        response.validate = false;
+        response.message = "You must add a serial business to continue the process";
     }
 
     return response;

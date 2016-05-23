@@ -21,6 +21,7 @@ angular.module("App")
 
         $scope.deviceName = "";
         $scope.deviceDescription = "";
+        $scope.deviceSerialNumber = "";
         $scope.showTableBusiness = false;
         $scope.disabledFields = false;
         $scope.listBusinessAsoc = [];
@@ -66,6 +67,7 @@ angular.module("App")
 
                             $scope.deviceName =  resp.ReaxiumResponse.object[0].device_name;
                             $scope.deviceDescription = resp.ReaxiumResponse.object[0].device_description;
+                            $scope.deviceSerialNumber = resp.ReaxiumResponse.object[0].device_serial;
 
                             if(isEmptyArray(resp.ReaxiumResponse.object[0].business)){
 

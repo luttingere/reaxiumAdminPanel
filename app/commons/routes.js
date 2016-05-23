@@ -276,6 +276,38 @@ angular.module("App")
                 }
             })
 
+            .state("bulkUsers",{
+                url:"/bulkUsers",
+                controller:'BulkUsersCtrl',
+                views:{
+                    '': {templateUrl: 'app/bulk_process/views/UsersBulkSystem.html'},
+                    'header@bulkUsers': {templateUrl: 'app/home/views/header.html'},
+                    'menu@bulkUsers': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@bulkUsers':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
+
+            .state("bulkStops",{
+                url:"/bulkStops",
+                controller:'BulkStopsCtrl',
+                views:{
+                    '': {templateUrl: 'app/bulk_process/views/StopsBulkSystem.html'},
+                    'header@bulkStops': {templateUrl: 'app/home/views/header.html'},
+                    'menu@bulkStops': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@bulkStops':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
+
+            .state("bulkSchool",{
+                url:"/bulkSchool",
+                controller:'BulkStopsCtrl',
+                views:{
+                    '': {templateUrl: 'app/bulk_process/views/SchoolBulkSystem.html'},
+                    'header@bulkSchool': {templateUrl: 'app/home/views/header.html'},
+                    'menu@bulkSchool': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@bulkSchool':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
 
         $urlRouterProvider.otherwise("/login");
 

@@ -70,7 +70,12 @@ angular.module("App")
         PROXY_URL_CREATE_ROUTE: "http://54.200.133.84/reaxium/Routes/createRoutes",
         PROXY_URL_GET_ROUTE_BY_ID_WITH_STOPS: "http://54.200.133.84/reaxium/Routes/getRouteByIdRelationStop",
         PROXY_URL_ALL_ROUTE_WITH_FILTER: "http://54.200.133.84/reaxium/Routes/allRouteWithFilter",
-        PROXY_URL_DELETE_ROUTE: "http://54.200.133.84/reaxium/Routes/deleteRoute"
+        PROXY_URL_DELETE_ROUTE: "http://54.200.133.84/reaxium/Routes/deleteRoute",
+
+        /*Proxy Bulks*/
+        PROXY_URL_BULK_USERS_SYSTEM:"http://localhost:8080/ProyectosGAndG/reaxiumCloud/Bulk/bulkUsersSystem",
+        PROXY_URL_BULK_STOPS_SYSTEM:"http://localhost:8080/ProyectosGAndG/reaxiumCloud/Bulk/bulkStopsSystem",
+        PROXY_URL_BULK_SCHOOL_SYSTEM:"http://localhost:8080/ProyectosGAndG/reaxiumCloud/Bulk/bulkSchoolSystem"
 
     })
     // configuracion file system imagenes

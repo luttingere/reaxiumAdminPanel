@@ -31,6 +31,14 @@ angular.module("App")
      */
     $scope.deviceTableHeaders = [
         {
+            title: 'Device ID',
+            value: 'device_id'
+        },
+        {
+            title: 'Device Serial Number',
+            value: 'device_serial'
+        },
+        {
             title: 'Device Name',
             value: 'device_name'
         },

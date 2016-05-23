@@ -1,0 +1,148 @@
+<spinner name="spinnerNew" ng-cloak="">
+    <div class="overlay"></div>
+    <div class="spinner">
+        <div class="test"><i class="fa fa-refresh fa-spin fa-5x"></i></div>
+    </div>
+    <div class="please-wait">Please Wait...</div>
+</spinner>
+
+<div class="skin-blue sidebar-mini">
+
+    <div class="wrapper" ng-controller="BulkUsersCtrl">
+        <!--header-->
+        <div ui-view="header"></div>
+
+        <!--menu-->
+        <div ui-view="menu"></div>
+
+        <!--content-->
+        <div class="content-wrapper">
+            <!--growl-->
+            <div growl></div>
+
+            <section class="content-header">
+                <h1>
+                    Bulk Users System
+                    <small>Control panel</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li class="active">Bulk Users System</li>
+                </ol>
+            </section>
+
+            <!-- Main content -->
+            <section class="content" style="min-height:535px;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="content">
+
+                                <div class="col-md-12">
+                                    <!--box Personal Information security-->
+                                    <div class="box box-primary box-solid">
+                                        <div class="box-header bg-light-blue-active with-border">
+                                            <h3 class="box-title">Enter file to perform user load</h3>
+                                        </div><!-- /.box-header -->
+                                        <div class="box-body">
+                                            <!--Search StakeHolder-->
+                                            <div class="col-md-8">
+                                                <div class="box box-info">
+                                                    <div class="box-body">
+                                                        <table>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td style="width: 400px;">
+                                                                    <div flow-init
+                                                                         flow-file-added="!!{csv:1}[$file.getExtension()]"
+                                                                         flow-file-success="someHandlerMethod($file,$message, $flow )"
+                                                                         flow-file-error="someHandlerMethod($file,$message, $flow )"
+                                                                         flow-files-submitted="$flow.upload()">
+
+                                                                        <button class="btn btn-info btn-flat" type="file" flow-btn>Upload File</button>
+
+                                                                        <div ng-repeat="file in $flow.files" class="transfer-box">
+                                                                            {{file.relativePath}} ({{file.size}}bytes)
+                                                                            <div class="progress progress-striped" ng-class="{active: file.isUploading()}">
+                                                                                <div class="progress-bar" role="progressbar"
+                                                                                     aria-valuenow="{{file.progress() * 100}}"
+                                                                                     aria-valuemin="0"
+                                                                                     aria-valuemax="100"
+                                                                                     ng-style="{width: (file.progress() * 100) + '%'}">
+                                                                                    <span class="sr-only">{{file.progress()}}% Complete</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="btn-group">
+                                                                                <a class="btn btn-sm btn-danger" ng-click="file.cancel()">Cancel</a>
+                                                                                <a class="btn btn-sm btn-success" ng-show="showButtonProcess" ng-click="processBulkUsers()">Process</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <!--Table StakeHolder-->
+                                            <!--<div class="col-md-8" ng-show="showForm">
+                                                <div class="box box-info">
+                                                    <div class="box-header with-border">
+                                                        <h3 class="box-title">Login & Password</h3>
+                                                    </div>
+
+                                                    <div class="box-body">
+                                                        <div class="form-group">
+                                                            <label for="inputEmail3"
+                                                                   class="col-sm-2 control-label">Login</label>
+
+                                                            <div class="col-sm-10">
+                                                                <input type="text" class="form-control"
+                                                                       id="inputEmail3" placeholder="Login" ng-model="access.login">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="inputPassword3"
+                                                                   class="col-sm-2 control-label">Password</label>
+
+                                                            <div class="col-sm-10">
+                                                                <input type="password" class="form-control"
+                                                                       id="inputPassword3"
+                                                                       placeholder="Password" ng-model="access.pass">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="inputPassword4"
+                                                                   class="col-sm-2 control-label">Confirm Password</label>
+
+                                                            <div class="col-sm-10">
+                                                                <input type="password" class="form-control"
+                                                                       id="inputPassword4"
+                                                                       placeholder=" Confirm Password" ng-model="access.confirmPass">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+
+        </div>
+
+        <!--footer-->
+        <div ui-view="footer"></div>
+
+    </div>
+</div>

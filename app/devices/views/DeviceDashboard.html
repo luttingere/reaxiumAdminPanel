@@ -62,7 +62,6 @@
                                         <table id="userTable" class="table table-bordered table-striped">
                                             <thead>
                                             <tr>
-                                                <th>Device ID</th>
                                                 <th ng-repeat="header in deviceTableHeaders">
                                                     <sort-by onsort="onSort" sortdir="filterCriteria.ReaxiumParameters.sortDir" sortedby="filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
                                                 </th>
@@ -73,6 +72,7 @@
                                             <tbody>
                                             <tr ng-repeat="obj in devices">
                                                 <td>{{obj.device_id}}</td>
+                                                <td>{{obj.device_serial}}</td>
                                                 <td>{{obj.device_name}}</td>
                                                 <td>{{obj.device_description}}</td>
                                                 <td>{{obj.configured}}</td>
@@ -93,7 +93,7 @@
                                         </div>
                                         <div ng-show="totalPages > 1" class="align-center">
                                             <uib-pagination total-items="totalRecords" ng-model="filterCriteria.ReaxiumParameters.page" items-per-page="filterCriteria.ReaxiumParameters.limit" previous-text="previous" next-text="next" last-text="last"
-                                                            direction-links="true" rotate="false" ng-change="selectPage()"></uib-pagination>
+                                                            direction-links="true" rotate="false" max-size="5"  boundary-link-numbers="true" ng-change="selectPage()"></uib-pagination>
                                         </div>
                                     </div><!-- /.box-body -->
 

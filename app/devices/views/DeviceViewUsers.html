@@ -106,7 +106,7 @@
                                                         </div>
                                                         <div ng-show="totalPages > 1" class="align-center">
                                                             <uib-pagination total-items="totalRecords" ng-model="filterCriteria.ReaxiumParameters.ReaxiumDevice.page" items-per-page="filterCriteria.ReaxiumParameters.ReaxiumDevice.limit" previous-text="previous" next-text="next" last-text="last"
-                                                                            direction-links="true" rotate="false" ng-change="selectPage()"></uib-pagination>
+                                                                            direction-links="true" rotate="false" max-size="5"  boundary-link-numbers="true" ng-change="selectPage()"></uib-pagination>
                                                         </div>
                                                     </div><!-- /.box-body -->
                                                 </div><!-- /.box -->

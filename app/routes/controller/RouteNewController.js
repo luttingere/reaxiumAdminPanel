@@ -22,45 +22,46 @@ angular.module("App")
 
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
-
         $scope.disabledFields = false;
         $scope.stopsFilter = [];
         $scope.listStops = [];
+        $scope.selectTypeRoute = "";
         $scope.showTable = false;
         $scope.allListStopSelect = [];
         $scope.listMarker = [];
         $scope.nameRoute = "";
         $scope.numberRoute = "";
-        $scope.polylines = [
-            {
-                id: 1,
-                path: [],
-                stroke: {
-                    color: '#6060FB',
-                    weight: 2
-                },
-                editable: false,
-                draggable: false,
-                geodesic: true,
-                visible: true,
-                icons: [{
-                    icon: {},
-                    offset: '25px',
-                    repeat: '50px'
-                }]
+
+        var objSend = {
+            ReaxiumParameters: {
+                ReaxiumRoutes: {
+                    stops: []
+                }
             }
-        ];
+        };
+
+        $scope.map = {
+            center: {
+                latitude:"",
+                longitude:"",
+            },
+            zoom: 16,
+            bounds: {},
+            control:{},
+            options: {}
+        };
 
 
         var loadServices = true;
-
+        var mapGogole = null;
+        var directionsDisplay = null;
         /**
          * add a google map with the location of the user address
          */
         $scope.addTheMap = function () {
 
-            var latitude = RoutesServices.getModeEdit().isModeEdit ? $scope.polylines[0].path[0].latitude : RoutesServices.getAddressDefault().latitude;
-            var longitude = RoutesServices.getModeEdit().isModeEdit ? $scope.polylines[0].path[0].longitude : RoutesServices.getAddressDefault().longitude;
+            var latitude =  RoutesServices.getAddressDefault().latitude;
+            var longitude = RoutesServices.getAddressDefault().longitude;
 
             console.log("latitude: "+latitude);
             console.log("longitude: "+longitude);
@@ -68,17 +69,39 @@ angular.module("App")
             uiGmapGoogleMapApi.then(function (maps) {
                 console.log("Google map cargado...");
                 maps.visualRefresh = true;
-                $scope.map = {
-                    center: {
-                        latitude: latitude,
-                        longitude: longitude
-                    },
-                    zoom: 14,
-                    bounds: {},
-                    options: {"MapTypeId": maps.MapTypeId.ROADMAP}
-                };
+                mapGogole = maps;
+                directionsDisplay = new mapGogole.DirectionsRenderer();
 
-                $scope.polylines[0].icons[0].icon.path = maps.SymbolPath.CIRCLE
+                $scope.map.center.latitude = latitude;
+                $scope.map.center.longitude = longitude;
+                $scope.map.center.options = {"MapTypeId": mapGogole.MapTypeId.ROADMAP};
+
+            }).catch(function (err) {
+                console.error("Error Cargando map Google" + err);
+            })
+        };
+
+
+
+        $scope.addTheMapEdit = function (arrayStopsOrder) {
+
+            var latitude =  RoutesServices.getAddressDefault().latitude;
+            var longitude = RoutesServices.getAddressDefault().longitude;
+
+            console.log("latitude: "+latitude);
+            console.log("longitude: "+longitude);
+
+            uiGmapGoogleMapApi.then(function (maps) {
+                console.log("Google map cargado...");
+                maps.visualRefresh = true;
+                mapGogole = maps;
+                directionsDisplay = new mapGogole.DirectionsRenderer();
+
+                $scope.map.center.latitude = latitude;
+                $scope.map.center.longitude = longitude;
+                $scope.map.center.options = {"MapTypeId": mapGogole.MapTypeId.ROADMAP};
+
+                findPath(arrayStopsOrder);
 
             }).catch(function (err) {
                 console.error("Error Cargando map Google" + err);
@@ -140,6 +163,7 @@ angular.module("App")
 
                             $scope.nameRoute = respService.route_name;
                             $scope.numberRoute = respService.route_number;
+                            $scope.selectTypeRoute = respService.route_type;
 
                             respService.stops.forEach(function(entry){
 
@@ -150,20 +174,32 @@ angular.module("App")
                                     stop_latitude: entry.stop_latitude,
                                     stop_longitude: entry.stop_longitude,
                                     stop_address: entry.stop_address,
-                                    pic: FILE_SYSTEM_ROUTE.IMAGE_MARKER_MAP
+                                    pic: FILE_SYSTEM_ROUTE.IMAGE_MARKER_MAP,
+                                    order_stop:entry._joinData.order_stop
                                 });
                             });
 
-                            var cont = 0;
-                            $scope.allListStopSelect.forEach(function (entry) {
-                                cont++;
-                                $scope.polylines[0].path.push({latitude: entry.stop_latitude, longitude: entry.stop_longitude});
-                                $scope.listMarker.push({id: entry.id_stop, latitude: entry.stop_latitude, longitude: entry.stop_longitude})
+
+                            //ordernar por lista de paradas en la tabla orden stop
+                            $scope.allListStopSelect.sort(function(a,b){
+                                return a.order_stop - b.order_stop;
                             });
+
+                            var arrayStopsOrder= [];
+
+                            $scope.allListStopSelect.forEach(function (entry) {
+                                arrayStopsOrder.push({id_stop: entry.id_stop,order_stop:entry.order_stop,latitude:entry.stop_latitude,longitude:entry.stop_longitude});
+                            });
+
+                            //ordernar por orden stop
+                            arrayStopsOrder.sort(function(a,b){
+                               return a.order_stop - b.order_stop;
+                            });
+
+                            $scope.addTheMapEdit(arrayStopsOrder);
 
                             $scope.disabledFields = true;
                             $scope.showTable = true;
-                            $scope.addTheMap();
 
                         }else{
                             console.info("Error respuesta del servicio getRouteByIdWithStops");
@@ -178,12 +214,10 @@ angular.module("App")
                         $state.go('routes');
                     });
 
-
             }else{
                 //modo normal
                 $scope.addTheMap();
             }
-
         }
 
         if(loadServices){
@@ -235,7 +269,8 @@ angular.module("App")
                                 stop_latitude: entry.stop_latitude,
                                 stop_longitude: entry.stop_longitude,
                                 stop_address: entry.stop_address,
-                                pic: FILE_SYSTEM_ROUTE.IMAGE_MARKER_MAP
+                                pic: FILE_SYSTEM_ROUTE.IMAGE_MARKER_MAP,
+                                order_stop:0
                             };
 
                             $scope.stopsFilter.push(aux);
@@ -249,7 +284,6 @@ angular.module("App")
 
 
         $scope.addStopsSelect = function (objStops) {
-            $log.debug(objStops);
 
             if(!searchObjList(objStops.originalObject.id_stop)){
                 $scope.showTable = true;
@@ -280,6 +314,7 @@ angular.module("App")
         $scope.deleteStopsSelect = function (id_stop) {
 
             console.log("Delete Element: " + id_stop);
+
             var index = -1;
             for (var i = 0, len = $scope.allListStopSelect.length; i < len; i++) {
                 if ($scope.allListStopSelect[i].id_stop === id_stop) {
@@ -291,18 +326,6 @@ angular.module("App")
             console.log("Delete  Pos: " + index);
             $scope.allListStopSelect.splice(index, 1);
 
-            $log.debug($scope.allListStopSelect);
-
-            var indexMarket = -1;
-            for (var i = 0, len = $scope.listMarker.length; i < len; i++) {
-                if ($scope.listMarker[i].id === id_stop) {
-                    indexMarket = i;
-                    break;
-                }
-            }
-
-            $scope.polylines[0].path.splice(indexMarket, 1);
-            $scope.listMarker.splice(indexMarket, 1);
 
             if ($scope.allListStopSelect.length == 0) {
                 $scope.showTable = false;
@@ -317,17 +340,16 @@ angular.module("App")
 
             if (isEmptyArray($scope.allListStopSelect)) {
 
+                var arrayStopsOrder= [];
+
+                var contOrder=1;
                 $scope.allListStopSelect.forEach(function (entry) {
 
-                    if(searchObjGeo(entry.stop_latitude,entry.stop_longitude,$scope.polylines[0].path)){
-                        $scope.polylines[0].path.push({latitude: entry.stop_latitude, longitude: entry.stop_longitude});
-                    }
-
-                    if(searchObjGeo(entry.stop_latitude,entry.stop_longitude,$scope.listMarker)){
-                        $scope.listMarker.push({id: entry.id_stop, latitude: entry.stop_latitude, longitude: entry.stop_longitude});
-                    }
-
+                    arrayStopsOrder.push({id_stop: entry.id_stop,order_stop:contOrder,latitude:entry.stop_latitude,longitude:entry.stop_longitude});
+                    contOrder++
                 });
+
+                findPath(arrayStopsOrder);
 
             } else {
                 growl.warning("You must add stops to continue the process");
@@ -353,23 +375,20 @@ angular.module("App")
 
                 spinnerService.show("spinnerNew");
 
-                var objSend = {
-                    ReaxiumParameters: {
-                        ReaxiumRoutes: {
-                            stops: []
-                        }
-                    }
-                };
 
                 objSend.ReaxiumParameters.ReaxiumRoutes.route_name = $scope.nameRoute;
                 objSend.ReaxiumParameters.ReaxiumRoutes.route_number = $scope.numberRoute;
                 objSend.ReaxiumParameters.ReaxiumRoutes.route_address = "Miami, Florida, EE. UU.";
+                objSend.ReaxiumParameters.ReaxiumRoutes.route_type_id = $scope.selectTypeRoute;
+
                 if(RoutesServices.getModeEdit().isModeEdit){
                     objSend.ReaxiumParameters.ReaxiumRoutes.id_route = RoutesServices.getModeEdit().id_route;
                 }
 
+                var cont = 1;
                 $scope.allListStopSelect.forEach(function (entry) {
-                    objSend.ReaxiumParameters.ReaxiumRoutes.stops.push({id_stop: entry.id_stop});
+                    objSend.ReaxiumParameters.ReaxiumRoutes.stops.push({id_stop: entry.id_stop,order_stop:cont});
+                    cont++
                 });
 
                 $log.debug("Objeto para enviar", objSend);
@@ -419,6 +438,61 @@ angular.module("App")
             }
 
             return validate;
+        }
+
+
+
+          function findPath(listStops){
+
+            //using the direction service of google map api
+             // mapGogole
+            var size  = listStops.length;
+
+              console.log(listStops[0]);
+              console.log(listStops[size-1]);
+
+              var waypts = [];
+
+              listStops.forEach(function(entry){
+                  var local = entry.latitude+','+entry.longitude;
+                  waypts.push({location:local,stopover: true})
+              });
+
+              $log.debug(waypts);
+
+                   var directionsService = new mapGogole.DirectionsService();
+
+                   directionsDisplay.setMap($scope.map.control.getGMap());
+
+                  var request = {
+
+                      origin: new mapGogole.LatLng(
+                          listStops[0].latitude,
+                          listStops[0].longitude
+                      ),
+                      destination: new mapGogole.LatLng(
+                          listStops[size-1].latitude,
+                          listStops[size-1].longitude
+                      ),
+                      travelMode: mapGogole.TravelMode['DRIVING'],
+                      waypoints:waypts,
+                      optimizeWaypoints: true
+
+                  };
+
+                  directionsService.route(request, function(response, status) {
+
+                      if(status === 'OK'){
+                          $log.debug(response);
+                          directionsDisplay.setDirections(response);
+
+                      }else{
+                          console.log("Error cargado ruta en el mapa: "+status);
+                      }
+
+                  });
+
+
         }
 
     });

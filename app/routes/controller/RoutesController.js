@@ -24,7 +24,7 @@ angular.module("App")
     $scope.filterCriteria = {
         ReaxiumParameters: {
             page: 1,
-            limit:5,
+            limit:10,
             sortDir: 'asc',
             sortedBy: 'route_name',
             filter: ''
@@ -32,7 +32,12 @@ angular.module("App")
     };
 
 
-    $scope.routeTableHeaders = [{
+    $scope.routeTableHeaders = [
+        {
+            title: 'Route ID',
+            value: 'id_route'
+        },
+        {
         title: 'Route Number',
         value: 'route_number'
     }, {

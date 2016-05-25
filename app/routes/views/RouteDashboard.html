@@ -22,12 +22,12 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Device Dashboard
+                    Routes Dashboard
                     <small>Control panel</small>
                 </h1>
                 <ol class="breadcrumb">
                     <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Home</a></li>
-                    <li class="active">User Dashboard</li>
+                    <li class="active">Routes Dashboard</li>
                 </ol>
             </section>
 
@@ -51,7 +51,7 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <h3 class="box-title">System Devices</h3>
+                                        <h3 class="box-title">System Routes</h3>
 
                                     </div><!-- /.box-header -->
                                     <div class="box-body">
@@ -72,6 +72,7 @@
                                             </thead>
                                             <tbody>
                                             <tr ng-repeat="obj in routes">
+                                                <td>{{obj.id_route}}</td>
                                                 <td>{{obj.route_number}}</td>
                                                 <td>{{obj.route_name}}</td>
                                                 <td>{{obj.route_address}}</td>

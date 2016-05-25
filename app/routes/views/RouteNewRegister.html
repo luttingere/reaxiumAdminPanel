@@ -54,6 +54,20 @@
                                         </div>
                                     </div><!-- /.box-body -->
                                 </form>
+                                <!-- form start -->
+                                <form class="form-horizontal">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <select class="form-control" style="width: 100%;" ng-model="selectTypeRoute">
+                                                    <option value="">Please select</option>
+                                                    <option value="1" ng-selected="selectTypeRoute == 1">Pick Up</option>
+                                                    <option value="2" ng-selected="selectTypeRoute == 2">Drop Off</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div><!-- /.box-body -->
+                                </form>
                             </div><!-- /.box -->
 
                         </div>
@@ -86,7 +100,7 @@
                                                                  local-data="stopsFilter"
                                                                  local-search="localSearch"
                                                                  title-field="stop_name,stop_number"
-                                                                 minlength="3"
+                                                                 minlength="1"
                                                                  description-field="stop_address"
                                                                  image-field="pic"
                                                                  input-class="form-control form-control-small"
@@ -174,17 +188,7 @@
                                         </div><!-- /.input group -->
                                     </div>
                                     <div id="googleMapDiv">
-                                        <ui-gmap-google-map center='map.center' zoom='map.zoom'
-                                                            options="map.options">
-                                            <ui-gmap-markers models="listMarker" coords="'self'" icon="'icon'">
-                                            </ui-gmap-markers>
-                                            <!--<ui-gmap-search-box template="searchbox.template"
-                                                                events="searchbox.events"
-                                                                parentdiv="searchbox.parentdiv"></ui-gmap-search-box>-->
-
-
-                                            <ui-gmap-polyline ng-repeat="p in polylines" path="p.path" stroke="p.stroke" visible='p.visible'
-                                                              geodesic='p.geodesic' fit="false" editable="p.editable" draggable="p.draggable" icons='p.icons'></ui-gmap-polyline>
+                                        <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options"  draggable="true" control="map.control">
 
                                         </ui-gmap-google-map>
                                     </div>

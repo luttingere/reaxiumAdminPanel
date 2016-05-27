@@ -34,32 +34,6 @@
             <section class="content" style="min-height:525px;">
 
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="content" style="min-height: 0px;">
-                            <div class="box box-primary">
-                                <div class="box-header bg-light-blue-active with-border ">
-                                    <h3 class="box-title">Create Stop</h3>
-                                </div><!-- /.box-header -->
-
-                                <!-- form start -->
-                                <form class="form-horizontal">
-                                    <div class="box-body">
-                                        <div class="form-group">
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="id_number_stop" placeholder="Number Stop" ng-model="addressStop.number_stops"/>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="id_name_stop" placeholder="Name Stop" ng-model="addressStop.name_stop"/>
-                                            </div>
-                                        </div>
-                                    </div><!-- /.box-body -->
-                                </form>
-                            </div><!-- /.box -->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
                     <div class="content">
                         <!--box Address-->
                         <div class="col-md-12">
@@ -84,9 +58,15 @@
                                         </div><!-- /.input group -->
                                     </div>
                                     <div id="googleMapDiv">
-                                        <ui-gmap-google-map center='map.center' zoom='map.zoom'
-                                                            options="map.options">
-                                            <ui-gmap-marker idKey='1' coords='marker.coords'></ui-gmap-marker>
+                                        <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options" events="map.events">
+
+                                            <ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords" icon="m.icon" idkey="m.id" options="m.options" click="onClick(m)">
+                                                <ui-gmap-window options="m.windowOptions" closeClick="closeClick(m)">
+                                                    <div ng-controller="infoWindowCtrl">
+                                                        <span>{{m.title}}&nbsp;</span>
+                                                        <button ng-click="showInfo()">Delete</button></div>
+                                                </ui-gmap-window>
+                                            </ui-gmap-marker>
 
                                             <ui-gmap-search-box template="searchbox.template"
                                                                 events="searchbox.events"
@@ -95,7 +75,8 @@
                                     </div>
                                 </div>
                                 <div class="box-footer text-center ">
-                                    <button class="btn btn-success" ng-click="addTableStops()">Add</button>
+                                    <button class="btn btn-success" ng-click="addTableStops()">Process</button>
+                                    <button class="btn btn-danger" ng-click="cleanAllStops()">Clean</button>
                                 </div>
                             </div><!-- /.box-body -->
                         </div>  <!--End box Address-->
@@ -117,7 +98,6 @@
                                             <th>Number Stop</th>
                                             <th>Name Stop</th>
                                             <th>Stops Address</th>
-                                            <th>Actions</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -125,7 +105,7 @@
                                             <td>{{stop.stop_number}}</td>
                                             <td>{{stop.stop_name}}</td>
                                             <td style="text-align: center">{{stop.stop_address}}</td>
-                                            <td><a ng-click="deleteStopsSelect(stop.id_stop)"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
+                                            <!--<td><a ng-click="deleteStopsSelect(stop.id_stop)"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>-->
                                         </tr>
                                         </tbody>
                                         </tfoot>

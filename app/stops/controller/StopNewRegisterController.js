@@ -1,254 +1,305 @@
 /**
  * Created by VladimirIlich on 8/5/2016.
  */
-angular.module('App')
-    .controller('StopNewCtrl', function ($scope,
-                                         $rootScope,
-                                         $state,
-                                         $sessionStorage,
-                                         uiGmapGoogleMapApi,
-                                         $log,
-                                         StopsService,
-                                         growl,
-                                         spinnerService,
-                                         GLOBAL_CONSTANT,
+var app = angular.module('App');
+app.controller('StopNewCtrl', function ($scope,
+                                        $rootScope,
+                                        $state,
+                                        $sessionStorage,
+                                        uiGmapGoogleMapApi,
+                                        $log,
+                                        StopsService,
+                                        growl,
+                                        spinnerService,
+                                        GLOBAL_CONSTANT,
                                         GLOBAL_MESSAGE) {
 
-        //Search on the menu
-        $scope.menuOptions = {searchWord: ''};
-        $scope.showTable = false;
-
-        $scope.addressStop = {
-            number_stops: "",
-            name_stop: ""
-        };
-
-        var jsonAddress = {};
-        var cont_stops = 0;
-        $scope.listProcessStops = [];
-
-        /**
-         * add a google map with the location of the user address
-         */
-        $scope.addTheMap = function () {
-            uiGmapGoogleMapApi.then(function (maps) {
-                console.log("Google map cargado...");
-
-                var latitude = StopsService.getAdressStopDefault().latitude;
-                var longitude = StopsService.getAdressStopDefault().longitude;
-
-                maps.visualRefresh = true;
-                $scope.map = {
-                    center: {
-                        latitude: latitude,
-                        longitude: longitude
-                    },
-                    zoom: 18,
-                    options: {"MapTypeId": maps.MapTypeId.ROADMAP}
-                };
-
-            })
-        }
+    //Search on the menu
+    $scope.menuOptions = {searchWord: ''};
+    $scope.showTable = false;
+    $scope.address=[];
+    $scope.listProcessStops = [];
 
 
-        /**
-         * Event relationship google maps
-         * @type {{places_changed: events.places_changed}}
-         */
-        var events = {
-            places_changed: function (searchBox) {
+    var jsonAddressPlaces = {};
+    var addressDefault = null;
 
-                var place = searchBox.getPlaces();
-                $log.debug("lugar: ", place);
-                if (!place || place == 'undefined' || place.length == 0) {
-                    console.log('no place data :(');
-                    return;
-                }
-                else {
 
-                    jsonAddress.stop_address = place[0].formatted_address;
-                    jsonAddress.stop_latitude = place[0].geometry.location.lat();
-                    jsonAddress.stop_longitude = place[0].geometry.location.lng();
-                    //$log.debug("json_event:", jsonAddress);
-                }
+    $scope.map = {
+        center: {
+            latitude: "",
+            longitude: ""
+        },
+        zoom: 18,
+        options: {"MapTypeId": ""},
+        markers: [],
+        events: {
+            click: function (mapModel, eventName, originalEventArgs) {
 
-                $scope.map = {
-                    "center": {
-                        "latitude": place[0].geometry.location.lat(),
-                        "longitude": place[0].geometry.location.lng()
-                    },
-                    "zoom": 18
-                };
-                $scope.marker = {
-                    id: 0,
-                    coords: {
-                        latitude: place[0].geometry.location.lat(),
-                        longitude: place[0].geometry.location.lng()
-                    }
-                };
+                $scope.$apply(function () {
+                    var e = originalEventArgs[0];
+                    var marker = {};
+                    marker.coords = {};
+                    marker.windowOptions = {
+                        visible: false,
+                        id_stops: ''
+                    };
+                    marker.id = Date.now();
+                    marker.coords.latitude = e.latLng.lat();
+                    marker.coords.longitude = e.latLng.lng();
+                    //buscar address con servicio de google map
+                    getAddressGoogleApi(e.latLng.lat()+','+e.latLng.lng(),marker.id);
+                    marker.title = "Lat: " + e.latLng.lat().toString().substring(0, 8) + " Lng:" + e.latLng.lng().toString().substring(0, 8);
+                    $scope.map.markers.push(marker);
+                    $log.debug($scope.map.markers);
+
+                    StopsService.setListMarkets($scope.map.markers);
+                });
             }
         }
 
-
-        $scope.searchbox = {
-            'template': 'searchbox.tpl.html',
-            'parentdiv': 'searchBoxParent',
-            'options': {
-                'autocomplete': true
-            },
-            'events': events
-        }
+    };
 
 
-        function init() {
-            console.info("Inicio controlador StopNewCtrl...");
+    /**
+     * add a google map with the location of the user address
+     */
+    $scope.addTheMap = function () {
+        uiGmapGoogleMapApi.then(function (maps) {
+            console.log("Google map cargado...");
 
-            if(isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)){
-                console.error("Usuario no a iniciado session");
-                $state.go("login");
+            maps.visualRefresh = true;
+
+            $scope.map.center.latitude = StopsService.getAdressStopDefault().latitude;
+            $scope.map.center.longitude = StopsService.getAdressStopDefault().longitude;
+            $scope.map.options.MapTypeId = maps.MapTypeId.ROADMAP;
+        })
+    }
+
+
+    /**
+     * Event relationship google maps
+     * @type {{places_changed: events.places_changed}}
+     */
+    var events = {
+        places_changed: function (searchBox) {
+
+            var place = searchBox.getPlaces();
+            $log.debug("lugar: ", place);
+            if (!place || place == 'undefined' || place.length == 0) {
+                console.log('no place data :(');
+                return;
             }
-            else{
-                //data user by session
-                $scope.photeUser = $sessionStorage.user_photo;
-                $scope.nameUser = $sessionStorage.nameUser;
-                //menu sidebar
-                $scope.menus = addActiveClassMenu(JSON.parse($sessionStorage.appMenus), GLOBAL_CONSTANT.ID_STOPS_MENU);
-                $scope.addTheMap();
-            }
+            else {
 
-        }
-
-
-        /**
-         * Init Ctrl
-         */
-        init();
-
-        /**
-         * add stops select in table
-         */
-        $scope.addTableStops = function () {
-
-            if ($scope.addressStop.name_stop != "" &&
-                $scope.addressStop.number_stops != "" &&
-                jsonAddress.latitude != "" &&
-                jsonAddress.longitude != "") {
-
-                if (!existStop($scope.addressStop.number_stops, $scope.addressStop.name_stop)) {
-
-                    $scope.showTable = true;
-                    cont_stops++;
-                    var addressFormat = $scope.addressStop.number_stops+"-"+$scope.addressStop.name_stop+" "+jsonAddress.stop_address;
-                    jsonAddress.id_stop = cont_stops;
-                    jsonAddress.stop_name = $scope.addressStop.name_stop;
-                    jsonAddress.stop_number = $scope.addressStop.number_stops;
-                    jsonAddress.stop_address = addressFormat;
-                    $log.debug(jsonAddress);
-                    $scope.listProcessStops.push(jsonAddress);
-                    clearFields();
-                }
-                else {
-                    growl.warning("Stop already added");
-                }
-
-            } else {
-                console.log("Ingresar otra paradas..");
+                addressDefault = place[0].formatted_address;
             }
 
-
+            $scope.map.center.latitude = place[0].geometry.location.lat();
+            $scope.map.center.longitude = place[0].geometry.location.lng();
         }
+    }
 
 
-        /**
-         * Delete stops
-         * @param id_stop
-         */
-        $scope.deleteStopsSelect = function (id_stop) {
+    $scope.searchbox = {
+        'template': 'searchbox.tpl.html',
+        'parentdiv': 'searchBoxParent',
+        'options': {
+            'autocomplete': true
+        },
+        'events': events
+    }
 
-            var index = -1;
-            for (var i = 0, len = $scope.listProcessStops.length; i < len; i++) {
-                if ($scope.listProcessStops[i].id_stop === id_stop) {
-                    index = i;
-                    break;
-                }
-            }
 
-            $scope.listProcessStops.splice(index, 1);
+    function init() {
+        console.info("Inicio controlador StopNewCtrl...");
 
-            clearFields();
+        if (isUndefined($sessionStorage.rol_user) || isEmptyString($sessionStorage.rol_user)) {
+            console.error("Usuario no a iniciado session");
+            $state.go("login");
         }
+        else {
+            //data user by session
+            $scope.photeUser = $sessionStorage.user_photo;
+            $scope.nameUser = $sessionStorage.nameUser;
+            //menu sidebar
+            $scope.menus = addActiveClassMenu(JSON.parse($sessionStorage.appMenus), GLOBAL_CONSTANT.ID_STOPS_MENU);
+            $scope.addTheMap();
+        }
+    }
 
-        /**
-         * Save stops method
-         */
-        $scope.saveStops = function () {
+    /**
+     * Init Ctrl
+     */
+    init();
 
-            if ($scope.listProcessStops.length > 0) {
-                spinnerService.show("spinnerNew");
 
-                var jsonSend = {
-                    ReaxiumParameters: {
-                        ReaxiumStops: {
-                            object: []
+    /**
+     * add stops select in table
+     */
+    $scope.addTableStops = function () {
+
+            if (isEmptyArray($scope.map.markers)) {
+
+                $scope.showTable = true;
+                $scope.listProcessStops=[];
+                $scope.map.markers.forEach(function (entry) {
+
+                    jsonAddressPlaces = {};
+                    jsonAddressPlaces.stop_latitude = entry.coords.latitude;
+                    jsonAddressPlaces.stop_longitude = entry.coords.longitude;
+                    jsonAddressPlaces.id_stop = entry.id;
+
+                    $scope.address.forEach(function(address){
+                        if(address.id == entry.id){
+                            jsonAddressPlaces.stop_address = address.address;
+                            var formatAddress = address.address.split(',');
+                            var numberStop = formatAddress[0].split(' ');
+                            jsonAddressPlaces.stop_number = numberStop[0];
+                            jsonAddressPlaces.stop_name = formatAddress[0];
+                            return;
                         }
-                    }
-                };
+                    });
 
-                $scope.listProcessStops.forEach(function (entry) {
-                    jsonSend.ReaxiumParameters.ReaxiumStops.object.push(entry);
+                    $scope.listProcessStops.push(jsonAddressPlaces);
                 });
 
-                $log.debug("Arreglo_final: ", jsonSend);
-
-                StopsService.registerNewStops(jsonSend)
-                    .then(function (resp) {
-                        spinnerService.hide("spinnerNew");
-                        if (resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
-                            StopsService.setShowGrowlMessage({isShow:true,message:GLOBAL_MESSAGE.MESSAGE_CREATE_NEW_STOPS});
-                            $state.go("stops");
-                        }
-                        else {
-                            console.error("Error creado nueva ruta "+resp.ReaxiumResponse.message);
-                            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
-                        }
-                    })
-                    .catch(function (err) {
-                        spinnerService.hide("spinnerNew");
-                        console.error("Error creado nueva ruta " + err);
-                        growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
-                    })
+                $log.debug($scope.listProcessStops);
 
             } else {
-                console.log("Arreglo vacio no se puede guardar las paradas");
-            }
-        }
-
-        /**
-         * clean varables
-         */
-        function clearFields() {
-
-            $scope.addressStop.number_stops = "";
-            $scope.addressStop.name_stop = "";
-            jsonAddress = {};
-
-            if ($scope.listProcessStops.length == 0) {
-                cont_stops = 0;
                 $scope.showTable = false;
+                growl.warning("Add stops to continue the process");
+                console.log("No existe stops preseleccionados");
             }
-        }
 
-        function existStop(number_stop, name_stop) {
+    }
 
-            var validate = false;
-            $scope.listProcessStops.forEach(function (entry) {
 
-                if (entry.stop_number.trim() === number_stop.trim() && entry.stop_name.trim() === name_stop.trim()) {
-                    validate = true;
+    $scope.$watchCollection('StopsService.getListMarkets', function (newCollection, oldCollection) {
+        $scope.map.markets = newCollection;
+    });
+
+    $scope.onClick = function (market) {
+        market.windowOptions.visible = !market.windowOptions.visible;
+        StopsService.setIdMarket(market.id);
+
+    }
+
+    $scope.closeClick = function (market) {
+        market.windowOptions.visible = false;
+    };
+
+
+    $scope.cleanAllStops = function () {
+        $scope.map.markers = [];
+        $scope.address=[];
+        $scope.showTable = false;
+    }
+
+
+    /**
+     * Save stops method
+     */
+    $scope.saveStops = function () {
+
+        if ($scope.listProcessStops.length > 0) {
+            spinnerService.show("spinnerNew");
+
+            var jsonSend = {
+                ReaxiumParameters: {
+                    ReaxiumStops: {
+                        object: []
+                    }
                 }
+            };
+
+            $scope.listProcessStops.forEach(function (entry) {
+                jsonSend.ReaxiumParameters.ReaxiumStops.object.push(entry);
             });
 
-            return validate;
+            $log.debug("Arreglo_final: ", jsonSend);
+
+            StopsService.registerNewStops(jsonSend)
+                .then(function (resp) {
+                    spinnerService.hide("spinnerNew");
+                    if (resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
+                        StopsService.setShowGrowlMessage({
+                            isShow: true,
+                            message: GLOBAL_MESSAGE.MESSAGE_CREATE_NEW_STOPS
+                        });
+                        $state.go("stops");
+                    }
+                    else {
+                        console.error("Error creado nueva ruta " + resp.ReaxiumResponse.message);
+                        growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                    }
+                })
+                .catch(function (err) {
+                    spinnerService.hide("spinnerNew");
+                    console.error("Error creado nueva ruta " + err);
+                    growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                })
+
+        } else {
+            console.log("Arreglo vacio no se puede guardar las paradas");
+        }
+    }
+
+
+    function existStop(number_stop, name_stop) {
+
+        var validate = false;
+        $scope.listProcessStops.forEach(function (entry) {
+
+            if (entry.stop_number.trim() === number_stop.trim() && entry.stop_name.trim() === name_stop.trim()) {
+                validate = true;
+            }
+        });
+
+        return validate;
+    }
+
+
+    function getAddressGoogleApi(geo,id) {
+
+        StopsService.getAddressGoogleApi(geo)
+            .then(function (resp) {
+                if (resp.status === 'OK') {
+                    $log.debug(resp);
+                   $scope.address.push({id:id,address:resp.results[0].formatted_address});
+                }
+            })
+            .catch(function (err) {
+                console.error("Error invocando servicio google Api: " + err);
+                $scope.address = addressDefault;
+                $scope.address.push({id:id,address:addressDefault});
+            });
+    }
+});
+
+app.controller('infoWindowCtrl', function ($scope, $log, StopsService) {
+
+    var arrayMarkets = [];
+    var id = null;
+    $scope.showInfo = function () {
+        id = StopsService.getIdMarket();
+        arrayMarkets = StopsService.getListMarkets();
+        deleteStopMarket(id);
+    }
+
+
+    function deleteStopMarket(id) {
+
+        var index = -1;
+        for (var i = 0, len = arrayMarkets.length; i < len; i++) {
+            if (arrayMarkets[i].id === id) {
+                index = i;
+                break;
+            }
         }
 
-    })
+        arrayMarkets.splice(index, 1);
+
+        StopsService.setListMarkets(arrayMarkets);
+    };
+});

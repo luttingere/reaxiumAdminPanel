@@ -88,19 +88,20 @@ angular.module("App")
                 DeviceService.getUsersRelationDevice($scope.filterCriteria)
                     .then(function (resp) {
 
+                        spinnerService.hide("spinnerNew");
+
                         if (resp.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
-                            //$log.debug(resp);
                             $scope.listUsersByDevice = resp.users;
                             $scope.totalPages = resp.totalPages;
                             $scope.totalRecords = resp.totalRecords;
-
                             $scope.showTableRoute = true;
                         }
-                        else {
-                            console.info("Error: " + resp.message);
+                        else if(resp.code == 99){
+                            console.info("Error: " + resp.code);
+                            $scope.showTableRoute = false;
                             growl.warning("The device has no associated users");
                         }
-                        spinnerService.hide("spinnerNew");
+
                     })
                     .catch(function (err) {
                         spinnerService.hide("spinnerNew");
@@ -155,16 +156,17 @@ angular.module("App")
 
                         DeviceService.deleteUsersAccessDevice(jsonSend)
                             .then(function (resp) {
+                                spinnerService.hide("spinnerNew");
+
                                 if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
                                     $scope.filterCriteria.ReaxiumParameters.ReaxiumDevice.page = 1;
-                                    $scope.searchDevice();
                                     growl.success(GLOBAL_MESSAGE.MESSAGE_DELETE_USERS_OF_DEVICE);
+                                    $scope.selectPage();
                                 }else{
                                     console.error("Error: "+resp.ReaxiumResponse.message);
                                     growl.error(resp.ReaxiumResponse.message);
                                 }
 
-                                spinnerService.hide("spinnerNew");
                             })
                             .catch(function (err) {
                                 spinnerService.hide("spinnerNew");

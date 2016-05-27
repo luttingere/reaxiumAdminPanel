@@ -183,6 +183,25 @@ angular.module('App')
             return promise;
         }
 
+
+        lookUpStops.getAddressApiGoogle = function(geo){
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
+                method: 'GET',
+                url: "http://maps.googleapis.com/maps/api/geocode/json?latlng="+geo+"&sensor=false"
+            }).success(function (response) {
+                defered.resolve(response);
+
+            }).error(function (err) {
+                defered.reject(err);
+            });
+
+            return promise;
+        }
+
         return lookUpStops;
     })
     .service("StopsService", function (StopsLookup) {
@@ -202,6 +221,26 @@ angular.module('App')
             longitude: -80.3011209
         };
 
+        var markets=[];
+
+        var id_market_stop = "";
+
+        this.getIdMarket = function(){
+            return id_market_stop;
+        }
+
+        this.setIdMarket = function(id){
+            id_market_stop = id;
+        }
+
+        this.getListMarkets = function(){
+            return markets;
+        }
+
+
+        this.setListMarkets = function(obj){
+            markets = obj;
+        }
 
         this.getModeAsociateUserStop = function(){
             return modeAsociateUserStop;
@@ -258,5 +297,9 @@ angular.module('App')
 
         this.deleteUserByStop = function(id_stop_user){
             return StopsLookup.delUserByStop(id_stop_user);
+        }
+
+        this.getAddressGoogleApi = function(geo){
+            return StopsLookup.getAddressApiGoogle(geo);
         }
     })

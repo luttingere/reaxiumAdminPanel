@@ -323,6 +323,7 @@ angular.module('App')
                         $scope.users.second_name = result[0].second_name;
                         $scope.users.first_last_name = result[0].first_last_name;
                         $scope.users.second_last_name = result[0].second_last_name;
+                        $scope.users.stakeholder_id = result[0].stakeholder_id;
 
                         $scope.selectEditBusiness = {
                             business_id: result[0].busines.business_id,
@@ -652,7 +653,9 @@ angular.module('App')
                 if (UserService.getModeEdit().isModeEdit) {
 
                     var obj = UserService.getObjUserById();
+                    $log.debug("Objeto",obj);
                     dataNewUserStakeHolder.ReaxiumParameters.Users.user_id = obj[0].user_id;
+                    dataNewUserStakeHolder.ReaxiumParameters.Users.stakeholder_id = obj[0].stakeholder_id;
 
                     if (!isUndefined(obj[0].phone_numbers[0])) {
                         dataNewUserStakeHolder.ReaxiumParameters.PhoneNumbers[0].phone_number_id = obj[0].phone_numbers[0].phone_number_id;

@@ -371,10 +371,9 @@ angular.module("App")
          */
         $scope.saveRoute = function () {
 
-            if($scope.allListStopSelect.length > 0 && $scope.nameRoute != "" && $scope.numberRoute != ""){
+            if($scope.allListStopSelect.length > 0 && $scope.nameRoute != "" && $scope.numberRoute != "" && $scope.selectTypeRoute){
 
                 spinnerService.show("spinnerNew");
-
 
                 objSend.ReaxiumParameters.ReaxiumRoutes.route_name = $scope.nameRoute;
                 objSend.ReaxiumParameters.ReaxiumRoutes.route_number = $scope.numberRoute;
@@ -484,10 +483,11 @@ angular.module("App")
 
                       if(status === 'OK'){
                           $log.debug(response);
+                          objSend.ReaxiumParameters.ReaxiumRoutes.overview_polyline = response.routes[0].overview_polyline;
                           directionsDisplay.setDirections(response);
-
                       }else{
-                          console.log("Error cargado ruta en el mapa: "+status);
+                          console.error("Error cargado ruta en el mapa: "+status);
+                          objSend.ReaxiumParameters.ReaxiumRoutes.overview_polyline = null;
                       }
 
                   });

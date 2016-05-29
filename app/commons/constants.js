@@ -32,6 +32,7 @@ angular.module("App")
         PROXY_URL_CREATE_ACCESS_USER: "http://54.200.133.84/reaxium/Access/createAccessNewUser",
         PROXY_URL_CHECK_ACCESS_BY_USER: "http://54.200.133.84/reaxium/Access/checkAccessControlByUser",
         PROXY_URL_CREATE_ACCESS_USER_BY_DEVICE: "http://54.200.133.84/reaxium/Access/addDeviceAccessData",
+        PROXY_URL_GET_ALL_ACCESS_USER:"http://54.200.133.84/reaxium/Access/getAllAccessUsersInfo",
 
         /*Proxy System*/
         PROXY_URL_ACCESS_TYPE_LIST: "http://54.200.133.84/reaxium/SystemList/accessTypeList",

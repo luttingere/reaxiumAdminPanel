@@ -381,6 +381,26 @@ angular.module("App")
     }
 
 
+    lookup.allAccessUserRegister = function(obj){
+
+        var defered = $q.defer();
+        var promise = defered.promise;
+
+        $http({
+            method: 'POST',
+            url: CONST_PROXY_URL.PROXY_URL_GET_ALL_ACCESS_USER,
+            data: JSON.stringify(obj),
+            headers: {'Content-Type':'application/json;charset=UTF-8'}
+        }).success(function(response){
+            defered.resolve(response);
+        }).error(function(err){
+            defered.reject(err);
+        });
+
+        return promise
+    }
+
+
     return lookup;
 })
 
@@ -515,5 +535,9 @@ angular.module("App")
 
     this.getDeviceById = function(device_id){
         return DeviceLookup.devideId(device_id);
+    }
+
+    this.getAllAccessUserDeviceConfig = function(obj){
+        return DeviceLookup.allAccessUserRegister(obj);
     }
 })

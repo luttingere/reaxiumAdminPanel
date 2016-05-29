@@ -20,7 +20,7 @@ angular.module("App")
         //Search on the menu
         $scope.menuOptions = {searchWord: ''};
 
-
+        $scope.accessAllUsers=[];
         $scope.userFilter = [];
         $scope.allUserSelcStakeHolder = [];
         $scope.showTable = false;
@@ -145,6 +145,9 @@ angular.module("App")
 
                 var device_id = DeviceService.getRelUserDevice().id_device;
 
+                //obtengo todos los accessos del usuario
+                findAllAccessUsersDevice(str.originalObject.user_id);
+
                 DeviceService.getTypeAccessByUser({
                         ReaxiumParameters: {
                             ReaxiumDevice: {
@@ -162,7 +165,7 @@ angular.module("App")
                         if (dataUser.code == 0) {
 
                             growl.success(GLOBAL_MESSAGE.MESSAGE_USER_VALIDATE_RELATION_DEVICE);
-                            $log.debug(response);
+                            //$log.debug(response);
 
                             var obj = {
                                 device_id: device_id,
@@ -185,21 +188,26 @@ angular.module("App")
                             obj.login_and_pass = {
                                 disable_login_and_pass: disable_login_and_pass,
                                 access_type_id: GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS,
-                                user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS)
+                                user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS),
+                                exist_access_type:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS).existAccess,
+                                isConfigured:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS).isConfigure
                             };
 
                             obj.biometric = {
                                 disable_bio: disable_bio,
                                 access_type_id: GLOBAL_CONSTANT.ACCESS_BIOMETRIC,
-                                user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_BIOMETRIC)
+                                user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_BIOMETRIC),
+                                exist_access_type:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_BIOMETRIC).existAccess,
+                                isConfigured:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_BIOMETRIC).isConfigure
                             };
 
                             obj.rfid = {
                                 disable_rfid: disable_rfid,
                                 access_type_id: GLOBAL_CONSTANT.ACCESS_RFID,
-                                user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_RFID)
+                                user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_RFID),
+                                exist_access_type:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_RFID).existAccess,
+                                isConfigured:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_RFID).isConfigure
                             };
-
 
                             $log.debug(obj);
                             $scope.allUserSelcStakeHolder.push(obj);
@@ -227,8 +235,58 @@ angular.module("App")
             }
 
             clearInput('ex2');
-
         };
+
+
+        function findAllAccessUsersDevice(user_id){
+
+            var request={
+                ReaxiumParameters:{
+                    ReaxiumDevice:{
+                        user_id:user_id,
+                        device_id:DeviceService.getRelUserDevice().id_device
+                    }
+                }
+            };
+
+            DeviceService.getAllAccessUserDeviceConfig(request)
+                .then(function(resp){
+                    if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+                        $log.debug(resp);
+                        $scope.accessAllUsers = resp.ReaxiumResponse.object;
+                    }else{
+                        console.error("Error respuesta servicio: "+resp.ReaxiumResponse.code);
+                    }
+                }).catch(function(err){
+                console.error("Error obteniendo informacion de acceso del usuario:" +err);
+                $scope.accessAllUsers=[];
+            });
+
+        }
+
+        function isConfiguredDeviceByUser(access_type_id){
+
+            var obj = {
+                existAccess:false,
+                isConfigure:false
+            };
+
+            if($scope.accessAllUsers.length > 0){
+
+                $scope.accessAllUsers.forEach(function(entry){
+
+                    if(access_type_id == entry.access_type_id){
+                        obj.existAccess=true;
+                        obj.isConfigure = entry.configured;
+                    }
+                });
+            }else{
+                console.error("No hay elemento en arreglo de acceso de usuario");
+            }
+
+            return obj;
+        }
+
 
         var searchAccessDataId = function (obj, id) {
 

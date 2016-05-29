@@ -119,16 +119,41 @@
                                                                 </td>
                                                                 <td id="documentId_{{user.user_id}}">{{user.document_id}}</td>
                                                                 <td id="userPassword_{{user.user_id}}" style="text-align: center">
+
                                                                     <input type="checkbox" name="r3"  value="{{user.login_and_pass.access_type_id}}-{{user.login_and_pass.user_access_data_id}}" ng-hide="{{user.login_and_pass.disable_login_and_pass != 1}}">
-                                                                    <small ng-show="{{user.login_and_pass.disable_login_and_pass == 0}}"><i class="fa fa-fw fa-check"></i></small>
+
+                                                                    <div ng-show="{{user.login_and_pass.disable_login_and_pass == 0 && user.login_and_pass.exist_access_type && user.login_and_pass.isConfigured}}">
+                                                                       <small><i class="fa fa-fw fa-check"></i></small>
+                                                                   </div>
+
+                                                                    <div ng-show="{{user.login_and_pass.disable_login_and_pass == 0 && !user.login_and_pass.exist_access_type}}">
+                                                                        <small><i class="fa fa-fw fa-close"></i></small>
+                                                                    </div>
                                                                 </td>
                                                                 <td id="biometrico_{{user.user_id}}" style="text-align: center">
+
                                                                     <input type="checkbox" name="r3"  value="{{user.biometric.access_type_id}}-{{user.biometric.user_access_data_id}}" ng-hide="{{user.biometric.disable_bio != 1}}">
-                                                                    <small ng-show="{{user.biometric.disable_bio == 0}}"><i class="fa fa-fw fa-check"></i></small>
+
+                                                                    <div ng-show="{{user.biometric.disable_bio == 0 && user.biometric.exist_access_type && user.biometric.isConfigured}}">
+                                                                        <small><i class="fa fa-fw fa-check"></i></small>
+                                                                    </div>
+
+                                                                    <div ng-show="{{user.biometric.disable_bio == 0 && !user.biometric.exist_access_type}}">
+                                                                        <small><i class="fa fa-fw fa-close"></i></small>
+                                                                    </div>
+
                                                                 </td>
                                                                 <td  id="rfid_{{user.user_id}}" style="text-align: center">
                                                                     <input type="checkbox" name="r3"  value="{{user.rfid.access_type_id}}-{{user.rfid.user_access_data_id}}" ng-hide="{{user.rfid.disable_rfid != 1}}">
-                                                                    <small ng-show="{{user.rfid.disable_rfid == 0}}"><i class="fa fa-fw fa-check"></i></small>
+
+                                                                    <div ng-show="{{user.rfid.disable_rfid == 0 && user.rfid.exist_access_type && user.rfid.isConfigured}}">
+                                                                        <small><i class="fa fa-fw fa-check"></i></small>
+                                                                    </div>
+
+                                                                    <div ng-show="{{user.rfid.disable_rfid == 0 && !user.rfid.exist_access_type}}">
+                                                                        <small><i class="fa fa-fw fa-close"></i></small>
+                                                                    </div>
+
                                                                 </td>
                                                                 <td id="delete_{{user.user_id}}"><a ng-click="deleteUserTable(user.user_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
                                                             </tr>

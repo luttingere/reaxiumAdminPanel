@@ -120,11 +120,7 @@ function validateParamNewUser(obj, mode) {
 
 
     //validar datos del usuario
-    if (objUsers.document_id == undefined || isEmptyString(objUsers.document_id)) {
-        response.validate = false;
-        response.message = "DNI field must not be empty";
-
-    } else if (objUsers.first_name == undefined || isEmptyString(objUsers.first_name)) {
+    if (objUsers.first_name == undefined || isEmptyString(objUsers.first_name)) {
         response.validate = false;
         response.message = "First Name field must not be empty";
 
@@ -344,4 +340,8 @@ function addActiveClassMenu(arrayMenuOriginal,id_menu){
     }
 
     return arrayMenu;
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }

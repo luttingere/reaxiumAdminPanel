@@ -55,7 +55,6 @@ angular.module('App')
             phone_other_number: "",
         }
 
-
         var addressObj = {
             address: "",
             latitude: "",
@@ -426,8 +425,8 @@ angular.module('App')
          * @type {string[]}
          */
 
-        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd/MM/yyyy', 'shortDate'];
-        $scope.format = $scope.formats[2];
+        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd/MM/yyyy','MM/dd/yyyy', 'shortDate'];
+        $scope.format = $scope.formats[3];
         $scope.altInputFormats = ['M!/d!/yyyy'];
 
         /**
@@ -708,6 +707,7 @@ angular.module('App')
                 var address_user = (isEmptyString(addressObj.address)) ? UserService.getAddressDefault().address : addressObj.address;
                 var latitude_user = (isEmptyString(addressObj.latitude)) ? UserService.getAddressDefault().latitude : addressObj.latitude;
                 var longitude_user = (isEmptyString(addressObj.longitude)) ? UserService.getAddressDefault().longitude : addressObj.longitude;
+
 
                 var dataNewUser = {
                     ReaxiumParameters: {

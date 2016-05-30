@@ -147,8 +147,6 @@ angular.module("App")
                 var device_id = DeviceService.getRelUserDevice().id_device;
 
                 //obtengo todos los accessos del usuario
-                //findAllAccessUsersDevice(str.originalObject.user_id);
-
 
                 DeviceService.getAllAccessUserDeviceConfig({
                     ReaxiumParameters:{
@@ -351,7 +349,7 @@ angular.module("App")
         };
 
 
-        function findAllAccessUsersDevice(user_id){
+       /* function findAllAccessUsersDevice(user_id){
 
             var request={
                 ReaxiumParameters:{
@@ -375,7 +373,7 @@ angular.module("App")
                 $scope.accessAllUsers=[];
             });
 
-        }
+        }*/
 
         function isConfiguredDeviceByUser(access_type_id){
 

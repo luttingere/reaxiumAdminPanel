@@ -67,6 +67,14 @@ angular.module('App')
         };
 
 
+        var filterCondition = {
+            ReaxiumParameters: {
+                Users: {
+                    filter: ""
+                }
+            }
+        };
+
         /**
          * Method Init
          */
@@ -83,6 +91,15 @@ angular.module('App')
                 $scope.nameUser = $sessionStorage.nameUser;
                 //menu sidebar
                 $scope.menus = addActiveClassMenu(JSON.parse($sessionStorage.appMenus),GLOBAL_CONSTANT.ID_USER_MENU);
+
+                if ($sessionStorage.rol_user == GLOBAL_CONSTANT.USER_ROL_CALL_CENTER) {
+
+                    filterCondition.ReaxiumParameters.Users.user_type_id = $sessionStorage.rol_user;
+                }
+                else if ($sessionStorage.rol_user == GLOBAL_CONSTANT.USER_ROL_SCHOOL) {
+                    filterCondition.ReaxiumParameters.Users.user_type_id = $sessionStorage.rol_user;
+                    filterCondition.ReaxiumParameters.Users.business_id = $sessionStorage.id_business;
+                }
             }
         }
 
@@ -132,11 +149,12 @@ angular.module('App')
          */
         var invokeServiceUserFilter = function (str) {
 
-            var myUserFilterPromise = UserService.getUsersFilter(str);
+            filterCondition.ReaxiumParameters.Users.filter = str;
 
-            myUserFilterPromise.then(function (result) {
+            UserService.getUsersFilter(filterCondition)
+            .then(function (result) {
 
-                if (result.ReaxiumResponse.code === 0) {
+                if (result.ReaxiumResponse.code == 0) {
 
                     //clean the array
                     $scope.userFilter.length = 0;

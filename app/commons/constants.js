@@ -92,6 +92,7 @@ angular.module("App")
         ACCESS_LOGIN_AND_PASS: 1,
         ACCESS_BIOMETRIC: 2,
         ACCESS_RFID: 3,
+        ACCESS_DOCUMENT_ID:4,
         SUCCESS_RESPONSE_SERVICE:0,
         USER_ROL_ADMIN:1,
         USER_ROL_SCHOOL:5,

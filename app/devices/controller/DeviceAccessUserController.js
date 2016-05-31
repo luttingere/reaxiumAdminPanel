@@ -13,6 +13,7 @@ angular.module("App")
                                                   growl,
                                                   spinnerService,
                                                   $stateParams,
+                                                  $timeout,
                                                   GLOBAL_CONSTANT,
                                                   GLOBAL_MESSAGE) {
 
@@ -146,88 +147,198 @@ angular.module("App")
                 var device_id = DeviceService.getRelUserDevice().id_device;
 
                 //obtengo todos los accessos del usuario
-                findAllAccessUsersDevice(str.originalObject.user_id);
 
-                DeviceService.getTypeAccessByUser({
-                        ReaxiumParameters: {
-                            ReaxiumDevice: {
-                                user_id: str.originalObject.user_id,
-                                device_id: device_id
-                            }
+                DeviceService.getAllAccessUserDeviceConfig({
+                    ReaxiumParameters:{
+                        ReaxiumDevice:{
+                            user_id:str.originalObject.user_id,
+                            device_id:DeviceService.getRelUserDevice().id_device
                         }
-                    })
-                    .then(function (response) {
+                    }})
+                    .then(function(resp){
+                        if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
 
-                        spinnerService.hide("spinnerNew");
+                            $log.debug(resp);
+                            $scope.accessAllUsers = resp.ReaxiumResponse.object;
 
-                        var dataUser = response.ReaxiumResponse;
+                            DeviceService.getTypeAccessByUser({
+                                    ReaxiumParameters: {
+                                        ReaxiumDevice: {
+                                            user_id: str.originalObject.user_id,
+                                            device_id: device_id
+                                        }
+                                    }
+                                })
+                                .then(function (response) {
 
-                        if (dataUser.code == 0) {
+                                    spinnerService.hide("spinnerNew");
 
-                            growl.success(GLOBAL_MESSAGE.MESSAGE_USER_VALIDATE_RELATION_DEVICE);
-                            //$log.debug(response);
+                                    var dataUser = response.ReaxiumResponse;
 
-                            var obj = {
-                                device_id: device_id,
-                                user_id: str.originalObject.user_id,
-                                document_id: str.originalObject.document_id,
-                                first_name: str.originalObject.first_name,
-                                second_name: str.originalObject.second_name,
-                                login_and_pass: {},
-                                biometric: {},
-                                rfid: {}
+                                    if (dataUser.code == 0) {
 
-                            };
+                                        var objAccessUser = {};
 
-                            var arrayData = searchAccessTypeId(dataUser.object);
+                                        objAccessUser.device_id = device_id;
+                                        objAccessUser.user_id = str.originalObject.user_id;
+                                        objAccessUser.document_id = str.originalObject.document_id;
+                                        objAccessUser.first_name = str.originalObject.first_name;
+                                        objAccessUser.second_name = str.originalObject.second_name;
+                                        objAccessUser.login_and_pass = {};
+                                        objAccessUser.biometric = {};
+                                        objAccessUser.rfid = {};
+                                        objAccessUser.documentAccessId={};
 
-                            var disable_login_and_pass = (!arrayData.containsObj(GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS)) ? 0 : 1;
-                            var disable_bio = (!arrayData.containsObj(GLOBAL_CONSTANT.ACCESS_BIOMETRIC)) ? 0 : 1;
-                            var disable_rfid = (!arrayData.containsObj(GLOBAL_CONSTANT.ACCESS_RFID)) ? 0 : 1;
+                                        var arrayData = searchAccessTypeId(dataUser.object);
 
-                            obj.login_and_pass = {
-                                disable_login_and_pass: disable_login_and_pass,
-                                access_type_id: GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS,
-                                user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS),
-                                exist_access_type:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS).existAccess,
-                                isConfigured:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS).isConfigure
-                            };
+                                        var disable_login_and_pass = (!arrayData.containsObj(GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS)) ? 0 : 1;
+                                        var disable_bio = (!arrayData.containsObj(GLOBAL_CONSTANT.ACCESS_BIOMETRIC)) ? 0 : 1;
+                                        var disable_rfid = (!arrayData.containsObj(GLOBAL_CONSTANT.ACCESS_RFID)) ? 0 : 1;
+                                        var disable_document_id = (!arrayData.containsObj(GLOBAL_CONSTANT.ACCESS_DOCUMENT_ID)) ? 0 : 1;
 
-                            obj.biometric = {
-                                disable_bio: disable_bio,
-                                access_type_id: GLOBAL_CONSTANT.ACCESS_BIOMETRIC,
-                                user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_BIOMETRIC),
-                                exist_access_type:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_BIOMETRIC).existAccess,
-                                isConfigured:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_BIOMETRIC).isConfigure
-                            };
+                                        objAccessUser.login_and_pass = {
+                                            disable_login_and_pass: disable_login_and_pass,
+                                            access_type_id: GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS,
+                                            user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS),
+                                            exist_access_type:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS).existAccess,
+                                            isConfigured:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS).isConfigure
+                                        };
 
-                            obj.rfid = {
-                                disable_rfid: disable_rfid,
-                                access_type_id: GLOBAL_CONSTANT.ACCESS_RFID,
-                                user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_RFID),
-                                exist_access_type:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_RFID).existAccess,
-                                isConfigured:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_RFID).isConfigure
-                            };
+                                        objAccessUser.biometric = {
+                                            disable_bio: disable_bio,
+                                            access_type_id: GLOBAL_CONSTANT.ACCESS_BIOMETRIC,
+                                            user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_BIOMETRIC),
+                                            exist_access_type:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_BIOMETRIC).existAccess,
+                                            isConfigured:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_BIOMETRIC).isConfigure
+                                        };
 
-                            $log.debug(obj);
-                            $scope.allUserSelcStakeHolder.push(obj);
-                            $scope.showTable = true;
+                                        objAccessUser.rfid = {
+                                            disable_rfid: disable_rfid,
+                                            access_type_id: GLOBAL_CONSTANT.ACCESS_RFID,
+                                            user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_RFID),
+                                            exist_access_type:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_RFID).existAccess,
+                                            isConfigured:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_RFID).isConfigure
+                                        };
 
+                                        objAccessUser.documentAccessId = {
+                                            disable_document_id: disable_document_id,
+                                            access_type_id: GLOBAL_CONSTANT.ACCESS_DOCUMENT_ID,
+                                            user_access_data_id: searchAccessDataId(dataUser.object, GLOBAL_CONSTANT.ACCESS_DOCUMENT_ID),
+                                            exist_access_type:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_DOCUMENT_ID).existAccess,
+                                            isConfigured:isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_DOCUMENT_ID).isConfigure
+                                        };
+
+                                        $log.debug(objAccessUser);
+                                        $scope.allUserSelcStakeHolder.push(objAccessUser);
+                                        $scope.showTable = true;
+
+                                    }
+                                    else {
+
+                                        console.info(dataUser.message);
+                                        if(dataUser.code == 1){
+
+                                            growl.success(GLOBAL_MESSAGE.MESSAGE_USER_NO_HAS_DATE_ACCESS_DEVICE);
+
+                                            var objAccessUser = {};
+
+                                            objAccessUser.device_id = device_id;
+                                            objAccessUser.user_id = str.originalObject.user_id;
+                                            objAccessUser.document_id = str.originalObject.document_id;
+                                            objAccessUser.first_name = str.originalObject.first_name;
+                                            objAccessUser.second_name = str.originalObject.second_name;
+                                            objAccessUser.login_and_pass = {};
+                                            objAccessUser.biometric = {};
+                                            objAccessUser.rfid = {};
+                                            objAccessUser.documentAccessId={};
+
+                                            objAccessUser.login_and_pass.disable_login_and_pass = 0;
+                                            objAccessUser.login_and_pass.access_type_id = GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS;
+                                            objAccessUser.login_and_pass.user_access_data_id = 0;
+                                            objAccessUser.login_and_pass.exist_access_type = false;
+                                            objAccessUser.login_and_pass.isConfigured = false;
+
+                                            objAccessUser.biometric.disable_bio = 0;
+                                            objAccessUser.biometric.access_type_id = GLOBAL_CONSTANT.ACCESS_BIOMETRIC;
+                                            objAccessUser.biometric.user_access_data_id = 0;
+                                            objAccessUser.biometric.exist_access_type = false;
+                                            objAccessUser.biometric.isConfigured = false;
+
+                                            objAccessUser.rfid.disable_rfid = 0;
+                                            objAccessUser.rfid.access_type_id = GLOBAL_CONSTANT.ACCESS_RFID;
+                                            objAccessUser.rfid.user_access_data_id = 0;
+                                            objAccessUser.rfid.exist_access_type = false;
+                                            objAccessUser.rfid.isConfigured = false;
+
+                                            objAccessUser.documentAccessId.disable_document_id = 0;
+                                            objAccessUser.documentAccessId.access_type_id = GLOBAL_CONSTANT.ACCESS_DOCUMENT_ID;
+                                            objAccessUser.documentAccessId.user_access_data_id=0;
+                                            objAccessUser.documentAccessId.exist_access_type = false;
+                                            objAccessUser.documentAccessId.isConfigured = false;
+
+                                            $scope.allUserSelcStakeHolder.push(objAccessUser);
+                                            $scope.showTable = true;
+
+                                        }else if(dataUser.code == 2){
+
+                                            growl.success(GLOBAL_MESSAGE.MESSAGE_USER_HAS_ALL_ACCESS_DEVICE);
+
+                                            var objAccessUser = {};
+
+                                            objAccessUser.device_id = device_id;
+                                            objAccessUser.user_id = str.originalObject.user_id;
+                                            objAccessUser.document_id = str.originalObject.document_id;
+                                            objAccessUser.first_name = str.originalObject.first_name;
+                                            objAccessUser.second_name = str.originalObject.second_name;
+                                            objAccessUser.login_and_pass = {};
+                                            objAccessUser.biometric = {};
+                                            objAccessUser.rfid = {};
+                                            objAccessUser.documentAccessId={};
+
+                                            objAccessUser.login_and_pass.disable_login_and_pass = 0;
+                                            objAccessUser.login_and_pass.access_type_id = GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS;
+                                            objAccessUser.login_and_pass.user_access_data_id = 0;
+                                            objAccessUser.login_and_pass.exist_access_type = isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS).existAccess;
+                                            objAccessUser.login_and_pass.isConfigured = isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_LOGIN_AND_PASS).isConfigure;
+
+                                            objAccessUser.biometric.disable_bio = 0;
+                                            objAccessUser.biometric.access_type_id = GLOBAL_CONSTANT.ACCESS_BIOMETRIC;
+                                            objAccessUser.biometric.user_access_data_id = 0;
+                                            objAccessUser.biometric.exist_access_type = isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_BIOMETRIC).existAccess;
+                                            objAccessUser.biometric.isConfigured = isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_BIOMETRIC).isConfigure;
+
+                                            objAccessUser.rfid.disable_rfid = 0;
+                                            objAccessUser.rfid.access_type_id = GLOBAL_CONSTANT.ACCESS_RFID;
+                                            objAccessUser.rfid.user_access_data_id = 0;
+                                            objAccessUser.rfid.exist_access_type = isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_RFID).existAccess;;
+                                            objAccessUser.rfid.isConfigured = isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_RFID).isConfigure;
+
+                                            objAccessUser.documentAccessId.disable_document_id = 0;
+                                            objAccessUser.documentAccessId.access_type_id = GLOBAL_CONSTANT.ACCESS_DOCUMENT_ID;
+                                            objAccessUser.documentAccessId.user_access_data_id=0;
+                                            objAccessUser.documentAccessId.exist_access_type = isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_DOCUMENT_ID).existAccess;
+                                            objAccessUser.documentAccessId.isConfigured = isConfiguredDeviceByUser(GLOBAL_CONSTANT.ACCESS_DOCUMENT_ID).isConfigure;
+
+                                            $scope.allUserSelcStakeHolder.push(objAccessUser);
+                                            $scope.showTable = true;
+                                        }
+                                    }
+                                }).catch(function (err) {
+                                console.error("Error invocando servicio " + err);
+                                spinnerService.hide("spinnerNew");
+                                growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                            });
+
+
+                        }else{
+                            console.error("Error respuesta servicio: "+resp.ReaxiumResponse.code);
                         }
-                        else {
-
-                            console.info(dataUser.message);
-                            if(dataUser.code == 1){
-                                growl.warning(GLOBAL_MESSAGE.MESSAGE_USER_NO_HAS_DATE_ACCESS_DEVICE);
-                            }else if(dataUser.code == 2){
-                                growl.warning(GLOBAL_MESSAGE.MESSAGE_USER_HAS_ALL_ACCESS_DEVICE);
-                            }
-                        }
-                    }).catch(function (err) {
-                    console.error("Error invocando servicio " + err);
-                    spinnerService.hide("spinnerNew");
-                    growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                    }).catch(function(err){
+                    console.error("Error obteniendo informacion de acceso del usuario:" +err);
+                    $scope.accessAllUsers=[];
                 });
+
+
 
             } else {
                console.log("Usuario ya se encuentra en la lista interna");
@@ -238,7 +349,7 @@ angular.module("App")
         };
 
 
-        function findAllAccessUsersDevice(user_id){
+       /* function findAllAccessUsersDevice(user_id){
 
             var request={
                 ReaxiumParameters:{
@@ -262,7 +373,7 @@ angular.module("App")
                 $scope.accessAllUsers=[];
             });
 
-        }
+        }*/
 
         function isConfiguredDeviceByUser(access_type_id){
 
@@ -347,6 +458,13 @@ angular.module("App")
                         var userpasss = $(elementoTD).find('input');
                         if ($(userpasss).is(':checked')) {
                             var arrayValues = $(userpasss).val().split("-");
+                            obj.push({device_id: userObj.device_id, user_access_data_id: arrayValues[1]});
+                        }
+                    }
+                    else if ($(elementoTD).attr('id').indexOf('documentId_' + userObj.user_id) > -1) {
+                        var documentId = $(elementoTD).find('input');
+                        if ($(documentId).is(':checked')) {
+                            var arrayValues = $(documentId).val().split("-");
                             obj.push({device_id: userObj.device_id, user_access_data_id: arrayValues[1]});
                         }
                     }

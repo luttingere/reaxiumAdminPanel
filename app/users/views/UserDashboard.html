@@ -180,7 +180,7 @@
                                                     <div ng-repeat="stopsObj in userCtrl.userFound.stopsUserRelationship">
                                                         <li type="none" style="text-align: left" ng-repeat="routes in stopsObj.stops.routes">
                                                             <a href="" ng-click="sendRouteId(routes.Routes.id_route)">
-                                                                <span class="users-list-date">{{routes.Routes.route_number + '-'+ routes.Routes.route_name}}</span>
+                                                                <span class="users-list-date">{{routes.Routes.route_number + ' - '+ routes.Routes.route_name}} - {{routes.Routes.route_type == 1 ? 'Pick Up' : 'Drop Off'}}</span>
                                                             </a>
                                                         </li>
                                                     </div>

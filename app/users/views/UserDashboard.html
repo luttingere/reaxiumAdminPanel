@@ -259,7 +259,7 @@
                                                 </ul>
                                             </ul>
                                         </li>
-                                        <li style="width: 250px; text-align: left">
+                                        <li style="width: 280px; text-align: left">
                                             <ul>
                                                 <li>
                                                     <span class="text-blue">Routes:</span>
@@ -269,7 +269,7 @@
                                                          ng-if="userRelation.user_id == stopsObj.stops.user_id">
                                                         <li type="none" style="text-align: left" ng-repeat="routes in stopsObj.stops.routes">
                                                             <a href="" ng-click="sendRouteId(routes.Routes.id_route)">
-                                                                <span class="users-list-date">{{routes.Routes.route_number + '-'+ routes.Routes.route_name}}</span>
+                                                                <span class="users-list-date">{{routes.Routes.route_number + ' - '+ routes.Routes.route_name}} - {{routes.Routes.route_type == 1 ? 'Pick Up' : 'Drop Off'}}</span>
                                                             </a>
                                                         </li>
                                                     </div>
@@ -291,7 +291,6 @@
                                                 </ul>
                                             </ul>
                                         </li>
-                                        <hr>
                                     </ul>
 
                                 </div>

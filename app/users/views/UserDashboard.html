@@ -21,195 +21,329 @@
 
             <div growl></div>
 
-                <!-- Content Header (Page header) -->
-                <section class="content-header">
-                    <h1>
-                        User Dashboard
-                        <small>Control panel</small>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Home</a></li>
-                        <li class="active">User Dashboard</li>
-                    </ol>
-                </section>
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    User Dashboard
+                    <small>Control panel</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li class="active">User Dashboard</li>
+                </ol>
+            </section>
 
-                <!-- Main content -->
-                <section class="content">
-                    <!-- Main row -->
-                    <div class="row">
-                        <section class="content" style="min-height:450px;">
-                            <div class="row">
-                                <div class="col-xs-12">
+            <!-- Main content -->
+            <section class="content">
+                <!-- Main row -->
+                <div class="row">
+                    <section class="content" style="min-height:450px;">
+                        <div class="row">
+                            <div class="col-xs-12">
 
-                                    <div class="box  box-info">
-                                        <div class="box-header ">
-                                            <div class="small-box">
-                                                <div class="customIcon">
-                                                    <a ui-sref="newUser" data-toggle="tooltip" title="Add User">
-                                                        <i class="ion ion-plus-circled"></i>
-                                                    </a>
-                                                </div>
+                                <div class="box  box-info">
+                                    <div class="box-header ">
+                                        <div class="small-box">
+                                            <div class="customIcon">
+                                                <a ui-sref="newUser" data-toggle="tooltip" title="Add User">
+                                                    <i class="ion ion-plus-circled"></i>
+                                                </a>
                                             </div>
-                                            <h3 class="box-title">System Users</h3>
+                                        </div>
+                                        <h3 class="box-title">System Users</h3>
 
-                                        </div><!-- /.box-header -->
-                                        <div class="box-body">
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
 
-                                            <div>
-                                                <input class="form-control reduceSize" placeholder="Search here..." on-enter-blur on-blur-change="filterResult()" ng-model="userCtrl.filterCriteria.ReaxiumParameters.filter" type="text" />
-                                            </div>
+                                        <div>
+                                            <input class="form-control reduceSize" placeholder="Search here..." on-enter-blur on-blur-change="filterResult()" ng-model="userCtrl.filterCriteria.ReaxiumParameters.filter" type="text" />
+                                        </div>
 
-                                            <table id="userTable" class="table table-bordered table-striped">
-                                                <thead>
-                                                <tr>
-                                                    <th ng-repeat="header in userCtrl.userTableHeaders">
-                                                        <sort-by onsort="onSort" sortdir="userCtrl.filterCriteria.ReaxiumParameters.sortDir" sortedby="userCtrl.filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
-                                                    </th>
-                                                    <th>Phones</th>
-                                                    <th>Address</th>
-                                                    <th>Information</th>
-                                                    <th>Status</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr ng-repeat="user in userCtrl.users">
-                                                    <td>{{user.first_name + " " + user.second_name}}</td>
-                                                    <td>{{user.first_last_name + " " + user.second_last_name}}</td>
-                                                    <td>{{user.document_id}}</td>
-                                                    <td><a href="" ng-click="userCtrl.showPhoneInformation(user.user_id)">Phones</a>
-                                                    </td>
-                                                    <td><a href=""
-                                                           ng-click="userCtrl.showAddressInformation(user.user_id)">Addresss</a>
-                                                    </td>
-                                                    <td><a href="" ng-click="userCtrl.showGeneralInformation(user.user_id)">Information</a>
-                                                    </td>
-                                                    <td>{{user.status.status_name | lowerCase | capitalize}}</td>
-                                                    <td><a data-toggle="tooltip" title="Delete User" ng-click="deleteUser(user.user_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -
-                                                        <a ui-sref="newUser({id_user:user.user_id,edit:true})" data-toggle="tooltip" title="Edit User"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
-                                                        <!--ng-click="editMode(user.user_id)"-->
-                                                </tr>
-                                                </tbody>
-                                                </tfoot>
-                                            </table>
-                                            <div ng-show="userCtrl.totalRecords == 0">
-                                                <h3>No Customers Found</h3>
-                                            </div>
-                                            <div ng-show="userCtrl.totalPages > 1" class="align-center">
-                                                <uib-pagination total-items="userCtrl.totalRecords" ng-model="userCtrl.filterCriteria.ReaxiumParameters.page" items-per-page="userCtrl.filterCriteria.ReaxiumParameters.limit" previous-text="previous" next-text="next" last-text="last"
-                                                                direction-links="true" rotate="false" max-size="5"  boundary-link-numbers="true" ng-change="userCtrl.selectPage()"></uib-pagination>
-                                            </div>
-                                        </div><!-- /.box-body -->
+                                        <table id="userTable" class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th ng-repeat="header in userCtrl.userTableHeaders">
+                                                    <sort-by onsort="onSort" sortdir="userCtrl.filterCriteria.ReaxiumParameters.sortDir" sortedby="userCtrl.filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
+                                                </th>
+                                                <th>Phones</th>
+                                                <th>Address</th>
+                                                <th>Information</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="user in userCtrl.users">
+                                                <td>{{user.first_name + " " + user.second_name}}</td>
+                                                <td>{{user.first_last_name + " " + user.second_last_name}}</td>
+                                                <td>{{user.document_id}}</td>
+                                                <td><a href="" ng-click="userCtrl.showPhoneInformation(user.user_id)">Phones</a>
+                                                </td>
+                                                <td><a href=""
+                                                       ng-click="userCtrl.showAddressInformation(user.user_id)">Addresss</a>
+                                                </td>
+                                                <td><a href="" ng-click="userCtrl.showGeneralInformation(user.user_id)">Information</a>
+                                                </td>
+                                                <td>{{user.status.status_name | lowerCase | capitalize}}</td>
+                                                <td><a data-toggle="tooltip" title="Delete User" ng-click="deleteUser(user.user_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -
+                                                    <a ui-sref="newUser({id_user:user.user_id,edit:true})" data-toggle="tooltip" title="Edit User"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
+                                                <!--ng-click="editMode(user.user_id)"-->
+                                            </tr>
+                                            </tbody>
+                                            </tfoot>
+                                        </table>
+                                        <div ng-show="userCtrl.totalRecords == 0">
+                                            <h3>No Customers Found</h3>
+                                        </div>
+                                        <div ng-show="userCtrl.totalPages > 1" class="align-center">
+                                            <uib-pagination total-items="userCtrl.totalRecords" ng-model="userCtrl.filterCriteria.ReaxiumParameters.page" items-per-page="userCtrl.filterCriteria.ReaxiumParameters.limit" previous-text="previous" next-text="next" last-text="last"
+                                                            direction-links="true" rotate="false" max-size="5"  boundary-link-numbers="true" ng-change="userCtrl.selectPage()"></uib-pagination>
+                                        </div>
+                                    </div><!-- /.box-body -->
 
-                                    </div><!-- /.box -->
+                                </div><!-- /.box -->
 
-                                </div><!-- /.col -->
-                            </div><!-- /.row -->
-                        </section><!-- /.content -->
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                    </section><!-- /.content -->
 
+                </div>
+                <br/>
+                <br/>
+            </section>
+
+            <modal title="Users Phone Intomation" visible="userCtrl.showPhoneModal">
+                <div class="box box-widget widget-user">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="widget-user-header bg-aqua-active">
+                        <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"      "+userCtrl.userFound.first_last_name}}</h3>
+                        <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
                     </div>
-                    <br/>
-                    <br/>
-                </section>
-
-                <modal title="Users Phone Intomation" visible="userCtrl.showPhoneModal">
-                    <div class="box box-widget widget-user">
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <div class="widget-user-header bg-aqua-active">
-                            <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"      "+userCtrl.userFound.first_last_name}}</h3>
-                            <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
-                        </div>
-                        <div class="widget-user-image">
-                            <!--<img class="img-circle" src="{{userCtrl.userFound.user_photo}}" alt="User Avatar">-->
-                            <img class="img-circle" src="dist/img/profile-default.png" alt="User Avatar">
-                        </div>
-                        <div class="box-footer">
-                            <div class="form-group" ng-repeat="phones in userCtrl.userFound.phone_numbers">
-                                <label>{{phones.phone_name}}</label>
-                                <div class="input-group">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-phone"></i>
-                                    </div>
-                                    <label class="form-control" >{{phones.phone_number}}</label>
-                                </div><!-- /.input group -->
-                            </div>
-                        </div>
+                    <div class="widget-user-image">
+                        <!--<img class="img-circle" src="{{userCtrl.userFound.user_photo}}" alt="User Avatar">-->
+                        <img class="img-circle" src="dist/img/profile-default.png" alt="User Avatar">
                     </div>
-                </modal>
-                <modal title="User general information" visible="userCtrl.showGeneralInfoModal">
-
-                    <div class="box box-widget widget-user">
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <div class="widget-user-header bg-aqua-active">
-                            <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"      "+userCtrl.userFound.first_last_name}}</h3>
-                            <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
-                        </div>
-                        <div class="widget-user-image">
-                            <!--<img class="img-circle" src="{{userCtrl.userFound.user_photo}}" alt="User Avatar">-->
-                            <img class="img-circle" src="dist/img/profile-default.png" alt="User Avatar">
-                        </div>
-                        <div class="box-footer">
-                            <div class="box">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">User Relationship</h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body no-padding">
-                                    <ul class="users-list clearfix">
-
-                                        <li ng-repeat="stakeholder in userCtrl.userFound.Stakeholders">
-                                            <img src="dist/img/profile-default.png" alt="User Image">
-                                            <a class="users-list-name" href="#">{{stakeholder[0].first_name +' '+ stakeholder[0].first_last_name}}</a>
-                                            <span class="users-list-date">{{stakeholder[0].user_type.user_type_name}}</span>
-                                        </li>
-
-                                    </ul><!-- /.users-list -->
-                                </div><!-- /.box-body -->
-                            </div>
-                        </div>
-                    </div>
-                </modal>
-                <modal title="User Address" visible="userCtrl.showAddressModal">
-
-                    <div class="box box-widget widget-user">
-                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                        <div class="widget-user-header bg-aqua-active">
-                            <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"   "+userCtrl.userFound.first_last_name}}</h3>
-                            <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
-                        </div>
-                        <div class="widget-user-image">
-                            <!--<img class="img-circle" src="{{userCtrl.userFound.user_photo}}" alt="User Avatar">-->
-                            <img class="img-circle" src="dist/img/profile-default.png" alt="User Avatar">
-                        </div>
-                        <div class="box-footer">
-                            <div class="box">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">User Address Information</h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body no-padding">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-map-marker"></i>
-                                            </div>
-                                            <label class="form-control">{{userCtrl.userFound.address[0].address}}</label>
-                                        </div><!-- /.input group -->
-                                    </div>
-                                    <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options">
-                                        <ui-gmap-marker idKey='1' coords='marker.coords'></ui-gmap-marker>
-                                    </ui-gmap-google-map>
+                    <div class="box-footer">
+                        <div class="form-group" ng-repeat="phones in userCtrl.userFound.phone_numbers">
+                            <label>{{phones.phone_name}}</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-phone"></i>
                                 </div>
+                                <label class="form-control" >{{phones.phone_number}}</label>
+                            </div><!-- /.input group -->
+                        </div>
+                    </div>
+                </div>
+            </modal>
+            <modal id="showInfoModal" title="User general information" visible="userCtrl.showGeneralInfoModal">
+
+                <div class="box box-widget widget-user">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="widget-user-header bg-aqua-active">
+                        <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"      "+userCtrl.userFound.first_last_name}}</h3>
+                        <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
+                    </div>
+                    <div class="widget-user-image">
+                        <img class="img-circle" src="{{userCtrl.userFound.user_photo}}" alt="User Avatar">
+                    </div>
+                    <div class="box-footer">
+
+                        <div class="box">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">User Information</h3>
+                            </div><!-- /.box-header -->
+                            <div class="box-body no-padding">
+                                <div ng-switch on="userCtrl.userFound.user_type_id" >
+
+                                    <ul class="users-list clearfix" ng-switch-when="2">
+                                        <li style="width: 250px; text-align: left">
+                                            <ul>
+                                                <li>
+                                                    <span class="text-blue">Stops:</span>
+                                                </li>
+                                                <ul>
+                                                    <div ng-repeat="stopsObj in userCtrl.userFound.stopsUserRelationship">
+                                                        <li type="none" style="text-align: left">
+                                                           <span class="users-list-date">{{stopsObj.stops.stop_name}}</span>
+                                                        </li>
+                                                    </div>
+                                                </ul>
+                                            </ul>
+                                        </li>
+                                        <li style="width: 250px; text-align: left">
+                                            <ul>
+                                                <li>
+                                                    <span class="text-blue">Routes:</span>
+                                                </li>
+                                                <ul>
+                                                    <div ng-repeat="stopsObj in userCtrl.userFound.stopsUserRelationship">
+                                                        <li type="none" style="text-align: left" ng-repeat="routes in stopsObj.stops.routes">
+                                                            <a href="" ng-click="sendRouteId(routes.Routes.id_route)">
+                                                                <span class="users-list-date">{{routes.Routes.route_number + '-'+ routes.Routes.route_name}}</span>
+                                                            </a>
+                                                        </li>
+                                                    </div>
+                                                </ul>
+                                            </ul>
+                                        </li>
+                                        <li style="width: 250px; text-align: left">
+                                            <ul>
+                                                <li>
+                                                    <span class="text-blue">School:</span>
+                                                </li>
+                                                <ul>
+                                                    <li type="none" style="text-align: left">
+                                                        <a href="" ng-click="sendBusinessId(userCtrl.userFound.busines.business_id)">
+                                                            <span class="users-list-date">{{userCtrl.userFound.busines.business_name}}</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </ul>
+                                        </li>
+                                    </ul>
+
+                                    <ul class="users-list clearfix" ng-switch-default>
+                                        <li style="width: 250px; text-align: left">
+                                            <ul>
+                                                <li>
+                                                    <span class="text-blue">School:</span>
+                                                </li>
+                                                <ul>
+                                                    <li type="none" style="text-align: left">
+                                                        <span class="users-list-date">{{userCtrl.userFound.busines.business_name}}</span>
+                                                    </li>
+                                                </ul>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+
+                            <div class="box-header with-border">
+                                <h3 class="box-title">User Relationship</h3>
+                            </div><!-- /.box-header -->
+
+                            <div class="box-body no-padding">
+
+                                <div ng-switch on="userCtrl.userFound.user_type_id">
+
+                                    <ul class="users-list clearfix" ng-switch-when="2">
+                                        <li ng-repeat="stakeholder in userCtrl.userFound.Stakeholders">
+                                            <img src="{{stakeholder[0].user_photo}}" alt="User Image">
+                                            <a href="" class="users-list-name" ng-click="sendNewUser(stakeholder[0].user_id)">{{stakeholder[0].first_name +' '+ stakeholder[0].first_last_name}}</a>
+                                            <span class="users-list-date">{{stakeholder[0].document_id}}</span>
+                                        </li>
+                                    </ul>
+
+                                    <ul class="users-list clearfix" ng-repeat="userRelation in userCtrl.userFound.UserRelationship"
+                                        ng-switch-when="3">
+                                        <li>
+                                            <img src="{{userRelation.user_photo}}" alt="User Image">
+                                            <a href="" class="users-list-name" ng-click="sendNewUser(userRelation.user_id)">{{userRelation.first_name +' '+ userRelation.first_last_name}}</a>
+                                            <span class="users-list-date">{{userRelation.document_id}}</span>
+                                        </li>
+                                        <li style="width: 250px; text-align: left">
+                                            <ul>
+                                                <li>
+                                                    <span class="text-blue">Stops:</span>
+                                                </li>
+                                                <ul>
+                                                    <div ng-repeat="stopsObj in userCtrl.userFound.stopsUserRelationship"
+                                                         ng-if="userRelation.user_id == stopsObj.stops.user_id">
+                                                        <li type="none" style="text-align: left">
+                                                            <span class="users-list-date">{{stopsObj.stops.stop_name}}</span>
+                                                        </li>
+                                                    </div>
+                                                </ul>
+                                            </ul>
+                                        </li>
+                                        <li style="width: 250px; text-align: left">
+                                            <ul>
+                                                <li>
+                                                    <span class="text-blue">Routes:</span>
+                                                </li>
+                                                <ul>
+                                                    <div ng-repeat="stopsObj in userCtrl.userFound.stopsUserRelationship"
+                                                         ng-if="userRelation.user_id == stopsObj.stops.user_id">
+                                                        <li type="none" style="text-align: left" ng-repeat="routes in stopsObj.stops.routes">
+                                                            <a href="" ng-click="sendRouteId(routes.Routes.id_route)">
+                                                                <span class="users-list-date">{{routes.Routes.route_number + '-'+ routes.Routes.route_name}}</span>
+                                                            </a>
+                                                        </li>
+                                                    </div>
+                                                </ul>
+                                            </ul>
+                                        </li>
+                                        <li style="width: 250px; text-align: left">
+                                            <ul>
+                                                <li>
+                                                    <span class="text-blue">School:</span>
+                                                </li>
+                                                <ul>
+                                                    <li type="none" style="text-align: left">
+                                                        <a href="" ng-click="sendBusinessId(userCtrl.userFound.busines.business_id)">
+                                                            <span class="users-list-date">{{userCtrl.userFound.busines.business_name}}</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </ul>
+                                        </li>
+                                        <hr>
+                                    </ul>
+
+                                </div>
+
+
                             </div><!-- /.box-body -->
                         </div>
-                    </div>
-                </modal>
-                <div class="control-sidebar-bg"></div>
 
-            </div>
-            <div ui-view="footer"></div>
+
+                    </div>
+                </div>
+            </modal>
+            <modal title="User Address" visible="userCtrl.showAddressModal">
+
+                <div class="box box-widget widget-user">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="widget-user-header bg-aqua-active">
+                        <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"   "+userCtrl.userFound.first_last_name}}</h3>
+                        <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
+                    </div>
+                    <div class="widget-user-image">
+                        <!--<img class="img-circle" src="{{userCtrl.userFound.user_photo}}" alt="User Avatar">-->
+                        <img class="img-circle" src="dist/img/profile-default.png" alt="User Avatar">
+                    </div>
+                    <div class="box-footer">
+                        <div class="box">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">User Address Information</h3>
+                            </div><!-- /.box-header -->
+                            <div class="box-body no-padding">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-map-marker"></i>
+                                        </div>
+                                        <label class="form-control">{{userCtrl.userFound.address[0].address}}</label>
+                                    </div><!-- /.input group -->
+                                </div>
+                                <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options">
+                                    <ui-gmap-marker idKey='1' coords='marker.coords'></ui-gmap-marker>
+                                </ui-gmap-google-map>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div>
+                </div>
+            </modal>
+            <div class="control-sidebar-bg"></div>
+
         </div>
+        <div ui-view="footer"></div>
     </div>
 </div>
-
+</div>
 
 
 

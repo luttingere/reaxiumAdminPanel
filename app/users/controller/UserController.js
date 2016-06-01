@@ -13,8 +13,10 @@ angular.module('App')
                                             $sessionStorage,
                                             growl,
                                             $confirm,
+                                            $timeout,
                                             GLOBAL_MESSAGE,
-                                            GLOBAL_CONSTANT) {
+                                            GLOBAL_CONSTANT,
+                                            TYPES_USERS) {
 
         console.log("Cargo el Controlador de Usuarios");
         $scope.control = {}
@@ -159,16 +161,108 @@ angular.module('App')
          * @param UserService
          * @private
          */
-        $scope.findByUserId = function (userId,$scope,loadMap) {
-            if (UserService.getUserIdFound() != userId) {
-                var myPhonePromise = UserService.getUsersById(userId);
-                myPhonePromise.then(function (result) {
+        $scope.findByUserId = function (userId,loadMap) {
+
+                UserService.getUsersById(userId)
+                .then(function (result) {
+                    $log.debug("Llamando servicio:",result);
                     $scope.userFound = result[0];
                     if(loadMap){
                         $scope.addTheMap();
                     }
+
+                }).catch(function(err){
+                    console.error("No se completo la llamada al servicio: "+err);
                 });
-            }
+        }
+
+
+        $scope.findByUserIdInfo = function(userId){
+
+            /**
+             * Invocando servicio que me de informacion del usuario
+             */
+            UserService.getUsersById(userId)
+                .then(function (result) {
+                    $log.debug("Llamando servicio:",result);
+
+                    $scope.userFound = result[0];
+                    $scope.userFound.stopsUserRelationship = [];
+
+                    var request = {
+                        ReaxiumParameters:{
+                            ReaxiumStops:{
+                                object:[]
+                            }
+                        }
+                    };
+
+                   console.log("User type del usuario: "+result[0].user_type_id);
+
+                    // user stakeholder
+                    if($scope.userFound.user_type_id == TYPES_USERS.TYPE_USER_STAKEHOLDER){
+
+                        if(isEmptyArray($scope.userFound.UserRelationship)){
+
+                            var listUserRelationShip = $scope.userFound.UserRelationship;
+
+                            listUserRelationShip.forEach(function(entry){
+                                request.ReaxiumParameters.ReaxiumStops.object.push({user_id:entry.user_id});
+                            });
+
+                            /**
+                             * Invocando servicio qpara obtener todas las paradas asociados de los estudiantes
+                             */
+                            UserService.getStopsAndRoutesByUser(request)
+                                .then(function(resp){
+
+                                    if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+
+                                        resp.ReaxiumResponse.object.forEach(function(entry){
+                                            $scope.userFound.stopsUserRelationship.push({stops:entry});
+                                        });
+
+                                    }else{
+                                        console.error(resp.ReaxiumResponse.message);
+                                    }
+                                })
+                                .catch(function(err){
+                                    console.error("Servico para obtener stops :" +err);
+                                    $scope.userFound={UserRelationship:[],Stakeholders:[]};
+                                });
+                        }
+
+                    }else if($scope.userFound.user_type_id == TYPES_USERS.TYPE_USER_STUDENT){
+
+                        request.ReaxiumParameters.ReaxiumStops.object.push({user_id:userId});
+
+                        /**
+                         * Invocando servicio qpara obtener todas las paradas asociados de los estudiantes
+                         */
+                        UserService.getStopsAndRoutesByUser(request)
+                            .then(function(resp){
+
+                                if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+
+                                    resp.ReaxiumResponse.object.forEach(function(entry){
+                                        $scope.userFound.stopsUserRelationship.push({stops:entry});
+                                    });
+
+                                }else{
+                                    console.info(resp.ReaxiumResponse.message);
+                                }
+                            })
+                            .catch(function(err){
+                                console.error("Servico para obtener stops :" +err);
+                                $scope.userFound={UserRelationship:[],Stakeholders:[]};
+                            });
+                    }
+
+                }).catch(function(err){
+                console.error("No se completo la llamada al servicio: "+err);
+                $scope.userFound={UserRelationship:[],Stakeholders:[]};
+            });
+
         }
 
         /**
@@ -240,9 +334,10 @@ angular.module('App')
          */
         $scope.showPhoneInformation = function (userId) {
             console.log("showPhoneInformation");
-            $scope.findByUserId(userId, $scope,false);
+            $scope.findByUserId(userId,false);
             $scope.showPhoneModal = !$scope.showPhoneModal;
         }
+
 
         /**
          * get the address information of a user and show it in a modal
@@ -250,7 +345,7 @@ angular.module('App')
          */
         $scope.showAddressInformation = function (userId) {
             console.log("showAddressInformation");
-            $scope.findByUserId(userId, $scope,true);
+            $scope.findByUserId(userId,true);
             $scope.showAddressModal = !$scope.showAddressModal;
         }
 
@@ -260,20 +355,54 @@ angular.module('App')
          */
         $scope.showGeneralInformation = function (userId) {
             console.log("showGeneralInformation");
-            $scope.findByUserId(userId, $scope,false);
+            $scope.findByUserIdInfo(userId);
             $scope.showGeneralInfoModal = !$scope.showGeneralInfoModal;
         }
 
+
+        $scope.sendNewUser = function(userId){
+            spinnerService.show("spinnerUserList");
+            $scope.showGeneralInfoModal = false;
+
+            //espero que cierre el modal y despues envio a la pantalla editar
+
+            $timeout(function(){
+                spinnerService.hide("spinnerUserList");
+                $state.go('newUser',{id_user:userId,edit:true});
+            },1500);
+        }
+
+
+        $scope.sendRouteId = function(routeId){
+
+            spinnerService.show("spinnerUserList");
+            $scope.showGeneralInfoModal = false;
+
+            //espero que cierre el modal y despues envio a la pantalla editar
+
+            $timeout(function(){
+                spinnerService.hide("spinnerUserList");
+                $state.go('routesNewRegister',{id_route:routeId,edit:true});
+            },1500);
+        }
+
+        $scope.sendBusinessId = function(businessId){
+
+            spinnerService.show("spinnerUserList");
+            $scope.showGeneralInfoModal = false;
+
+            //espero que cierre el modal y despues envio a la pantalla editar
+
+            $timeout(function(){
+                spinnerService.hide("spinnerUserList");
+                $state.go('newBusiness',{id_business:businessId,edit:true});
+            },1500);
+
+        }
         /**
          * Edit User Mode
          * @param id
          */
-       /* $scope.editMode = function(id){
-
-            var obj ={isModeEdit:true,idUser:parseInt(id)};
-            UserService.setModeEdit(obj);
-            $state.go("newUser");
-        }*/
 
 
         /**

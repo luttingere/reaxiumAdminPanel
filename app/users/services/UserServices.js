@@ -323,6 +323,25 @@ angular.module('App')
             return promise;
         }
 
+        lookup.stopsAndRoutesByUser = function(obj){
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
+                method: 'POST',
+                url: CONST_PROXY_URL.PROXY_URL_STOPS_AND_ROUTE_BY_USER,
+                data: JSON.stringify(obj),
+                headers: {'Content-Type': 'application/json;charset=UTF-8'}
+            }).success(function (response) {
+                defered.resolve(response);
+            }).error(function (err) {
+                defered.reject(err);
+            });
+
+            return promise;
+        }
+
         return lookup;
 
     })
@@ -433,6 +452,10 @@ angular.module('App')
 
         this.updateAllAccessMenu = function(obj){
             return UserLookup.updateRolAccessMenu(obj);
+        }
+
+        this.getStopsAndRoutesByUser = function(obj){
+            return UserLookup.stopsAndRoutesByUser(obj);
         }
 
     });

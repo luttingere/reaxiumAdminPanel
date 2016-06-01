@@ -17,6 +17,7 @@ angular.module("App")
         PROXY_URL_ALL_USER_WITH_PAGINATE: "http://54.200.133.84/reaxium/Users/allUsersInfoWithPagination",
         PROXY_URL_SHOW_ACCESS_HISTORY_BY_USER: "http://54.200.133.84/reaxium/Traffic/trafficFilteredByUser",
         PROXY_URL_CREATE_USER_STAKEHOLDER: "http://54.200.133.84/reaxium/Users/createStakeholderUser",
+        PROXY_URL_STOPS_AND_ROUTE_BY_USER:"http://54.200.133.84/reaxium/Stops/getUserByIdForStops",
 
         /*Proxy Business*/
         PROXY_URL_CREATE_NEW_BUSINESS: "http://54.200.133.84/reaxium/Business/createBusiness",
@@ -110,6 +111,8 @@ angular.module("App")
 
     .constant('TYPES_USERS',{
         TYPE_SCHOOL: 5,
+        TYPE_USER_STAKEHOLDER:3,
+        TYPE_USER_STUDENT:2
 
     })
 

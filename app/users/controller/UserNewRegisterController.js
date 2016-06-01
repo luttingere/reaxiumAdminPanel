@@ -282,125 +282,137 @@ angular.module('App')
             UserService.setModeEdit({isModeEdit: Boolean($stateParams.edit), idUser: parseInt($stateParams.id_user)});
             UserService.setShowGrowlMessage({isShow: false, message: ""});
 
+            spinnerService.show("spinnerNew");
 
-            /***
-             * call services AllUsersType
+            /**
+             * Call services Status Users
              */
-            UserService.getAllUsersType($scope.rol_user)
+           UserService.getAllStatusUser()
             .then(function (result) {
-                $log.debug(result);
-                $scope.allUserType = result;
-            }).catch(function (err) {
-                console.error("Error servicio allUserType: " + err);
-            });
-
-            var myStatusUsers = UserService.getAllStatusUser();
-            myStatusUsers.then(function (result) {
                 $scope.allStatusUser = result;
 
             }).catch(function (err) {
                 console.error("Error servicio allStatusUser: " + err);
             });
 
-            //validate mode edit
-            if (UserService.getModeEdit().isModeEdit) {
+            /***
+             * Call services AllUsersType
+             */
+            UserService.getAllUsersType($scope.rol_user)
+                .then(function (result) {
+                    $log.debug(result);
+                    $scope.allUserType = result;
 
-                console.log("Esta en modo editar...");
-                spinnerService.show("spinnerNew");
+                    //validate mode edit
+                    if (UserService.getModeEdit().isModeEdit) {
 
-                var promiseUserById = UserService.getUsersById(UserService.getModeEdit().idUser);
-                promiseUserById.then(function (result) {
+                        console.log("Esta en modo editar...");
+                        spinnerService.show("spinnerNew");
 
-                    try {
+                        /**
+                         * Call services getUserById
+                         */
+                        UserService.getUsersById(UserService.getModeEdit().idUser)
+                            .then(function (result) {
 
-                        $log.debug(result);
-                        UserService.setObjUserById(result);
-                        $scope.headerName = result[0].first_name + ' ' + result[0].first_last_name
-                        $scope.users.user_photo = result[0].user_photo;
-                        $scope.users.document_id = result[0].document_id;
-                        $scope.users.first_name = result[0].first_name;
-                        $scope.users.second_name = result[0].second_name;
-                        $scope.users.first_last_name = result[0].first_last_name;
-                        $scope.users.second_last_name = result[0].second_last_name;
-                        $scope.users.stakeholder_id = result[0].stakeholder_id;
+                                try {
 
-                        $scope.selectEditBusiness = {
-                            business_id: result[0].busines.business_id,
-                            business_name: result[0].busines.business_name,
-                            business_id_number: result[0].busines.business_id_number
-                        };
+                                    $log.debug(result);
+                                    UserService.setObjUserById(result);
+                                    $scope.headerName = result[0].first_name + ' ' + result[0].first_last_name
+                                    $scope.users.user_photo = result[0].user_photo;
+                                    $scope.users.document_id = result[0].document_id;
+                                    $scope.users.first_name = result[0].first_name;
+                                    $scope.users.second_name = result[0].second_name;
+                                    $scope.users.first_last_name = result[0].first_last_name;
+                                    $scope.users.second_last_name = result[0].second_last_name;
+                                    $scope.users.stakeholder_id = result[0].stakeholder_id;
+
+                                    $scope.selectEditBusiness = {
+                                        business_id: result[0].busines.business_id,
+                                        business_name: result[0].busines.business_name,
+                                        business_id_number: result[0].busines.business_id_number
+                                    };
 
 
-                        if (!isEmptyString(result[0].birthdate)) {
+                                    if (!isEmptyString(result[0].birthdate)) {
 
-                            var birthdate = result[0].birthdate.split('/');
+                                        var birthdate = result[0].birthdate.split('/');
 
-                            var day = (birthdate[0].length == 1) ? "0" + birthdate[0] : birthdate[0];
-                            var month = (birthdate[1].length == 1) ? "0" + birthdate[1] : birthdate[1];
-                            var year = birthdate[2];
+                                        var day = (birthdate[0].length == 1) ? "0" + birthdate[0] : birthdate[0];
+                                        var month = (birthdate[1].length == 1) ? "0" + birthdate[1] : birthdate[1];
+                                        var year = birthdate[2];
 
-                            var dateFinal = month + "/" + day + "/" + year;
-                            $scope.users.birthdate = new Date(dateFinal);
-                        }
-                        else {
-                            $scope.users.birthdate = new Date();
-                        }
+                                        var dateFinal = month + "/" + day + "/" + year;
+                                        $scope.users.birthdate = new Date(dateFinal);
+                                    }
+                                    else {
+                                        $scope.users.birthdate = new Date();
+                                    }
 
-                        $scope.users.email = result[0].email;
+                                    $scope.users.email = result[0].email;
 
-                        addressObj.latitude = (result[0].address.length > 0) ? result[0].address[0].latitude : UserService.getAddressDefault().latitude;
-                        addressObj.longitude = (result[0].address.length > 0) ? result[0].address[0].longitude : UserService.getAddressDefault().longitude;
-                        addressObj.address = (result[0].address.length > 0) ? result[0].address[0].address : UserService.getAddressDefault().address;
-                        $scope.address = (result[0].address.length > 0) ? result[0].address[0].address : UserService.getAddressDefault().address;
+                                    addressObj.latitude = (result[0].address.length > 0) ? result[0].address[0].latitude : UserService.getAddressDefault().latitude;
+                                    addressObj.longitude = (result[0].address.length > 0) ? result[0].address[0].longitude : UserService.getAddressDefault().longitude;
+                                    addressObj.address = (result[0].address.length > 0) ? result[0].address[0].address : UserService.getAddressDefault().address;
+                                    $scope.address = (result[0].address.length > 0) ? result[0].address[0].address : UserService.getAddressDefault().address;
 
-                        //PhoneNumber
+                                    //PhoneNumber
 
-                        result[0].phone_numbers.forEach(function (entry) {
+                                    result[0].phone_numbers.forEach(function (entry) {
 
-                            if (entry.phone_name.toLowerCase() === "home") {
-                                $scope.phoneNumbers.phone_home_number = entry.phone_number;
-                            }
-                            else if (entry.phone_name.toLowerCase() === "office") {
-                                $scope.phoneNumbers.phone_office_number = entry.phone_number;
-                            } else {
-                                $scope.phoneNumbers.phone_other_number = entry.phone_number;
-                            }
+                                        if (entry.phone_name.toLowerCase() === "home") {
+                                            $scope.phoneNumbers.phone_home_number = entry.phone_number;
+                                        }
+                                        else if (entry.phone_name.toLowerCase() === "office") {
+                                            $scope.phoneNumbers.phone_office_number = entry.phone_number;
+                                        } else {
+                                            $scope.phoneNumbers.phone_other_number = entry.phone_number;
+                                        }
+                                    });
+
+                                    $scope.selectTypeUser = (result[0].user_type != null) ? result[0].user_type.user_type_id : 0;
+                                    $scope.status_id = result[0].status.status_id;
+                                    $scope.selectAccT = (result[0].user_type != null) ? result[0].user_type.user_type_id : 0;
+
+
+                                    if ($scope.selectTypeUser == 3) {
+
+                                        result[0].UserRelationship.forEach(function (entry) {
+                                            $scope.showTable = true;
+                                            $scope.allUserSelcStakeHolder.push(entry);
+                                        })
+                                    }
+
+                                    $scope.addTheMap();
+                                }
+                                catch (err) {
+                                    console.log("error cargando los datos para editar: " + err);
+                                }
+                                finally {
+                                    spinnerService.hide("spinnerNew");
+                                }
+
+                            }).catch(function (err) {
+                            console.error("Error servicio getUsersById " + err);
                         });
-
-                        $scope.selectTypeUser = (result[0].user_type != null) ? result[0].user_type.user_type_id : 0;
-                        $scope.status_id = result[0].status.status_id;
-                        $scope.selectAccT = (result[0].user_type != null) ? result[0].user_type.user_type_id : 0;
-
-
-                        if ($scope.selectTypeUser == 3) {
-
-                            result[0].UserRelationship.forEach(function (entry) {
-                                $scope.showTable = true;
-                                $scope.allUserSelcStakeHolder.push(entry);
-                            })
+                    }
+                    else {
+                        spinnerService.hide("spinnerNew");
+                        //solo  entra en esta validacion si es una escuela
+                        if ($scope.rol_user == GLOBAL_CONSTANT.USER_ROL_SCHOOL) {
+                            $scope.users.business_id = $scope.business_id;
                         }
 
                         $scope.addTheMap();
                     }
-                    catch (err) {
-                        console.log("error cargando los datos para editar: " + err);
-                    }
-                    finally {
-                        spinnerService.hide("spinnerNew");
-                    }
+
 
                 }).catch(function (err) {
-                    console.error("Error servicio getUsersById " + err);
-                });
-            }
-            else {
-                //solo  entra en esta validacion si es una escuela
-                if ($scope.rol_user == GLOBAL_CONSTANT.USER_ROL_SCHOOL) {
-                    $scope.users.business_id = $scope.business_id;
-                }
+                console.error("Error servicio allUserType: " + err);
+            });
 
-                $scope.addTheMap();
-            }
+
         }
 
         /**
@@ -558,7 +570,7 @@ angular.module('App')
             var obj = JSON.parse(message);
 
             if (obj.success) {
-                nameImageUpload = file.name;
+                nameImageUpload = obj.flowFilename;
             } else {
                 nameImageUpload = FILE_SYSTEM_ROUTE.IMAGE_DEFAULT_USER;
             }

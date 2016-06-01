@@ -12,11 +12,11 @@
   <div growl></div>
 
   <div class="login-box">
-    <div class="login-logo">
-    <b>Reaxium</b>
+    <div class="login-logo" style="margin-button:100px;">
+    <img src="images/logo2.png" alt="Reaxium">
     </div><!-- /.login-logo -->
     <div class="login-box-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg"><strong>Sign in to start your session</strong></p>
         <form ng-submit="authenticateUser()">
           <input type="hidden" ng-model="data.settings.checked">
 
@@ -39,7 +39,7 @@
             </div><!-- /.col -->
           </div>
        </form>
-      <a ui-sref="forgetPass">I forgot my password</a><br>
+      <a ui-sref="forgetPass"><strong>I forgot my password</strong></a><br>
 
     </div><!-- /.login-box-body -->
   </div><!-- /.login-box -->

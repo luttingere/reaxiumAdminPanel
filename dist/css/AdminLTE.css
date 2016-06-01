@@ -905,6 +905,8 @@ a:focus {
 .control-sidebar-light .control-sidebar-menu > li > a .menu-info > p {
   color: #5e5e5e;
 }
+
+
 /*
  * Component: Dropdown menus
  * -------------------------
@@ -1289,7 +1291,7 @@ a:focus {
 /* button groups */
 .btn-group-vertical .btn.btn-flat:first-of-type,
 .btn-group-vertical .btn.btn-flat:last-of-type {
-  border-radius: 0;
+
 }
 .icheck > label {
   padding-left: 0;
@@ -1308,6 +1310,8 @@ a:focus {
 .form-group-sm .form-control + .form-control-feedback.fa {
   line-height: 30px;
 }
+
+/*logo login*/
 /*
  * Component: Progress Bar
  * -----------------------
@@ -2224,6 +2228,7 @@ a:focus {
 .btn-primary {
   background-color: #3c8dbc;
   border-color: #367fa9;
+  
 }
 .btn-primary:hover,
 .btn-primary:active,

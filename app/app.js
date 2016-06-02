@@ -1,6 +1,7 @@
 /**
  * Created by VladimirIlich G&G on 4/4/2016.
  */
+var interval = null;
 
 angular.module('App', ['ui.router',
         'angularSpinners',
@@ -15,11 +16,15 @@ angular.module('App', ['ui.router',
         'angular-confirm'])
 
     //Aqui lo primero que se ejecuta en angular como el document Ready en jquery
-    .run(['$templateCache', '$rootScope', function ($templateCache, $rootScope) {
+    .run(['$templateCache', '$rootScope','$interval', function ($templateCache, $rootScope,$interval) {
         $templateCache.put('searchbox.tpl.html', '<input class="form-control" type="text" placeholder="Place an address...">');
         $templateCache.put('sort-by.html', '<a ng-click="sort(sortvalue)"><span ng-transclude=""></span><span ng-show="sortedby == sortvalue">&nbsp;&nbsp;<i ng-class="{true: \'fa fa-sort-up\', false: \'fa fa-sort-desc\'}[sortdir == \'asc\']"></i></span></a>');
 
         $rootScope.welcomePage = 'app/home/views/content.html';
+
+        $rootScope.$on('$stateChangeStart', function() {
+            $interval.cancel(interval);
+        });
 
     }])
 

@@ -187,6 +187,21 @@ angular.module("App")
                 }
             })
 
+            .state("trackingDevice",{
+                url:"/trackingDevice",
+                controller:'DeviceTrackCtrl',
+                params:{
+                    id_device: null,
+                },
+                views: {
+                    '': {templateUrl: 'app/devices/views/DeviceTracking.html'},
+                    'header@trackingDevice': {templateUrl: 'app/home/views/header.html'},
+                    'menu@trackingDevice': {templateUrl: 'app/home/views/menu.html'},
+                    'footer@trackingDevice':{templateUrl: 'app/home/views/footer.html'}
+                }
+            })
+
+
             .state("routes",{
                 url: '/routes',
                 controller:'RouteCtrl',

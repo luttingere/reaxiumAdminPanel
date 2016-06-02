@@ -1,0 +1,65 @@
+
+<spinner name="spinnerNew" ng-cloak="">
+    <div class="overlay"></div>
+    <div class="spinner">
+        <div class="test"><i class="fa fa-refresh fa-spin fa-5x"></i></div>
+    </div>
+    <div class="please-wait">Please Wait...</div>
+</spinner>
+
+
+<div class="skin-blue sidebar-mini">
+
+    <div class="wrapper" ng-controller="DeviceTrackCtrl">
+
+
+        <!--header-->
+        <div ui-view="header"></div>
+
+        <!--menu-->
+        <div ui-view="menu"></div>
+
+        <!--content-->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Device Dashboard
+                    <small>Control panel</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Home</a></li>
+                    <li class="active">Device Tracking</li>
+                </ol>
+            </section>
+            <section class="content">
+                <div growl></div>
+                <div class="row">
+                    <div class="content">
+                        <!--box Address-->
+                        <div class="col-md-12">
+                            <div class="box box-primary box-solid">
+                                <div class="box-header bg-light-blue-active with-border">
+                                    <h3 class="box-title">Tracking Device</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <div class="input-group"></div>
+                                    </div>
+                                    <div id="map_canvas"></div>
+                                </div>
+                            </div><!-- /.box-body -->
+
+                        </div>  <!--End box Address-->
+
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!--footer-->
+        <div ui-view="footer"></div>
+
+
+    </div>
+</div>

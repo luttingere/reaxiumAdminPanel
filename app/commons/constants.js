@@ -55,6 +55,7 @@ angular.module("App")
         PROXY_URL_GET_BUSINESS_BY_DEVICE:"http://54.200.133.84/reaxium/Device/getBusinessByDevice",
         PROXY_URL_DELETE_BUSINESS_BY_DEVICE:"http://54.200.133.84/reaxium/Device/deleteBusinessDevice",
         PROXY_URL_GET_DEVICE_ID:"http://54.200.133.84/reaxium/Device/deviceInfo",
+        PROXY_URL_TRACKING_DEVICE:"http://54.200.133.84/reaxium/Device/getLocationDevice",
 
 
         /*Proxy Stops*/
@@ -105,7 +106,8 @@ angular.module("App")
         ID_DEVICE_MENU:3,
         ID_ROUTES_MENU:4,
         ID_STOPS_MENU:5,
-        ID_SUPER_USER:6
+        ID_SUPER_USER:6,
+        TIME_INTERVAL:5000
 
     })
 

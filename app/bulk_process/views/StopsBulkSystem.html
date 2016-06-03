@@ -59,8 +59,8 @@
                                                                          flow-file-error="someHandlerMethod($file,$message, $flow )"
                                                                          flow-files-submitted="$flow.upload()">
 
-                                                                        <button class="btn btn-info btn-flat" type="file" flow-btn>Upload File</button>
-                                                                        <a class="link-black" href="./model_reports/stops.csv">Download File Example</a>
+                                                                        <button class="btn btn-info btn-flat" type="file" flow-btn>Upload File<i class="fa fa-arrow-circle-up pull-right"></i></button>
+                                                                        <a class="link-black" href="./model_reports/stops.csv">Download File Example<i class="fa fa-arrow-circle-down color-black" style="margin-left: 10px;"></i></a>
 
                                                                         <div ng-repeat="file in $flow.files" class="transfer-box">
                                                                             {{file.relativePath}} ({{file.size}}bytes)

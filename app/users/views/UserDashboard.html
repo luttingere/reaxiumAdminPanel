@@ -75,7 +75,7 @@
                                             <tbody>
                                             <tr ng-repeat="user in userCtrl.users">
                                                 <td>{{user.first_name + " " + user.second_name}}</td>
-                                                <td>{{user.first_last_name + " " + user.second_last_name}}</td>
+                                                <td>{{user.first_last_name}}</td>
                                                 <td>{{user.document_id}}</td>
                                                 <td><a href="" ng-click="userCtrl.showPhoneInformation(user.user_id)">Phones</a>
                                                 </td>

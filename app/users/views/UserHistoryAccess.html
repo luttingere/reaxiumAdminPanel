@@ -132,7 +132,7 @@
                                             </div>
                                             <div ng-show="totalPages > 1" class="align-center">
                                                 <uib-pagination total-items="totalRecords" ng-model="filterCriteria.ReaxiumParameters.page" items-per-page="filterCriteria.ReaxiumParameters.limit" previous-text="previous" next-text="next" last-text="last"
-                                                                direction-links="true" rotate="false" ng-change="selectPage()"></uib-pagination>
+                                                                direction-links="true" rotate="false" ng-change="selectPage()" max-size="5"  boundary-link-numbers="true"></uib-pagination>
                                             </div>
 
                                         </div>

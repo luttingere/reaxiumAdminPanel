@@ -332,10 +332,13 @@ angular.module("App")
 
                         }else{
                             console.error("Error respuesta servicio: "+resp.ReaxiumResponse.code);
+                            spinnerService.hide("spinnerNew");
+                            growl.warning("User no has access in system");
                         }
                     }).catch(function(err){
                     console.error("Error obteniendo informacion de acceso del usuario:" +err);
                     $scope.accessAllUsers=[];
+                    spinnerService.hide("spinnerNew");
                 });
 
 

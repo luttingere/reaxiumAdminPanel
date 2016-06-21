@@ -86,13 +86,20 @@
                 <div class="row" ng-show="showTable">
                     <div class="col-lg-12">
                         <div class="content" style="min-height: 0px;">
-                            <div class="box box-primary">
-                                <div class="box-header bg-light-blue-active with-border ">
+                            <div class="box box-primary box-solid">
+                                <div class="box-header bg-light-blue-active with-border">
+
                                     <h3 class="box-title">Your selection of stops</h3>
+
+                                    <div class="box-tools pull-right">
+                                        <a class="btn btn-box-tool" ng-click="editTableStops()"
+                                           data-toggle="tooltip" title="Edit Stops">
+                                            <small><i class="fa fa-fw fa-pencil"></i></small>
+                                        </a>
+                                    </div><!-- /.box-tools -->
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
-                                    <table id="userTable"
-                                           class="table table-bordered table-striped">
+                                    <table id="stopsTable" class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
                                             <th>Number Stop</th>
@@ -102,10 +109,11 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="stop in listProcessStops">
-                                            <td>{{stop.stop_number}}</td>
-                                            <td>{{stop.stop_name}}</td>
-                                            <td style="text-align: center">{{stop.stop_address}}</td>
-                                            <!--<td><a ng-click="deleteStopsSelect(stop.id_stop)"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>-->
+                                            <td id="stopNumber_{{stop.id_stop}}">{{stop.stop_number}}</td>
+                                            <td id="stopName_{{stop.id_stop}}">{{stop.stop_name}}</td>
+                                            <td id="stopAddres_{{stop.id_stop}}" style="text-align: center">{{stop.stop_address}}</td>
+                                            <td id="stopLtd_{{stop.id_stop}}" ng-show="false">{{stop.stop_latitude}}</td>
+                                            <td id="stopLog_{{stop.id_stop}}" ng-show="false">{{stop.stop_longitude}}</td>
                                         </tr>
                                         </tbody>
                                         </tfoot>

@@ -3,6 +3,9 @@
  * Metodos utilitarios
  * */
 
+var numeros="0123456789";
+var letras="abcdefghyjklmnñopqrstuvwxyz";
+
 /**
  * Search object inside of array
  * @param obj
@@ -342,6 +345,43 @@ function addActiveClassMenu(arrayMenuOriginal,id_menu){
     return arrayMenu;
 }
 
+/**
+ * Generar un numero random aleatorio
+ * @param min
+ * @param max
+ * @returns {number}
+ */
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+/**
+ * Saber si un string contiene numeros
+ * @param texto
+ * @returns {number}
+ */
+function has_number(texto){
+    for(var i=0; i<texto.length; i++){
+        if (numeros.indexOf(texto.charAt(i),0)!=-1){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/**
+ * Saber si un string contiene letras
+ * @param texto
+ * @returns {number}
+ */
+function has_letters(texto){
+    texto = texto.toLowerCase();
+    for(var i=0; i<texto.length; i++){
+        if (letras.indexOf(texto.charAt(i),0)!=-1){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+

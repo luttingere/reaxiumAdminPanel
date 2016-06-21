@@ -155,7 +155,8 @@ app.controller('StopNewCtrl', function ($scope,
                             jsonAddressPlaces.stop_address = address.address;
                             var formatAddress = address.address.split(',');
                             var numberStop = formatAddress[0].split(' ');
-                            jsonAddressPlaces.stop_number = numberStop[0];
+
+                            jsonAddressPlaces.stop_number = has_number(numberStop[0]) > 0 ? numberStop[0] : getRandomInt(1000,9999);
                             jsonAddressPlaces.stop_name = formatAddress[0];
                             return;
                         }
@@ -165,6 +166,7 @@ app.controller('StopNewCtrl', function ($scope,
                 });
 
                 $log.debug($scope.listProcessStops);
+
 
             } else {
                 $scope.showTable = false;
@@ -197,14 +199,61 @@ app.controller('StopNewCtrl', function ($scope,
     }
 
 
+
+    function buildJsonSendStops(stop_id){
+
+        var arrayResponse = [];
+        var trTableMax = 5;
+        var cont=0;
+        $.each($('#stopsTable').find('tbody tr'), function (index, elemento) {
+            //cada parada
+
+            var objResponse = {stop_latitude:"",stop_longitude:"",stop_number:"",stop_name:"",stop_address:""};
+
+            $.each($(elemento).find('td'), function (index2, elementoTD) {
+
+                var id_td_table = $(elementoTD).attr('id');
+
+                if(id_td_table === 'stopNumber_'+stop_id){
+                    objResponse.stop_number = $(elementoTD).text();
+                    cont++;
+                }
+                else if(id_td_table === 'stopName_'+stop_id){
+                    objResponse.stop_name = $(elementoTD).text();
+                    cont++;
+                }
+                else if(id_td_table === 'stopAddres_'+stop_id){
+                    objResponse.stop_address = $(elementoTD).text();
+                    cont++
+                }
+                else if(id_td_table === 'stopLtd_'+stop_id){
+                    objResponse.stop_latitude = $(elementoTD).text();
+                    cont++
+                }
+                else if(id_td_table === 'stopLog_'+stop_id){
+                    objResponse.stop_longitude = $(elementoTD).text();
+                    cont++
+                }
+
+                if(cont == trTableMax){
+                    arrayResponse.push(objResponse);
+                    cont=0;
+                }
+            });
+
+        });
+
+        return arrayResponse;
+    }
+
     /**
      * Save stops method
      */
     $scope.saveStops = function () {
 
         if ($scope.listProcessStops.length > 0) {
-            spinnerService.show("spinnerNew");
-
+           // spinnerService.show("spinnerNew");
+           var arrayAux=[];
             var jsonSend = {
                 ReaxiumParameters: {
                     ReaxiumStops: {
@@ -214,7 +263,16 @@ app.controller('StopNewCtrl', function ($scope,
             };
 
             $scope.listProcessStops.forEach(function (entry) {
-                jsonSend.ReaxiumParameters.ReaxiumStops.object.push(entry);
+                arrayAux.push(buildJsonSendStops(entry.id_stop));
+            });
+
+            $log.debug("arrayAux: ",arrayAux);
+
+            arrayAux.forEach(function(entry){
+
+                entry.forEach(function(stops){
+                    jsonSend.ReaxiumParameters.ReaxiumStops.object.push(stops);
+                });
             });
 
             $log.debug("Arreglo_final: ", jsonSend);
@@ -238,7 +296,7 @@ app.controller('StopNewCtrl', function ($scope,
                     spinnerService.hide("spinnerNew");
                     console.error("Error creado nueva ruta " + err);
                     growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
-                })
+                });
 
         } else {
             console.log("Arreglo vacio no se puede guardar las paradas");
@@ -275,6 +333,13 @@ app.controller('StopNewCtrl', function ($scope,
                 $scope.address.push({id:id,address:addressDefault});
             });
     }
+
+
+
+    $scope.editTableStops = function(){
+        $('#stopsTable').editableTableWidget().find('td:first').focus();
+    }
+
 });
 
 app.controller('infoWindowCtrl', function ($scope, $log, StopsService) {

@@ -33,6 +33,7 @@ angular.module('App')
         var nameImageUpload = "";
         var loadServices = true;
 
+
         $scope.users = {
             document_id: "",
             first_name: "",
@@ -568,11 +569,25 @@ angular.module('App')
 
             console.log(message);
             var obj = JSON.parse(message);
-
             if (obj.success) {
+
                 nameImageUpload = obj.flowFilename;
-            } else {
-                nameImageUpload = FILE_SYSTEM_ROUTE.IMAGE_DEFAULT_USER;
+            }
+            else {
+                //nameImageUpload = FILE_SYSTEM_ROUTE.IMAGE_DEFAULT_USER;
+                flow.files.length = 0;
+
+                if(obj.codeError == 1){
+                    growl.warning("Image too large to process, maximum size allowed is 600 * 400.");
+                    console.error("Imagen demasiada grande para subirla al servidor");
+                }
+                else if(obj.codeError == 2){
+                    growl.warning("File Extension is not valid for upload to the server,allowed extensions are png, jpg and jpeg.");
+                    console.error("Extension invalida de archivo");
+                }else{
+                    growl.error("Right now you can not upload images to the server Please try again later.");
+                    console.error("Error subiendo archivos al servidor");
+                }
             }
             console.log("Nombre archivo cargado: " + nameImageUpload);
         }

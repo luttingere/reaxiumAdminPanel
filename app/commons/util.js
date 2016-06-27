@@ -199,7 +199,7 @@ function validateParamNewUser(obj, mode) {
 
             if (!isEmptyArray(arrayStake)) {
                 response.validate = false;
-                response.message = "No relationShip StakeHolder";
+                response.message = "Please add a student relationship to proceed";
             }
         }
     }

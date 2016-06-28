@@ -142,10 +142,16 @@ function validateParamNewUser(obj, mode) {
     }
       else if (objUsers.birthdate == undefined || isEmptyString(objUsers.birthdate) ||
         objUsers.birthdate.trim().toLowerCase() === "Invalid date".trim().toLowerCase()) {
-        response.validate = false;
-        response.message = "Birthdate field must not be empty";
 
-    } else if (objUsers.email == undefined || isEmptyString(objUsers.email) || !objUsers.email.match(expRegEmail)) {
+            response.validate = false;
+            response.message = "Birthdate field must not be empty";
+
+    }else if(!validateDateBirthDate(objUsers.birthdate,true)){
+
+        response.validate = false;
+        response.message = "Date format invalid";
+    }
+    else if (objUsers.email == undefined || isEmptyString(objUsers.email) || !objUsers.email.match(expRegEmail)) {
         if(objUsers.user_type_id != 2){
             response.validate = false;
             response.message = "Email field invalid";
@@ -385,3 +391,82 @@ function has_letters(texto){
 }
 
 
+function validateDateBirthDate(fecha){
+
+    var validate = true;
+
+    if(validarFormatoFecha(fecha)){
+        if(existeFecha(fecha)){
+            if(!validarFechaMenorActual(fecha)){
+                validate=false;
+                console.log("Fecha es mayor a la actual");
+            }
+        }else{
+            validate=false;
+            console.log("Fecha es no existe es incorrecta");
+        }
+    }else{
+        validate=false;
+        console.log("Fecha tiene un formato desconocido");
+    }
+
+    return validate;
+}
+
+/**
+ *
+ * @param campo
+ * @returns {boolean}
+ */
+function validarFormatoFecha(campo) {
+    var RegExPattern = /^\d{1,2}\/\d{1,2}\/\d{2,4}$/;
+    if ((campo.match(RegExPattern)) && (campo!='')) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+/**
+ *
+ * @param fecha
+ * @returns {boolean}
+ */
+function existeFecha(fecha){
+    var fechaf = fecha.split("/");
+    var day = fechaf[0];
+    var month = fechaf[1];
+    var year = fechaf[2];
+    var date = new Date(year,month,'0');
+    if((day-0)>(date.getDate()-0)){
+        return false;
+    }
+    return true;
+}
+
+/**
+ *
+ * @param fecha
+ * @returns {boolean}
+ */
+function existeFecha2 (fecha) {
+    var fechaf = fecha.split("/");
+    var d = fechaf[0];
+    var m = fechaf[1];
+    var y = fechaf[2];
+    return m > 0 && m < 13 && y > 0 && y < 32768 && d > 0 && d <= (new Date(y, m, 0)).getDate();
+}
+
+
+function validarFechaMenorActual(date){
+    var x=new Date();
+    var fecha = date.split("/");
+    x.setFullYear(fecha[2],fecha[1]-1,fecha[0]);
+    var today = new Date();
+
+    if (x >= today)
+        return false;
+    else
+        return true;
+}

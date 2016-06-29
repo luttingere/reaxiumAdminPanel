@@ -291,6 +291,9 @@ angular.module('App')
            UserService.getAllStatusUser()
             .then(function (result) {
                 $scope.allStatusUser = result;
+                $scope.selectUserStatus = {status_id:'1'};
+                $scope.disableStatus = true;
+
 
             }).catch(function (err) {
                 console.error("Error servicio allStatusUser: " + err);
@@ -303,6 +306,7 @@ angular.module('App')
                 .then(function (result) {
                     $log.debug(result);
                     $scope.allUserType = result;
+
 
                     //validate mode edit
                     if (UserService.getModeEdit().isModeEdit) {
@@ -373,8 +377,10 @@ angular.module('App')
                                     });
 
                                     $scope.selectTypeUser = (result[0].user_type != null) ? result[0].user_type.user_type_id : 0;
-                                    $scope.status_id = result[0].status.status_id;
                                     $scope.selectAccT = (result[0].user_type != null) ? result[0].user_type.user_type_id : 0;
+
+                                    $scope.selectUserStatus = {status_id:result[0].status.status_id};
+                                    $scope.disableStatus = false;
 
 
                                     if ($scope.selectTypeUser == 3) {
@@ -646,7 +652,8 @@ angular.module('App')
                             user_photo: pathImage,
                             birthdate: formatDate($scope.users.birthdate),
                             email: $scope.users.email,
-                            business_id: $scope.users.business_id
+                            business_id: $scope.users.business_id,
+                            status_id:$scope.selectUserStatus.status_id
 
                         },
                         PhoneNumbers: [
@@ -750,7 +757,8 @@ angular.module('App')
                             user_photo: pathImage,
                             birthdate: formatDate($scope.users.birthdate),
                             email: $scope.users.email,
-                            business_id: $scope.users.business_id
+                            business_id: $scope.users.business_id,
+                            status_id:$scope.selectUserStatus.status_id
 
                         },
                         PhoneNumbers: [

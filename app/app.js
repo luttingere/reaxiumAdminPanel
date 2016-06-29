@@ -15,13 +15,22 @@ angular.module('App', ['ui.router',
         'angular-growl',
         'angular-confirm'])
 
+
+
     //Aqui lo primero que se ejecuta en angular como el document Ready en jquery
     .run(['$templateCache', '$rootScope','$interval', function ($templateCache, $rootScope,$interval) {
-        $templateCache.put('searchbox.tpl.html', '<input class="form-control" type="text" placeholder="Place an address...">');
+
+        //remover el cache de la aplicacion
+        $rootScope.$on('$destroy', function() {
+            $templateCache.removeAll();
+        });
+
         $templateCache.put('sort-by.html', '<a ng-click="sort(sortvalue)"><span ng-transclude=""></span><span ng-show="sortedby == sortvalue">&nbsp;&nbsp;<i ng-class="{true: \'fa fa-sort-up\', false: \'fa fa-sort-desc\'}[sortdir == \'asc\']"></i></span></a>');
+        $templateCache.put('searchbox.tpl.html', '<input class="form-control" type="text" placeholder="Place an address...">');
 
         $rootScope.welcomePage = 'app/home/views/content.html';
 
+        //controllar el intervalo del proceso del tracking
         $rootScope.$on('$stateChangeStart', function() {
             $interval.cancel(interval);
         });

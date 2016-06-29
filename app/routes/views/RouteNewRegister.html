@@ -21,11 +21,11 @@
 
             <!-- Content Header (Page header) -->
             <section class="content-header">
-                <h1>Register New Route</h1>
+                <h1>Create New Route</h1>
                 <ol class="breadcrumb">
                     <li><a ui-sref="home"><i class="fa fa-dashboard"></i>Home</a></li>
                     <li><a ui-sref="routes">All Routes</a></li>
-                    <li class="active"><a>New Routes</a></li>
+                    <li class="active"><a>New Route</a></li>
                 </ol>
 
             </section>
@@ -38,7 +38,7 @@
                         <div class="content" style="min-height: 0px;">
                             <div class="box box-primary">
                                 <div class="box-header bg-light-blue-active with-border ">
-                                    <h3 class="box-title">Create Route</h3>
+                                    <h3 class="box-title">Route Information</h3>
                                 </div><!-- /.box-header -->
 
                                 <!-- form start -->
@@ -46,10 +46,10 @@
                                     <div class="box-body">
                                         <div class="form-group">
                                             <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="id_number_route" placeholder="Number Route" ng-model="numberRoute" ng-disabled="disabledFields">
+                                                <input type="text" class="form-control" id="id_number_route" placeholder="Route Number" ng-model="numberRoute" ng-disabled="disabledFields">
                                             </div>
                                             <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="id_name_route" placeholder="Name Route" ng-model="nameRoute" ng-disabled="disabledFields">
+                                                <input type="text" class="form-control" id="id_name_route" placeholder="Route Name" ng-model="nameRoute" ng-disabled="disabledFields">
                                             </div>
                                         </div>
                                     </div><!-- /.box-body -->
@@ -60,7 +60,7 @@
                                         <div class="form-group">
                                             <div class="col-sm-6">
                                                 <select class="form-control" style="width: 100%;" ng-model="selectTypeRoute">
-                                                    <option value="">Please select</option>
+                                                    <option value="">Route Direction</option>
                                                     <option value="1" ng-selected="selectTypeRoute == 1">Pick Up</option>
                                                     <option value="2" ng-selected="selectTypeRoute == 2">Drop Off</option>
                                                 </select>
@@ -80,7 +80,7 @@
                         <div class="content" style="min-height: 0px; ">
                             <div class="box box-primary box-solid">
                                 <div class="box-header bg-light-blue-active with-border">
-                                    <h3 class="box-title">Stops RelationShip Route</h3>
+                                    <h3 class="box-title">Route Stops</h3>
 
 
                                 </div><!-- /.box-header -->

@@ -21,9 +21,9 @@ angular.module('App', ['ui.router',
     .run(['$templateCache', '$rootScope','$interval', function ($templateCache, $rootScope,$interval) {
 
         //remover el cache de la aplicacion
-        $rootScope.$on('$destroy', function() {
+       /* $rootScope.$on('$destroy', function() {
             $templateCache.removeAll();
-        });
+        });*/
 
         $templateCache.put('sort-by.html', '<a ng-click="sort(sortvalue)"><span ng-transclude=""></span><span ng-show="sortedby == sortvalue">&nbsp;&nbsp;<i ng-class="{true: \'fa fa-sort-up\', false: \'fa fa-sort-desc\'}[sortdir == \'asc\']"></i></span></a>');
         $templateCache.put('searchbox.tpl.html', '<input class="form-control" type="text" placeholder="Place an address...">');

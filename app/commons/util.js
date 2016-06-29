@@ -149,7 +149,7 @@ function validateParamNewUser(obj, mode) {
     }else if(!validateDateBirthDate(objUsers.birthdate,true)){
 
         response.validate = false;
-        response.message = "Date format invalid";
+        response.message = "Invalid date format. Please verify that is mm/dd/yyyy.";
     }
     else if (objUsers.email == undefined || isEmptyString(objUsers.email) || !objUsers.email.match(expRegEmail)) {
         if(objUsers.user_type_id != 2){

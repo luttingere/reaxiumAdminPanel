@@ -28,7 +28,9 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li class="header">Admin Options</li>
-            <li><a ui-sref="home"><i class="fa fa-home"></i>Home</a></li>
+            <li><a ui-sref="home">
+                <i class="fa fa-home"></i><span>Home</span></a>
+            </li>
             <!--class="active treeview" ng-class="{active: menu.class_active_menu}"-->
             <li ng-class="{active: menu.class_active_menu}" ng-repeat="menu in menus | filter:{name:menuOptions.searchWord}">
                 <a>

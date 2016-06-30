@@ -34,10 +34,6 @@ angular.module("App")
 
     $scope.routeTableHeaders = [
         {
-            title: 'Route ID',
-            value: 'id_route'
-        },
-        {
         title: 'Route Number',
         value: 'route_number'
     }, {

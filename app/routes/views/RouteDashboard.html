@@ -57,7 +57,7 @@
                                     <div class="box-body">
 
                                         <div>
-                                            <input class="form-control reduceSize" placeholder="Search here..." on-enter-blur on-blur-change="filterResult()" ng-model="filterCriteria.ReaxiumParameters.filter" type="text" />
+                                            <input class="form-control reduceSize" placeholder="Search by name or number" on-enter-blur on-blur-change="filterResult()" ng-model="filterCriteria.ReaxiumParameters.filter" type="text" />
                                         </div>
 
                                         <table id="userTable" class="table table-bordered table-striped">
@@ -66,13 +66,12 @@
                                                 <th ng-repeat="header in routeTableHeaders">
                                                     <sort-by onsort="onSort" sortdir="filterCriteria.ReaxiumParameters.sortDir" sortedby="filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
                                                 </th>
-                                                <th>Quantity Stop</th>
+                                                <th>Number of Stops</th>
                                                 <th>Actions</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <tr ng-repeat="obj in routes">
-                                                <td>{{obj.id_route}}</td>
                                                 <td>{{obj.route_number}}</td>
                                                 <td>{{obj.route_name}}</td>
                                                 <td>{{obj.route_address}}</td>

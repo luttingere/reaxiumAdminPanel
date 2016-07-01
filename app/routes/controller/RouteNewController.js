@@ -362,8 +362,8 @@ angular.module("App")
          */
         $scope.cleanStops = function () {
             $scope.allListStopSelect = [];
-            $scope.polylines[0].path = [];
             $scope.listMarker = [];
+            directionsDisplay.setMap(null);
         };
 
         /**

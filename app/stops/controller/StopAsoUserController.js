@@ -22,7 +22,9 @@ angular.module("App")
 
         $scope.userFilter = [];
         $scope.listUserSelect = [];
+        $scope.selectRoute = null;
         $scope.showUserTable = false;
+        $scope.listRoutesAsoStops = [];
 
         var filterCondition = {
             ReaxiumParameters: {
@@ -51,9 +53,33 @@ angular.module("App")
                 console.log("Id stops: " + $stateParams.id_stop);
                 console.log("Mode asocciate User Stop: " + $stateParams.modeAsocStopUser);
 
+
                 if(!isEmptyString($stateParams.id_stop) && $stateParams.id_stop != null){
 
                     StopsService.setModeAsociateUserStop({modeAsociateUserStop:$stateParams.modeAsocStopUser,id_stop:$stateParams.id_stop});
+
+                    //validar si la parada tiene rutas asociadas
+                    StopsService.routeAsociateStop($stateParams.id_stop)
+                        .then(function(result){
+
+                            if(result.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+                                $log.debug("Rutas asociadas: ",result.ReaxiumResponse.object);
+                                result.ReaxiumResponse.object.forEach(function(entry){
+                                    $scope.listRoutesAsoStops.push(entry.route);
+                                });
+                            }else{
+                                console.error("Error invocando el servicio: "+result.ReaxiumResponse.message);
+                                StopsService.setShowGrowlMessage({
+                                    isShow: true,
+                                    message: result.ReaxiumResponse.message
+                                });
+                                $state.go("stops");
+                            }
+                        }).catch(function(err){
+                            console.error("Error invocando el servicio: "+err);
+
+                    });
+
 
                     if ($sessionStorage.rol_user == GLOBAL_CONSTANT.USER_ROL_CALL_CENTER) {
 
@@ -141,6 +167,7 @@ angular.module("App")
                 $scope.showUserTable = true;
                 objUser = str.originalObject;
                 $scope.listUserSelect.push(objUser);
+
             }
             else{
                 console.log("Usuario ya esta preseleccionado");
@@ -164,7 +191,7 @@ angular.module("App")
 
             $.each($('#userStopsTable').find('tbody tr'), function (index, elemento) {
 
-                var objResponse = {code:0,message:"",id_stop:"",user_id:"",start_time:"",end_time:""};
+                var objResponse = {code:0,message:"",id_stop:"",user_id:"",start_time:"",end_time:"",id_route:""};
 
                 //cada usuario
                 $.each($(elemento).find('td'), function (index2, elementoTD) {
@@ -206,8 +233,22 @@ angular.module("App")
                                 return false;
                             }
                         }
+                        else if(id_td_table === 'stops_aso_route_' + id_user){
 
-                        if(cont == 3){
+                            var stops_aso_route = $('#selectRoutes_'+ id_user).val();
+
+                            if(stops_aso_route != ""){
+                                objResponse.id_route = stops_aso_route;
+                                cont++;
+                            }else{
+                                objResponse.code = 1;
+                                objResponse.message = "route select empty";
+                                arrayResponse.push(objResponse);
+                                return false;
+                            }
+                        }
+
+                        if(cont == 4){
                             objResponse.code = 0;
                             objResponse.message = "";
                             objResponse.id_stop = StopsService.getModeAsociateUserStop().id_stop;
@@ -273,7 +314,8 @@ angular.module("App")
                             id_stop:obj.id_stop,
                             user_id:obj.user_id,
                             start_time:obj.start_time,
-                            end_time:obj.end_time
+                            end_time:obj.end_time,
+                            id_route:obj.id_route
                         });
 
                     }else{

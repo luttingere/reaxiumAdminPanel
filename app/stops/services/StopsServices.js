@@ -202,6 +202,27 @@ angular.module('App')
             return promise;
         }
 
+
+        lookUpStops.getRouteAsociateStop = function(id_stop){
+
+            var defered = $q.defer();
+            var promise = defered.promise;
+
+            $http({
+                method: 'POST',
+                data: JSON.stringify({ReaxiumParameters:{ReaxiumStops:{stop_id:id_stop}}}),
+                url: CONST_PROXY_URL.PROXY_URL_ROUTES_ASSOCIATE_STOP
+            }).success(function (response) {
+                defered.resolve(response);
+
+            }).error(function (err) {
+                defered.reject(err);
+            });
+
+            return promise;
+        }
+
+
         return lookUpStops;
     })
     .service("StopsService", function (StopsLookup) {
@@ -301,5 +322,9 @@ angular.module('App')
 
         this.getAddressGoogleApi = function(geo){
             return StopsLookup.getAddressApiGoogle(geo);
+        }
+
+        this.routeAsociateStop = function(id_stop){
+            return StopsLookup.getRouteAsociateStop(id_stop);
         }
     })

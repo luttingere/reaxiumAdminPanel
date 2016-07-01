@@ -178,9 +178,9 @@
                                                 </li>
                                                 <ul>
                                                     <div ng-repeat="stopsObj in userCtrl.userFound.stopsUserRelationship">
-                                                        <li type="none" style="text-align: left" ng-repeat="routes in stopsObj.stops.routes">
-                                                            <a href="" ng-click="sendRouteId(routes.Routes.id_route)">
-                                                                <span class="users-list-date">{{routes.Routes.route_number + ' - '+ routes.Routes.route_name}} - {{routes.Routes.route_type == 1 ? 'Pick Up' : 'Drop Off'}}</span>
+                                                        <li type="none" style="text-align: left">
+                                                            <a href="" ng-click="sendRouteId(stopsObj.stops.routes.id_route)">
+                                                                <span class="users-list-date">{{stopsObj.stops.routes.route_number + ' - '+ stopsObj.stops.routes.route_name}} - {{stopsObj.stops.routes.route_type == 1 ? 'Pick Up' : 'Drop Off'}}</span>
                                                             </a>
                                                         </li>
                                                     </div>
@@ -267,9 +267,9 @@
                                                 <ul>
                                                     <div ng-repeat="stopsObj in userCtrl.userFound.stopsUserRelationship"
                                                          ng-if="userRelation.user_id == stopsObj.stops.user_id">
-                                                        <li type="none" style="text-align: left" ng-repeat="routes in stopsObj.stops.routes">
-                                                            <a href="" ng-click="sendRouteId(routes.Routes.id_route)">
-                                                                <span class="users-list-date">{{routes.Routes.route_number + ' - '+ routes.Routes.route_name}} - {{routes.Routes.route_type == 1 ? 'Pick Up' : 'Drop Off'}}</span>
+                                                        <li type="none" style="text-align: left">
+                                                            <a href="" ng-click="sendRouteId(stopsObj.stops.routes.id_route)">
+                                                                <span class="users-list-date">{{stopsObj.stops.routes.route_number + ' - '+ stopsObj.stops.routes.route_name}} - {{stopsObj.stops.routes.route_type == 1 ? 'Pick Up' : 'Drop Off'}}</span>
                                                             </a>
                                                         </li>
                                                     </div>

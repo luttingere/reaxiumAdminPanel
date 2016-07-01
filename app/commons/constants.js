@@ -67,6 +67,7 @@ angular.module("App")
         PROXY_URL_GET_STOP_BY_ID:"http://localhost:8080/ProyectosGAndG/reaxiumCloud/Stops/getStopById",
         PROXY_URL_GET_USERS_BY_STOP:"http://localhost:8080/ProyectosGAndG/reaxiumCloud/Stops/getUserByStops",
         PROXY_URL_DELETE_USERS_BY_STOP:"http://localhost:8080/ProyectosGAndG/reaxiumCloud/Stops/deleteUserRelationShipStop",
+        PROXY_URL_ROUTES_ASSOCIATE_STOP:"http://localhost:8080/ProyectosGAndG/reaxiumCloud/Stops/associationStopsWithRoute",
 
         /*Proxy Routes*/
         PROXY_URL_ALL_ROUTES: "http://localhost:8080/ProyectosGAndG/reaxiumCloud/Routes/allRoutesWithPagination",

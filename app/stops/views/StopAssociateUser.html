@@ -95,6 +95,7 @@
                                                                 <th>ID</th>
                                                                 <th>Start Date</th>
                                                                 <th>End Date</th>
+                                                                <th>Route</th>
                                                                 <th>Actions</th>
                                                             </tr>
                                                             </thead>
@@ -102,7 +103,7 @@
                                                             <tr ng-repeat="user in listUserSelect">
                                                                 <td id="id_user_{{user.user_id}}" ng-hide="true">{{user.user_id}}</td>
                                                                 <td id="name_user_{{user.user_id}}">{{user.first_name + " " + user.second_name}}</td>
-                                                                <td id="last_name_{{user.user_id}}">{{user.first_last_name + " " + user.second_last_name}}</td>
+                                                                <td id="last_name_{{user.user_id}}">{{user.first_last_name}}</td>
                                                                 <td id="document_{{user.user_id}}">{{user.document_id}}</td>
                                                                 <td id="timepicker_start_{{user.user_id}}">
                                                                     <div class="input-group bootstrap-timepicker timepicker" id="div_start_{{user.user_id}}">
@@ -113,6 +114,15 @@
                                                                     <div class="input-group bootstrap-timepicker timepicker" id="div_end_{{user.user_id}}">
                                                                         <input  id="id_input_end_{{user.user_id}}" type="text" class="form-control input-small" ng-focus="timePickerEnd(user.user_id)">
                                                                     </div>
+                                                                </td>
+                                                                <td id="stops_aso_route_{{user.user_id}}">
+                                                                    <select class="form-control" style="width: 100%;"
+                                                                            id="selectRoutes_{{user.user_id}}"
+                                                                            name="selectRoutes_{{user.user_id}}"
+                                                                            ng-options='option.id_route as (option.route_number+" - "+option.route_name)  for option in listRoutesAsoStops track by option.id_route'
+                                                                            ng-model="selectRoute">
+                                                                        <option value="">Select Route</option>
+                                                                    </select>
                                                                 </td>
                                                                 <td id="delete_{{user.user_id}}"><a data-toggle="tooltip" title="Delete Stop" ng-click="deleteUserTable(user.user_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
                                                             </tr>

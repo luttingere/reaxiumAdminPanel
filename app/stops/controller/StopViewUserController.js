@@ -93,6 +93,10 @@ angular.module("App")
                         }
                         else {
                             console.info("Error: " + resp.message);
+                            $scope.listUsersByStop = [];
+                            $scope.totalPages = 0;
+                            $scope.totalRecords = 0;
+                            $scope.showTableRoute = false;
                             growl.warning(resp.message);
                         }
                         spinnerService.hide("spinnerNew");

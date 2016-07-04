@@ -112,8 +112,8 @@
                                                             <tbody>
                                                             <tr ng-repeat="user in allUserSelcStakeHolder">
                                                                 <td id="userId_{{user.user_id}}" ng-hide="true">{{user.user_id}}</td>
-                                                                <td id="userName_{{user.user_id}}">{{user.first_name + " " + user.first_name}}</td>
-                                                                <td id="secondName_{{user.user_id}}">{{user.second_name + " " + user.second_name}}</td>
+                                                                <td id="userName_{{user.user_id}}">{{user.first_name}} {{user.second_name}}</td>
+                                                                <td id="secondName_{{user.user_id}}">{{user.first_last_name}}</td>
                                                                 <td id="id_{{user.user_id}}">{{user.document_id}}</td>
 
                                                                 <td id="userPassword_{{user.user_id}}" style="text-align: center">

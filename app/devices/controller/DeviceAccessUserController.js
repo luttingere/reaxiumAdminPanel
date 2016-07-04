@@ -184,6 +184,7 @@ angular.module("App")
                                         objAccessUser.document_id = str.originalObject.document_id;
                                         objAccessUser.first_name = str.originalObject.first_name;
                                         objAccessUser.second_name = str.originalObject.second_name;
+                                        objAccessUser.first_last_name = str.originalObject.first_last_name;
                                         objAccessUser.login_and_pass = {};
                                         objAccessUser.biometric = {};
                                         objAccessUser.rfid = {};

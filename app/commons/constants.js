@@ -134,7 +134,7 @@ angular.module("App")
         MESSAGE_DELETE_USERS_OF_DEVICE:"User associated with the device successfully removed",
         MESSAGE_ROUTE_CREATE_SUCCESS:"Route created successfully",
         MESSAGE_DELETE_ROUTE:"Route successfully removed",
-        MESSAGE_ASSOCIATE_USER_WITH_STOP:"Associating user successfully stop",
+        MESSAGE_ASSOCIATE_USER_WITH_STOP:"User successfully linked to the stop",
         MESSAGE_CREATE_NEW_STOPS:"Stops successfully created",
         MESSAGE_DELETE_STOP:"Stop successfully removed",
         MESSAGE_DELETE_USER_OF_STOP:"User removed successfully stop",

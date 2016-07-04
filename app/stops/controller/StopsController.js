@@ -127,25 +127,65 @@ angular.module('App')
          */
         $scope.deleteStop = function(id_stop){
 
-            $confirm({text: GLOBAL_MESSAGE.MESSAGE_CONFIRM_ACTION})
-                .then(function() {
-                    spinnerService.show("spinnerNew");
-                    StopsService.deleteStops(id_stop)
-                        .then(function(resp){
-                            spinnerService.hide("spinnerNew");
-                            if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
-                                $scope.selectPage(1);
-                                growl.success(GLOBAL_MESSAGE.MESSAGE_DELETE_STOP);
-                            }else{
-                                growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
-                            }
-                        })
-                        .catch(function(err){
-                            console.error("Error invocando servicio delete: "+err);
-                            spinnerService.hide("spinnerNew");
-                            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+            StopsService.routeAsociateStop(id_stop)
+                .then(function(resp){
+
+                    $log.debug('Respuesta servicio',resp);
+
+                    if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+
+                        var listRoutes =[];
+
+                        resp.ReaxiumResponse.object.forEach(function(entry){
+                            listRoutes.push(entry.route);
                         });
+
+                        var text = 'The selected stop is related routes: ';
+                        listRoutes.forEach(function(entry){
+                            text += '\n' + '* '+entry.route_number + ' - ' + entry.route_name;
+                        });
+
+                        text +='\n'+'disassociate routes to eliminate stop';
+                        BootstrapDialog.show({
+                            title: 'Attention',
+                            message:text,
+                            buttons: [{
+                                label: 'Close',
+                                action: function(dialog) {
+                                    dialog.close();
+                                }
+                            }]
+                        });
+
+                    }
+                    else if(resp.ReaxiumResponse.code == 1){
+
+                        $confirm({text: GLOBAL_MESSAGE.MESSAGE_CONFIRM_ACTION})
+                            .then(function() {
+                                spinnerService.show("spinnerNew");
+                                StopsService.deleteStops(id_stop)
+                                    .then(function(resp){
+                                        spinnerService.hide("spinnerNew");
+                                        if(resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE){
+                                            $scope.selectPage(1);
+                                            growl.success(GLOBAL_MESSAGE.MESSAGE_DELETE_STOP);
+                                        }else{
+                                            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                                        }
+                                    })
+                                    .catch(function(err){
+                                        console.error("Error invocando servicio delete: "+err);
+                                        spinnerService.hide("spinnerNew");
+                                        growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                                    });
+                            });
+                    }
+                })
+                .catch(function(err){
+                    console.error("Error invocando servicio routeAsociateStop: "+err);
+                    growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                 });
+
         };
 
 

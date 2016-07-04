@@ -128,13 +128,12 @@
                                                     <div class="box-body">
                                                         <div class="form-group">
                                                             <select class="form-control" style="width: 100%;"
-                                                                    ng-model="business.status_id">
-                                                                <option value="">Please select</option>
-                                                                <option ng-selected="business.status_id == obj.status_id"
-                                                                        ng-repeat="obj in allStatus"
-                                                                        value="{{obj.status_id}}">{{obj.status_name |
-                                                                    lowerCase | capitalize}}
-                                                                </option>
+                                                                    id="statusBusiness"
+                                                                    name="statusBusiness"
+                                                                    ng-disabled="disableStatus"
+                                                                    ng-options="option.status_name | lowerCase | capitalize for option in allStatus track by option.status_id"
+                                                                    ng-model="selectUserStatus">
+                                                                <option value="">Please Select</option>
                                                             </select>
                                                         </div><!-- /.form-group -->
                                                     </div>

@@ -153,6 +153,10 @@ angular.module('App')
             var myStatus = BusinessService.getAllStatus();
             myStatus.then(function (result) {
                 $scope.allStatus = result;
+                $scope.selectUserStatus = {status_id:'1'};
+                $scope.disableStatus = true;
+
+
             }).catch(function (err) {
                 console.error("Error servicio allStatus: " + err);
             });
@@ -173,7 +177,10 @@ angular.module('App')
                         $scope.business.business_id = result[0].business_id;
                         $scope.business.business_name = result[0].business_name;
                         $scope.business.business_id_number = result[0].business_id_number;
-                        $scope.business.status_id = result[0].status_id;
+                        //$scope.business.status_id = result[0].status_id;
+
+                        $scope.selectUserStatus = {status_id:result[0].status_id};
+                        $scope.disableStatus = false;
 
                         //Address
                         addressObj.address_id = result[0].addres == null ? null : result[0].addres.address_id;
@@ -234,7 +241,7 @@ angular.module('App')
                         business_id: $scope.business.business_id,
                         business_name: $scope.business.business_name,
                         business_id_number: $scope.business.business_id_number,
-                        status_id:$scope.business.status_id
+                        status_id:$scope.selectUserStatus.status_id
                     },
                     BusinessPhoneNumbers:
                         {

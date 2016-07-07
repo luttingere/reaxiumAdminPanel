@@ -82,15 +82,7 @@ angular.module("App")
                         }
                         else{
                             console.error("Error service: "+resp.ReaxiumResponse.message);
-
-                            if(resp.ReaxiumResponse.code == 1){
-                                growl.error("School is not Registered in the System.");
-                            }else if(resp.ReaxiumResponse.code == 2){
-                                growl.error("Invalid User Type.");
-                            }else{
-                                growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
-                            }
-
+                            growl.error(resp.ReaxiumResponse.message);
                         }
 
                     })

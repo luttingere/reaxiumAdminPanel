@@ -85,7 +85,7 @@ angular.module("App")
                         }
                         else{
                             console.error("Error service: "+resp.ReaxiumResponse.message);
-                            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                            growl.error(resp.ReaxiumResponse.message);
                         }
 
                     })

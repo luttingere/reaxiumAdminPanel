@@ -488,6 +488,7 @@ angular.module("App")
                       }else{
                           console.error("Error cargado ruta en el mapa: "+status);
                           objSend.ReaxiumParameters.ReaxiumRoutes.overview_polyline = null;
+                          growl.error("Unable to load this route, stops are not valid to create the route.");
                       }
 
                   });

@@ -139,7 +139,7 @@ angular.module("App")
                 if (result.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
                     $scope.userFilter = [];
                     var array = result.ReaxiumResponse.object;
-                    console.log("size:" + array.length);
+
                     array.forEach(function (entry) {
                         var aux = {
                             first_name: entry.first_name,
@@ -149,6 +149,7 @@ angular.module("App")
                             user_id: entry.user_id,
                             document_id: entry.document_id,
                             email: entry.email,
+                            typeUser: entry.user_type_id,
                             pic: entry.user_photo
                         };
 
@@ -161,13 +162,19 @@ angular.module("App")
 
 
         $scope.addUser = function (str) {
-            $log.debug(objUser);
+
+            $log.debug(str);
 
             if(!searchObjList(str.originalObject.user_id)){
-                $scope.showUserTable = true;
-                objUser = str.originalObject;
-                $scope.listUserSelect.push(objUser);
 
+                if(str.originalObject.typeUser == 2){
+                    $scope.showUserTable = true;
+                    objUser = str.originalObject;
+                    $scope.listUserSelect.push(objUser);
+                }else{
+                    console.log("Usuario no es un estudiante");
+                    growl.warning("You can only associate a user with student role.");
+                }
             }
             else{
                 console.log("Usuario ya esta preseleccionado");
@@ -249,11 +256,22 @@ angular.module("App")
                         }
 
                         if(cont == 4){
-                            objResponse.code = 0;
-                            objResponse.message = "";
-                            objResponse.id_stop = StopsService.getModeAsociateUserStop().id_stop;
-                            arrayResponse.push(objResponse);
-                            cont = 0;
+
+                            //valido las horas para probar si son validas
+
+                            if(compararDosHoras(objResponse.start_time,objResponse.end_time)){
+                                objResponse.code = 0;
+                                objResponse.message = "";
+                                objResponse.id_stop = StopsService.getModeAsociateUserStop().id_stop;
+                                arrayResponse.push(objResponse);
+                                cont = 0;
+                            }else{
+                                objResponse.code = 1;
+                                objResponse.message = "The start time may not be greater than the initial.";
+                                arrayResponse.push(objResponse);
+                                return false;
+                            }
+
                         }
                     }
                 });

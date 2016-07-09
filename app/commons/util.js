@@ -470,3 +470,17 @@ function validarFechaMenorActual(date){
     else
         return true;
 }
+
+function compararDosHoras(starTimep,endTimep){
+
+    var startTime = moment(starTimep,'HH:mm:ss');
+    var endTime = moment(endTimep,'HH:mm:ss');
+
+    if(startTime.isBefore(endTime)){
+        return true;
+    }
+    else{
+        return false;
+    }
+
+}

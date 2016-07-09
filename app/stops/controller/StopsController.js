@@ -140,12 +140,13 @@ angular.module('App')
                             listRoutes.push(entry.route);
                         });
 
-                        var text = 'The selected stop is related routes: ';
+                        var text = 'The stop that you have selected is part of the following route(s):';
                         listRoutes.forEach(function(entry){
                             text += '\n' + '* '+entry.route_number + ' - ' + entry.route_name;
                         });
 
-                        text +='\n'+'disassociate routes to eliminate stop';
+                        text +='\n'+'Please remove it from the routes above to continue.';
+
                         BootstrapDialog.show({
                             title: 'Attention',
                             message:text,

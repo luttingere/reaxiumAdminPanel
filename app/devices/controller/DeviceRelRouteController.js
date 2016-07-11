@@ -191,7 +191,12 @@ angular.module("App")
                             if (resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
                                 DeviceService.setShowGrowlMessage({isShow: true, message: GLOBAL_MESSAGE.MESSAGE_ASSOCIATE_DEVICE_WITH_ROUTES})
                                 $state.go('device');
-                            } else {
+                            }
+                            else if(resp.ReaxiumResponse.code === '1'){
+                                console.error("Error servicio: "+resp.ReaxiumResponse.message);
+                                growl.error("The route you have selected is already associated to this device, please try with a different one.");
+                            }
+                            else {
                                 console.error("Error servicio: "+resp.ReaxiumResponse.message);
                                 growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
                             }

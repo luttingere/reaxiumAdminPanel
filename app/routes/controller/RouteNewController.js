@@ -452,16 +452,18 @@ angular.module("App")
 
               var waypts = [];
 
-              listStops.forEach(function(entry){
-                  var local = entry.latitude+','+entry.longitude;
-                  waypts.push({location:local,stopover: true})
-              });
+              for(var i=1; i<size-1;i++){
+                  var local = listStops[i].latitude+','+listStops[i].longitude;
+                  waypts.push({location:local,stopover: true});
+              }
+
 
               $log.debug(waypts);
 
                    var directionsService = new mapGogole.DirectionsService();
 
                    directionsDisplay.setMap($scope.map.control.getGMap());
+
 
                   var request = {
 
@@ -474,9 +476,8 @@ angular.module("App")
                           listStops[size-1].longitude
                       ),
                       travelMode: mapGogole.TravelMode['DRIVING'],
-                      waypoints:waypts,
-                      optimizeWaypoints: true
-
+                      optimizeWaypoints: true,
+                      waypoints:waypts
                   };
 
                   directionsService.route(request, function(response, status) {

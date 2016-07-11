@@ -158,8 +158,6 @@ angular.module("App")
 
             if ($scope.allUserSelcStakeHolder.length > 0) {
 
-                spinnerService.show("spinnerNew");
-
                 console.log($scope.mytime_start);
                 console.log($scope.mytime_end);
 
@@ -169,37 +167,44 @@ angular.module("App")
                 console.log(start_date);
                 console.log(end_date);
 
+                if(compararDosHoras(start_date,end_date)){
 
-                var objSend = {
-                    ReaxiumParameters: {
-                        ReaxiumDevice: {
-                            device_id: DeviceService.getRelUserDevice().id_device,
-                            id_route: $scope.allUserSelcStakeHolder[0].id_route,
-                            start_date: start_date.trim() + ':00',
-                            end_date: end_date.trim() + ':00'
+                    spinnerService.show("spinnerNew");
+
+                    var objSend = {
+                        ReaxiumParameters: {
+                            ReaxiumDevice: {
+                                device_id: DeviceService.getRelUserDevice().id_device,
+                                id_route: $scope.allUserSelcStakeHolder[0].id_route,
+                                start_date: start_date.trim() + ':00',
+                                end_date: end_date.trim() + ':00'
+                            }
                         }
                     }
-                }
 
+                    console.log(objSend);
 
-                console.log(objSend);
+                    DeviceService.getAssociateADeviceWithRoute(objSend)
+                        .then(function (resp) {
+                            spinnerService.hide("spinnerNew");
 
-                DeviceService.getAssociateADeviceWithRoute(objSend)
-                    .then(function (resp) {
+                            if (resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
+                                DeviceService.setShowGrowlMessage({isShow: true, message: GLOBAL_MESSAGE.MESSAGE_ASSOCIATE_DEVICE_WITH_ROUTES})
+                                $state.go('device');
+                            } else {
+                                console.error("Error servicio: "+resp.ReaxiumResponse.message);
+                                growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
+                            }
+
+                        }).catch(function (err) {
                         spinnerService.hide("spinnerNew");
+                        console.error("Error servicio: "+err);
+                    });
 
-                        if (resp.ReaxiumResponse.code == GLOBAL_CONSTANT.SUCCESS_RESPONSE_SERVICE) {
-                            DeviceService.setShowGrowlMessage({isShow: true, message: GLOBAL_MESSAGE.MESSAGE_ASSOCIATE_DEVICE_WITH_ROUTES})
-                            $state.go('device');
-                        } else {
-                            console.error("Error servicio: "+resp.ReaxiumResponse.message);
-                            growl.error(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);
-                        }
-
-                    }).catch(function (err) {
-                    spinnerService.hide("spinnerNew");
-                    console.error("Error servicio: "+err);
-                });
+                }else{
+                    console.error("Hora invalida");
+                    growl.error("The start time may not be greater than the initial.");
+                }
 
             } else {
                 growl.warning(GLOBAL_MESSAGE.MESSAGE_SERVICE_ERROR);

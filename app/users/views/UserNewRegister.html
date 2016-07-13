@@ -379,9 +379,9 @@
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                    <tr ng-repeat="user in allUserSelcStakeHolder">
-                                                                        <td>{{user.first_name + " " + user.second_name}}</td>
-                                                                        <td>{{user.first_last_name + " " + user.second_last_name}}</td>
+                                                                    <tr ng-repeat="user in allUserSelcStakeHolder" ng-hide="user.status_id == 3">
+                                                                        <td>{{user.first_name}} {{user.second_name}}</td>
+                                                                        <td>{{user.first_last_name}}</td>
                                                                         <td>{{user.document_id}}</td>
                                                                         <td><a ng-click="deleteUserTable(user.user_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a></td>
                                                                     </tr>

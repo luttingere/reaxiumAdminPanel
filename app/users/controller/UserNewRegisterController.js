@@ -386,8 +386,11 @@ angular.module('App')
                                     if ($scope.selectTypeUser == 3) {
 
                                         result[0].UserRelationship.forEach(function (entry) {
-                                            $scope.showTable = true;
-                                            $scope.allUserSelcStakeHolder.push(entry);
+
+                                            if(entry.status_id != 3){
+                                                $scope.showTable = true;
+                                                $scope.allUserSelcStakeHolder.push(entry);
+                                            }
                                         })
                                     }
 
@@ -520,6 +523,7 @@ angular.module('App')
                             first_last_name: entry.first_last_name,
                             second_last_name: entry.second_last_name,
                             user_id: entry.user_id,
+                            type_user: entry.user_type_id,
                             document_id: entry.document_id,
                             email: entry.email,
                             pic: entry.user_photo
@@ -545,8 +549,14 @@ angular.module('App')
         $scope.addUser = function (str) {
 
             if(!searchObjList(str.originalObject.user_id)){
-                $scope.showTable = true;
-                $scope.allUserSelcStakeHolder.push(str.originalObject);
+
+                if(str.originalObject.type_user == 2){
+                    $scope.showTable = true;
+                    $scope.allUserSelcStakeHolder.push(str.originalObject);
+                }else{
+                    console.log("El tipo de usuario no es un estudiante");
+                    growl.warning("You can only associate a user with student role.");
+                }
             }else{
                 console.log("Usuario ya esta agregado en la preselleccion");
                 growl.warning("User is already included in your shortlist");

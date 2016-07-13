@@ -46,6 +46,9 @@ angular.module('App')
         }, {
             title: 'ID',
             value: 'document_id'
+        },{
+            title:'User Type',
+            value:'UserType.user_type_name'
         }
         ];
 

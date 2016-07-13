@@ -66,7 +66,6 @@
                                                     <sort-by onsort="onSort" sortdir="userCtrl.filterCriteria.ReaxiumParameters.sortDir" sortedby="userCtrl.filterCriteria.ReaxiumParameters.sortedBy" sortvalue="{{ header.value }}">{{ header.title }}</sort-by>
                                                 </th>
                                                 <th>Phones</th>
-                                                <th>Address</th>
                                                 <th>Information</th>
                                                 <th>Status</th>
                                                 <th>Actions</th>
@@ -74,16 +73,12 @@
                                             </thead>
                                             <tbody>
                                             <tr ng-repeat="user in userCtrl.users">
-                                                <td>{{user.first_name + " " + user.second_name}}</td>
+                                                <td>{{user.first_name }} {{user.second_name}}</td>
                                                 <td>{{user.first_last_name}}</td>
                                                 <td>{{user.document_id}}</td>
-                                                <td><a href="" ng-click="userCtrl.showPhoneInformation(user.user_id)">Phones</a>
-                                                </td>
-                                                <td><a href=""
-                                                       ng-click="userCtrl.showAddressInformation(user.user_id)">Addresss</a>
-                                                </td>
-                                                <td><a href="" ng-click="userCtrl.showGeneralInformation(user.user_id)">Information</a>
-                                                </td>
+                                                <td>{{user.user_type.user_type_name | lowerCase | capitalize}}</td>
+                                                <td><a href="" ng-click="userCtrl.showPhoneInformation(user.user_id)">Phones</a></td>
+                                                <td><a href="" ng-click="userCtrl.showGeneralInformation(user.user_id)">Information</a></td>
                                                 <td>{{user.status.status_name | lowerCase | capitalize}}</td>
                                                 <td><a data-toggle="tooltip" title="Delete User" ng-click="deleteUser(user.user_id)"><small><i class="fa fa-fw fa-trash"></i></small></i></a> -
                                                     <a ui-sref="newUser({id_user:user.user_id,edit:true})" data-toggle="tooltip" title="Edit User"><small><i class="fa fa-fw fa-pencil"></i> </small></a></td>
@@ -230,15 +225,15 @@
                                 <div ng-switch on="userCtrl.userFound.user_type_id">
 
                                     <ul class="users-list clearfix" ng-switch-when="2">
-                                        <li ng-repeat="stakeholder in userCtrl.userFound.Stakeholders">
-                                            <img src="{{stakeholder[0].user_photo}}" alt="User Image">
-                                            <a href="" class="users-list-name" ng-click="sendNewUser(stakeholder[0].user_id)">{{stakeholder[0].first_name +' '+ stakeholder[0].first_last_name}}</a>
-                                            <span class="users-list-date">{{stakeholder[0].document_id}}</span>
+                                        <li ng-repeat="stakeholder in userCtrl.userFound.Stakeholders" ng-hide="stakeholder[0].status_id == 3">
+                                                <img src="{{stakeholder[0].user_photo}}" alt="User Image">
+                                                <a href="" class="users-list-name" ng-click="sendNewUser(stakeholder[0].user_id)">{{stakeholder[0].first_name +' '+ stakeholder[0].first_last_name}}</a>
+                                                <span class="users-list-date">{{stakeholder[0].document_id}}</span>
                                         </li>
                                     </ul>
 
                                     <ul class="users-list clearfix" ng-repeat="userRelation in userCtrl.userFound.UserRelationship"
-                                        ng-switch-when="3">
+                                        ng-switch-when="3" ng-hide="userRelation.status_id == 3">
                                         <li>
                                             <img src="{{userRelation.user_photo}}" alt="User Image">
                                             <a href="" class="users-list-name" ng-click="sendNewUser(userRelation.user_id)">{{userRelation.first_name +' '+ userRelation.first_last_name}}</a>
@@ -303,23 +298,23 @@
                     </div>
                 </div>
             </modal>
-            <modal title="User Address" visible="userCtrl.showAddressModal">
+          <!--  <modal title="User Address" visible="userCtrl.showAddressModal">
 
                 <div class="box box-widget widget-user">
-                    <!-- Add the bg color to the header using any of the bg-* classes -->
+
                     <div class="widget-user-header bg-aqua-active">
                         <h3 class="widget-user-username">{{userCtrl.userFound.first_name+"   "+userCtrl.userFound.first_last_name}}</h3>
                         <h5 class="widget-user-desc">{{userCtrl.userFound.user_type.user_type_name}}</h5>
                     </div>
                     <div class="widget-user-image">
-                        <!--<img class="img-circle" src="{{userCtrl.userFound.user_photo}}" alt="User Avatar">-->
+                        <img class="img-circle" src="{{userCtrl.userFound.user_photo}}" alt="User Avatar">
                         <img class="img-circle" src="dist/img/profile-default.png" alt="User Avatar">
                     </div>
                     <div class="box-footer">
                         <div class="box">
                             <div class="box-header with-border">
                                 <h3 class="box-title">User Address Information</h3>
-                            </div><!-- /.box-header -->
+                            </div>
                             <div class="box-body no-padding">
                                 <div class="form-group">
                                     <div class="input-group">
@@ -327,18 +322,17 @@
                                             <i class="fa fa-map-marker"></i>
                                         </div>
                                         <label class="form-control">{{userCtrl.userFound.address[0].address}}</label>
-                                    </div><!-- /.input group -->
+                                    </div>
                                 </div>
                                 <ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options">
                                     <ui-gmap-marker idKey='1' coords='marker.coords'></ui-gmap-marker>
                                 </ui-gmap-google-map>
                             </div>
-                        </div><!-- /.box-body -->
+                        </div>
                     </div>
                 </div>
-            </modal>
+            </modal>-->
             <div class="control-sidebar-bg"></div>
-
         </div>
         <div ui-view="footer"></div>
     </div>
